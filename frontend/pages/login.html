@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | HELAR-TEC</title>
+    <link rel="stylesheet" href="#">
+</head>
+<body style="background-color: black; color: white;">
+    <div class="container">
+        <div class="card">
+            <div class="logo-container">
+                <img src="../img/logo-helar.jpeg" width="120" height="40" alt="#">
+            </div>
+
+            <div class="logo">
+                <p class="subtitle">Ingresa tus credenciales</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="input-group">
+                    <label>Usuario</label>
+                    <input type="text" id="usuario" placeholder="Ingresa tu usuario" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Contraseña</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="contrasena" placeholder="Ingresa tu contraseña" required>
+                        
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary">
+                    Iniciar sesión
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+<script src="../js/auth.js"></script>
+</html>

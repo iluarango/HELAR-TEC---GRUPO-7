@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Empleado | HELAR-TEC</title>
+    <link rel="stylesheet" href="../css/empleado.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.1/css/all.css">
+</head>
+<body>
+    <div class="contenedor-principal">
+
+        <!-- BARRA LATERAL -->
+        <aside class="barra-lateral">
+            <div class="logo-empresa">
+                <img src="../img/logo-helar.jpeg" style="width: 120px;">
+            </div>
+
+            <h2 class="titulo-panel">Panel de Empleado</h2>
+
+            <ul class="lista-menu">
+                <li class="opcion-menu activa" onclick="cambiarSeccion('inventario', this)">
+                    <svg class="icono-menu" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                    </svg>
+                    Inventario
+                </li>
+                <li class="opcion-menu" onclick="cambiarSeccion('proveedores', this)">
+                    <svg class="icono-menu" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    Proveedores
+                </li>
+                <li class="opcion-menu" onclick="cambiarSeccion('compras', this)">
+                    <svg class="icono-menu" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                    </svg>
+                    Compras
+                </li>
+                <li class="opcion-menu" onclick="cambiarSeccion('ventas', this)">
+                    <svg class="icono-menu" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                    </svg>
+                    Ventas
+                </li>
+            </ul>
+
+            <!-- AJUSTES -->
+            <div class="menu-ajustes-wrapper">
+                <ul class="lista-menu">
+                    <li class="opcion-menu" id="btnAjustes">
+                        <svg class="icono-menu" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        Ajustes
+                    </li>
+                </ul>
+
+                <ul class="menu-ajustes" id="menuAjustes">
+                    <li class="opcion-submenu cerrar-sesion" id="abrirModalLogout">
+                        <svg class="icono-submenu" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                        </svg>
+                        Cerrar sesión
+                    </li>
+                </ul>
+            </div>
+
+            <!-- PERFIL USUARIO -->
+            <div class="perfil-usuario">
+                <div class="avatar-usuario" id="avatarUsuario">JD</div>
+                <div class="info-usuario">
+                    <h4 id="nombreUsuario">Cargando...</h4>
+                    <p id="rolUsuario">Empleado</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="contenido-principal">
+
+            <!-- SECCIÓN INVENTARIO -->
+            <div id="contenido-inventario" class="seccion-contenido activa">
+                <div class="encabezado-seccion">
+                    <h2>Inventario de Insumos</h2>
+                    <button class="boton-registrar" id="btnAbrirModalInsumo">
+                        <span>+</span> Registrar insumo
+                    </button>
+                </div>
+                <div class="barra-busqueda">
+                    <svg width="20" height="20" fill="#999" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
+                    </svg>
+                    <input type="text" id="inputBusquedaInsumo" placeholder="Buscar por nombre o categoría...">
+                </div>
+                <div class="seccion-inventario">
+                    <table class="tabla-inventario">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Categoría</th>
+                                <th>Stock</th>
+                                <th>Stock mínimo</th>
+                                <th>Unidad</th>
+                                <th>Caducidad</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoTablaInsumos">
+                            <tr>
+                                <td colspan="8" style="text-align: center; padding: 40px; color: #999;">
+                                    <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: #a47c7c;"></i>
+                                    <p style="margin-top: 10px;">Cargando insumos...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SECCIÓN PROVEEDORES -->
+            <div id="contenido-proveedores" class="seccion-contenido">
+                <div class="encabezado-seccion">
+                    <h2>Proveedores</h2>
+                    <button class="boton-registrar" id="btnAbrirModalProveedor">
+                        <span>+</span> Registrar proveedor
+                    </button>
+                </div>
+                <div class="barra-busqueda">
+                    <svg width="20" height="20" fill="#999" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
+                    </svg>
+                    <input type="text" id="inputBusquedaProveedor" placeholder="Buscar por nombre...">
+                </div>
+                <table class="tabla-inventario">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Contacto</th>
+                            <th>Teléfono</th>
+                            <th>Correo</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTablaProveedores"></tbody>
+                </table>
+            </div>
+
+            <!-- SECCIÓN COMPRAS -->
+            <div id="contenido-compras" class="seccion-contenido">
+                <div class="encabezado-seccion">
+                    <h2>Compras</h2>
+                    <button class="boton-registrar" id="btnAbrirModalCompra">
+                        <span>+</span> Registrar compra
+                    </button>
+                </div>
+                <div class="barra-busqueda">
+                    <svg width="20" height="20" fill="#999" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
+                    </svg>
+                    <input type="text" id="inputBusquedaCompra" placeholder="Buscar por número o proveedor...">
+                </div>
+                <table class="tabla-inventario">
+                    <thead>
+                        <tr>
+                            <th># Compra</th>
+                            <th>Fecha</th>
+                            <th>Proveedor</th>
+                            <th>Total</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTablaCompras"></tbody>
+                </table>
+            </div>
+
+            <!-- SECCIÓN VENTAS -->
+            <div id="contenido-ventas" class="seccion-contenido">
+                <div class="encabezado-seccion">
+                    <h2>Historial de Ventas</h2>
+                    <button class="boton-registrar">
+                        <span>+</span> Registrar venta
+                    </button>
+                </div>
+                <div class="seccion-ventas">
+                    <table class="tabla-ventas">
+                        <thead>
+                            <tr>
+                                <th># Venta</th>
+                                <th>Fecha</th>
+                                <th># Pedido</th>
+                                <th>Total</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoTablaVentas"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+        <!-- CALENDARIO -->
+        <aside class="seccion-calendario">
+            <h3 style="margin-bottom: 20px; color: #a47c7c;">Calendario</h3>
+            <div class="encabezado-calendario">
+                <span id="mes-actual"></span>
+                <div class="navegacion-calendario">
+                    <button class="boton-navegacion" id="btnMesAnterior">‹</button>
+                    <button class="boton-navegacion" id="btnMesSiguiente">›</button>
+                </div>
+            </div>
+            <div class="grilla-calendario" id="grillaCalendario">
+                <div class="etiqueta-dia-semana">Do</div>
+                <div class="etiqueta-dia-semana">Lu</div>
+                <div class="etiqueta-dia-semana">Ma</div>
+                <div class="etiqueta-dia-semana">Mi</div>
+                <div class="etiqueta-dia-semana">Ju</div>
+                <div class="etiqueta-dia-semana">Vi</div>
+                <div class="etiqueta-dia-semana">Sa</div>
+            </div>
+            <h4 class="titulo-seccion-calendario">Hora actual</h4>
+            <div class="hora-actual">
+                <div class="mostrar-hora" id="horaTiempoReal">00:00</div>
+                <div class="mostrar-fecha" id="fechaTiempoReal"></div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- MODAL REGISTRO INSUMO -->
+    <div id="modalInsumo" class="modal">
+        <div class="modal-contenido">
+            <button class="modal-cerrar" id="btnCerrarModalInsumo">×</button>
+            <h2>Registrar Nuevo Insumo</h2>
+            <p>Agrega un nuevo insumo al inventario</p>
+            <form id="formNuevoInsumo">
+                <div class="form-group">
+                    <label>Nombre del insumo</label>
+                    <input type="text" id="nombreInsumo" placeholder="Ej: Leche entera" required>
+                </div>
+                <div class="form-group">
+                    <label>Categoría</label>
+                    <select id="tipoInsumo" required>
+                        <option value="" disabled selected>Selecciona categoría</option>
+                        <option value="Saborizantes">Saborizantes</option>
+                        <option value="Lácteos">Lácteos</option>
+                        <option value="Frutas">Frutas</option>
+                        <option value="Granos/cereales">Granos/cereales</option>
+                        <option value="Endulzantes">Endulzantes</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Stock</label>
+                    <input type="number" id="stock" min="0" step="0.01" placeholder="Ej: 50" required>
+                </div>
+                <div class="form-group">
+                    <label>Stock mínimo</label>
+                    <input type="number" id="stockMinimo" min="0" step="0.01" placeholder="Ej: 10" required>
+                </div>
+                <div class="form-group">
+                    <label>Unidad de medida</label>
+                    <select id="unidadMedida" required>
+                        <option value="" disabled selected>Selecciona</option>
+                        <option value="L">Litros (L)</option>
+                        <option value="kg">Kilogramos (kg)</option>
+                        <option value="g">Gramos (g)</option>
+                        <option value="ml">Mililitros (ml)</option>
+                        <option value="Unidades">Unidades</option>
+                        <option value="Cajas">Cajas</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Fecha de caducidad <span style="color: #999; font-weight: normal;">(opcional)</span></label>
+                    <input type="date" id="fechaCaducidad">
+                </div>
+                <div id="mensajeInsumo"></div>
+                <div class="botones">
+                    <button type="button" class="btn-cancelar" id="btnCancelarModalInsumo">Cancelar</button>
+                    <button type="submit" class="btn-registrar">Registrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL EDITAR INSUMO -->
+    <div id="modalEditarInsumo" class="modal">
+        <div class="modal-contenido">
+            <button class="modal-cerrar" id="btnCerrarModalEditar">×</button>
+            <h2>Editar Insumo</h2>
+            <p>Modifica los datos del insumo</p>
+            <form id="formEditarInsumo">
+                <input type="hidden" id="editIdInsumo">
+                <div class="form-group">
+                    <label>Nombre del insumo</label>
+                    <input type="text" id="editNombreInsumo" placeholder="Ej: Leche entera" required>
+                </div>
+                <div class="form-group">
+                    <label>Categoría</label>
+                    <select id="editTipoInsumo" required>
+                        <option value="Saborizantes">Saborizantes</option>
+                        <option value="Lácteos">Lácteos</option>
+                        <option value="Frutas">Frutas</option>
+                        <option value="Granos/cereales">Granos/cereales</option>
+                        <option value="Endulzantes">Endulzantes</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Stock</label>
+                    <input type="number" id="editStock" min="0" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>Stock mínimo</label>
+                    <input type="number" id="editStockMinimo" min="0" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>Unidad de medida</label>
+                    <select id="editUnidadMedida" required>
+                        <option value="L">Litros (L)</option>
+                        <option value="kg">Kilogramos (kg)</option>
+                        <option value="g">Gramos (g)</option>
+                        <option value="ml">Mililitros (ml)</option>
+                        <option value="Unidades">Unidades</option>
+                        <option value="Cajas">Cajas</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Fecha de caducidad <span style="color: #999; font-weight: normal;">(opcional)</span></label>
+                    <input type="date" id="editFechaCaducidad">
+                </div>
+                <div id="mensajeEditarInsumo"></div>
+                <div class="botones">
+                    <button type="button" class="btn-cancelar" id="btnCancelarModalEditar">Cancelar</button>
+                    <button type="submit" class="btn-registrar">Guardar cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL REGISTRO PROVEEDOR -->
+    <div id="modalProveedor" class="modal">
+        <div class="modal-contenido">
+            <button class="modal-cerrar" id="btnCerrarModalProveedor">×</button>
+            <h2>Registrar Proveedor</h2>
+            <p>Agrega un nuevo proveedor</p>
+            <form id="formNuevoProveedor">
+                <div class="form-group">
+                    <label>Nombre <span style="color:#d9534f">*</span></label>
+                    <input type="text" id="nombreProveedor" placeholder="Ej: Lácteos del Valle" required>
+                </div>
+                <div class="form-group">
+                    <label>Contacto</label>
+                    <input type="text" id="contactoProveedor" placeholder="Ej: Juan Pérez">
+                </div>
+                <div class="form-group">
+                    <label>Teléfono</label>
+                    <input type="text" id="telefonoProveedor" placeholder="Ej: 3001234567">
+                </div>
+                <div class="form-group">
+                    <label>Correo</label>
+                    <input type="email" id="correoProveedor" placeholder="Ej: proveedor@correo.com">
+                </div>
+                <div id="mensajeProveedor"></div>
+                <div class="botones">
+                    <button type="button" class="btn-cancelar" id="btnCancelarModalProveedor">Cancelar</button>
+                    <button type="submit" class="btn-registrar">Registrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL EDITAR PROVEEDOR -->
+    <div id="modalEditarProveedor" class="modal">
+        <div class="modal-contenido">
+            <button class="modal-cerrar" id="btnCerrarModalEditarProveedor">×</button>
+            <h2>Editar Proveedor</h2>
+            <p>Modifica los datos del proveedor</p>
+            <form id="formEditarProveedor">
+                <input type="hidden" id="editIdProveedor">
+                <div class="form-group">
+                    <label>Nombre <span style="color:#d9534f">*</span></label>
+                    <input type="text" id="editNombreProveedor" required>
+                </div>
+                <div class="form-group">
+                    <label>Contacto</label>
+                    <input type="text" id="editContactoProveedor">
+                </div>
+                <div class="form-group">
+                    <label>Teléfono</label>
+                    <input type="text" id="editTelefonoProveedor">
+                </div>
+                <div class="form-group">
+                    <label>Correo</label>
+                    <input type="email" id="editCorreoProveedor">
+                </div>
+                <div id="mensajeEditarProveedor"></div>
+                <div class="botones">
+                    <button type="button" class="btn-cancelar" id="btnCancelarModalEditarProveedor">Cancelar</button>
+                    <button type="submit" class="btn-registrar">Guardar cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL REGISTRO COMPRA -->
+    <div id="modalCompra" class="modal">
+        <div class="modal-contenido" style="max-width: 800px;">
+            <button class="modal-cerrar" id="btnCerrarModalCompra">×</button>
+            <h2>Registrar Compra</h2>
+            <p>Selecciona el proveedor y agrega los insumos</p>
+            <form id="formNuevaCompra">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label>Proveedor <span style="color:#d9534f">*</span></label>
+                        <select id="idProveedorCompra" required>
+                            <option value="" disabled selected>Selecciona un proveedor</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha</label>
+                        <input type="date" id="fechaCompra">
+                    </div>
+                </div>
+
+                <h4 style="margin: 20px 0 10px; color: #a47c7c;">Detalles de la compra</h4>
+
+                <div style="max-height: 200px; overflow-y: auto; margin-bottom: 15px;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead style="background: #f5e6e6; position: sticky; top: 0;">
+                            <tr>
+                                <th style="padding: 10px; text-align: left; font-size: 13px;">Insumo</th>
+                                <th style="padding: 10px; text-align: left; font-size: 13px;">Cantidad</th>
+                                <th style="padding: 10px; text-align: left; font-size: 13px;">Precio unitario</th>
+                                <th style="padding: 10px; text-align: left; font-size: 13px;">Subtotal</th>
+                                <th style="padding: 10px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaDetallesCompra"></tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" style="padding: 10px; text-align: right; font-weight: 600;">Total:</td>
+                                <td style="padding: 10px; font-weight: 600; color: #a47c7c;" id="totalCompra">$0.00</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div style="background: #f9f9f9; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                    <h5 style="margin: 0 0 10px; color: #666; font-size: 13px;">Agregar insumo</h5>
+                    <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 10px; align-items: end;">
+                        <div class="form-group" style="margin: 0;">
+                            <label style="font-size: 12px;">Insumo</label>
+                            <select id="detalleInsumo">
+                                <option value="" disabled selected>Selecciona</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin: 0;">
+                            <label style="font-size: 12px;">Cantidad</label>
+                            <input type="number" id="detalleCantidad" min="1" value="1">
+                        </div>
+                        <div class="form-group" style="margin: 0;">
+                            <label style="font-size: 12px;">Precio unitario</label>
+                            <input type="number" id="detallePrecio" min="0" step="0.01" placeholder="0.00">
+                        </div>
+                        <div class="form-group" style="margin: 0;">
+                            <label style="font-size: 12px;">Fecha de caducidad</label>
+                            <input type="date" id="fechaCaducidadDetalle">
+                        </div>
+                        <button type="button" class="btn-registrar" style="padding: 10px 16px;" onclick="agregarDetalleCompra()">
+                            + Agregar
+                        </button>
+                    </div>
+                </div>
+
+                <div id="mensajeCompra"></div>
+
+                <div class="botones">
+                    <button type="button" class="btn-cancelar" id="btnCancelarModalCompra">Cancelar</button>
+                    <button type="submit" class="btn-registrar" id="btnRegistrarCompra" disabled>Registrar compra</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL CONFIRMACIÓN LOGOUT -->
+    <div id="modalLogout" class="modal-logout">
+        <div class="modal-logout-contenido">
+            <div class="modal-logout-header">
+                <h3>Cerrar sesión</h3>
+            </div>
+            <div class="modal-logout-body">
+                <p>¿Estás seguro que deseas cerrar sesión?</p>
+            </div>
+            <div class="modal-logout-footer">
+                <button id="cancelarLogout" class="btn-cancelar">Cancelar</button>
+                <button id="confirmarLogout" class="btn-cerrar">Cerrar sesión</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/empleado.js"></script>
+    <script src="../js/inventario.js"></script>
+    <script src="../js/proveedores.js"></script>
+    <script src="../js/compras.js"></script>
+</body>
+</html>

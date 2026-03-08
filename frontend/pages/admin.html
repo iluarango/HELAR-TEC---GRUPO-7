@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Administrador | HELAR-TEC</title>
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div class="contenedor-principal">
+
+        <!-- BARRA LATERAL IZQUIERDA -->
+        <aside class="barra-lateral-izquierda">
+            <div class="logo-empresa">
+                <svg viewBox="0 0 120 40">
+                    <image href="../assets/img/logo-helar.jpeg" width="120" height="40" />
+                </svg>
+            </div>
+
+            <h2>Panel de Admin</h2>
+
+            <nav class="menu">
+                <div class="item-menu activo">
+                    <svg fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+                    </svg>
+                    Empleados
+                </div>
+            </nav>
+
+            <!-- AJUSTES CON SUBMENU -->
+            <div class="item-menu item-ajustes" id="btnAjustes">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"/>
+                </svg>
+                Ajustes
+                <i class="fas fa-chevron-right chevron-ajustes" style="margin-left: auto; font-size: 11px;"></i>
+            </div>
+
+            <!-- SUBMENU AJUSTES -->
+            <div class="submenu-ajustes" id="submenuAjustes">
+                <div class="submenu-item">
+                    <i class="fas fa-book"></i>
+                    Manual de usuario
+                </div>
+                <div class="submenu-item cerrar-sesion" id="abrirModalLogout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Cerrar sesión
+                </div>
+            </div>
+
+            <div class="perfil-usuario">
+                <div class="avatar-usuario" id="avatarAdmin">AD</div>
+                <div class="info-usuario">
+                    <h3 id="nombreAdmin">Cargando...</h3>
+                    <p id="rolAdmin">Administrador</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="contenido-principal">
+            <div class="encabezado-seccion">
+                <h2><i class="fas fa-users" style="margin-right: 10px;"></i> GESTIÓN DE EMPLEADOS</h2>
+                <button class="boton-generar" id="btnAbrirModalEmpleado">
+                    <span>+</span> Nuevo Empleado
+                </button>
+            </div>
+
+            <!-- BARRA DE BÚSQUEDA -->
+            <div class="barra-busqueda">
+                <svg width="20" height="20" fill="#999" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
+                </svg>
+                <input type="text" id="inputBusqueda" placeholder="Buscar por nombre o correo...">
+            </div>
+
+            <div class="tabla-contenedor">
+                <table class="tabla-empleados">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Usuario</th>
+                            <th>Correo</th>
+                            <th>Rol</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaEmpleadosBody">
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 40px;">
+                                <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: #a47c7c;"></i>
+                                <p style="margin-top: 10px; color: #666;">Cargando empleados...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL REGISTRO EMPLEADO -->
+    <div id="modalEmpleado" class="modal">
+        <div class="modal-contenido">
+            <div class="modal-header">
+                <h2><i class="fas fa-user-plus"></i> Registrar Nuevo Empleado</h2>
+                <button class="modal-cerrar" id="btnCerrarModal">&times;</button>
+            </div>
+
+            <form id="formRegistroEmpleado">
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Nombre de Usuario</label>
+                    <input type="text" id="nombreUsuario" placeholder="Ej: juan.perez" required>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> Correo Electrónico</label>
+                    <input type="email" id="correoUsuario" placeholder="Ej: juan@helar-tec.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> Contraseña</label>
+                    <input type="password" id="contrasenaUsuario" placeholder="Entre 12 y 16 caracteres" required>
+                    <div id="requisitosContrasena" style="margin-top: 10px; font-size: 12px; display: none;">
+                        <div id="req-length"><i class="fas fa-circle"></i> Entre 12 y 16 caracteres</div>
+                        <div id="req-uppercase"><i class="fas fa-circle"></i> Al menos una mayúscula</div>
+                        <div id="req-lowercase"><i class="fas fa-circle"></i> Al menos una minúscula</div>
+                        <div id="req-number"><i class="fas fa-circle"></i> Al menos un número</div>
+                        <div id="req-special"><i class="fas fa-circle"></i> Al menos un carácter especial (@$!%*?&)</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-briefcase"></i> Rol</label>
+                    <select id="idRol" required>
+                        <option value="" disabled selected>Selecciona un rol</option>
+                        <option value="1">Administrador</option>
+                        <option value="2">Empleado</option>
+                    </select>
+                </div>
+
+                <div id="mensajeRegistro"></div>
+
+                <div class="modal-botones">
+                    <button type="button" class="btn-cancelar" id="btnCancelarModal">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button type="submit" class="btn-registrar" id="btnRegistrar" disabled>
+                        <i class="fas fa-save"></i> Registrar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL EDITAR ROL -->
+    <div id="modalEditarRol" class="modal">
+        <div class="modal-contenido">
+            <div class="modal-header">
+                <h2><i class="fas fa-user-edit"></i> Actualizar Rol</h2>
+                <button class="modal-cerrar" id="btnCerrarModalEditar">&times;</button>
+            </div>
+
+            <form id="formEditarRol">
+                <input type="hidden" id="editIdUsuario">
+
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Usuario</label>
+                    <input type="text" id="editNombreUsuario" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-briefcase"></i> Nuevo Rol</label>
+                    <select id="editIdRol" required>
+                        <option value="1">Administrador</option>
+                        <option value="2">Empleado</option>
+                    </select>
+                </div>
+
+                <div id="mensajeEditar"></div>
+
+                <div class="modal-botones">
+                    <button type="button" class="btn-cancelar" id="btnCancelarModalEditar">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button type="submit" class="btn-registrar">
+                        <i class="fas fa-save"></i> Actualizar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL CONFIRMACIÓN ELIMINAR -->
+    <div id="modalEliminar" class="modal-logout">
+        <div class="modal-logout-contenido">
+            <div class="modal-logout-header">
+                <h3>Eliminar usuario</h3>
+            </div>
+            <div class="modal-logout-body">
+                <p>¿Estás seguro que deseas eliminar a <strong id="nombreEliminar"></strong>?</p>
+                <p style="font-size: 13px; color: #999; margin-top: 8px;">Esta acción no se puede deshacer.</p>
+            </div>
+            <div class="modal-logout-footer">
+                <button id="cancelarEliminar" class="btn-cancelar">Cancelar</button>
+                <button id="confirmarEliminar" class="btn-cerrar">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CONFIRMACIÓN LOGOUT -->
+    <div id="modalLogout" class="modal-logout">
+        <div class="modal-logout-contenido">
+            <div class="modal-logout-header">
+                <h3>Cerrar sesión</h3>
+            </div>
+            <div class="modal-logout-body">
+                <p>¿Estás seguro que deseas cerrar sesión?</p>
+            </div>
+            <div class="modal-logout-footer">
+                <button id="cancelarLogout" class="btn-cancelar">Cancelar</button>
+                <button id="confirmarLogout" class="btn-cerrar">Cerrar sesión</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/ui.js"></script>
+    <script src="../js/usuarios.js"></script>
+    <script src="../js/admin.js"></script>
+</body>
+</html>
