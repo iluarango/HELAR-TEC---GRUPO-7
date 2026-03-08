@@ -37,6 +37,18 @@
                     </svg>
                     Compras
                 </li>
+                <li class="opcion-menu" onclick="cambiarSeccion('productos', this)">
+                    <svg class="icono-menu" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                    </svg>
+                    Productos
+                </li>
+                <li class="opcion-menu" onclick="cambiarSeccion('pedidos', this)">
+                    <svg class="icono-menu" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Pedidos
+                </li>
                 <li class="opcion-menu" onclick="cambiarSeccion('ventas', this)">
                     <svg class="icono-menu" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
@@ -56,7 +68,6 @@
                         Ajustes
                     </li>
                 </ul>
-
                 <ul class="menu-ajustes" id="menuAjustes">
                     <li class="opcion-submenu cerrar-sesion" id="abrirModalLogout">
                         <svg class="icono-submenu" viewBox="0 0 24 24">
@@ -177,29 +188,132 @@
                 </table>
             </div>
 
+            <!-- SECCIÓN PRODUCTOS -->
+            <div id="contenido-productos" class="seccion-contenido">
+                <div class="pestanas">
+                    <button class="pestana activa" id="pestanaProductos" onclick="cambiarPestana('productos')">Productos</button>
+                    <button class="pestana" id="pestanaCategorias" onclick="cambiarPestana('categorias')">Categorías</button>
+                    <button class="pestana" id="pestanaSabores" onclick="cambiarPestana('sabores')">Sabores</button>
+                </div>
+
+                <!-- PANEL PRODUCTOS -->
+                <div id="panelProductos">
+                    <div class="encabezado-seccion">
+                        <h2>Productos</h2>
+                        <button class="boton-registrar" id="btnAbrirModalProducto">
+                            <span>+</span> Registrar producto
+                        </button>
+                    </div>
+                    <div class="barra-busqueda">
+                        <svg width="20" height="20" fill="#999" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
+                        </svg>
+                        <input type="text" id="inputBusquedaProducto" placeholder="Buscar por nombre o categoría...">
+                    </div>
+                    <table class="tabla-inventario">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Categoría</th>
+                                <th>Precio</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoTablaProductos"></tbody>
+                    </table>
+                </div>
+
+                <!-- PANEL CATEGORÍAS -->
+                <div id="panelCategorias" style="display:none;">
+                    <div class="encabezado-seccion">
+                        <h2>Categorías</h2>
+                        <button class="boton-registrar" id="btnAbrirModalCategoria">
+                            <span>+</span> Registrar categoría
+                        </button>
+                    </div>
+                    <table class="tabla-inventario">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoTablaCategorias"></tbody>
+                    </table>
+                </div>
+
+                <!-- PANEL SABORES -->
+                <div id="panelSabores" style="display:none;">
+                    <div class="encabezado-seccion">
+                        <h2>Sabores</h2>
+                        <button class="boton-registrar" id="btnAbrirModalSabor">
+                            <span>+</span> Registrar sabor
+                        </button>
+                    </div>
+                    <table class="tabla-inventario">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoTablaSabores"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SECCIÓN PEDIDOS -->
+            <div id="contenido-pedidos" class="seccion-contenido">
+                <div class="encabezado-seccion">
+                    <h2>Pedidos</h2>
+                    <button class="boton-registrar" id="btnAbrirModalPedido">
+                        <span>+</span> Registrar pedido
+                    </button>
+                </div>
+                <div class="barra-busqueda">
+                    <svg width="20" height="20" fill="#999" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
+                    </svg>
+                    <input type="text" id="inputBusquedaPedido" placeholder="Buscar por número o estado...">
+                </div>
+                <table class="tabla-inventario">
+                    <thead>
+                        <tr>
+                            <th># Pedido</th>
+                            <th>Fecha</th>
+                            <th>Empleado</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTablaPedidos"></tbody>
+                </table>
+            </div>
+
             <!-- SECCIÓN VENTAS -->
             <div id="contenido-ventas" class="seccion-contenido">
                 <div class="encabezado-seccion">
                     <h2>Historial de Ventas</h2>
-                    <button class="boton-registrar">
-                        <span>+</span> Registrar venta
-                    </button>
                 </div>
-                <div class="seccion-ventas">
-                    <table class="tabla-ventas">
-                        <thead>
-                            <tr>
-                                <th># Venta</th>
-                                <th>Fecha</th>
-                                <th># Pedido</th>
-                                <th>Total</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="cuerpoTablaVentas"></tbody>
-                    </table>
-                </div>
+                <table class="tabla-inventario">
+                    <thead>
+                        <tr>
+                            <th># Venta</th>
+                            <th>Fecha</th>
+                            <th># Pedido</th>
+                            <th>Total</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTablaVentas"></tbody>
+                </table>
             </div>
+
         </main>
 
         <!-- CALENDARIO -->
@@ -229,13 +343,18 @@
         </aside>
     </div>
 
-    <!-- MODAL REGISTRO INSUMO -->
+    <!-- ══════════════════════════════════════════ -->
+    <!-- MODALES                                    -->
+    <!-- ══════════════════════════════════════════ -->
+
+    <!-- MODAL INSUMO (registro y edición) -->
     <div id="modalInsumo" class="modal">
         <div class="modal-contenido">
             <button class="modal-cerrar" id="btnCerrarModalInsumo">×</button>
-            <h2>Registrar Nuevo Insumo</h2>
-            <p>Agrega un nuevo insumo al inventario</p>
-            <form id="formNuevoInsumo">
+            <h2 id="tituloModalInsumo">Registrar Insumo</h2>
+            <p id="subtituloModalInsumo">Agrega un nuevo insumo al inventario</p>
+            <form id="formInsumo">
+                <input type="hidden" id="idInsumoEditar">
                 <div class="form-group">
                     <label>Nombre del insumo</label>
                     <input type="text" id="nombreInsumo" placeholder="Ej: Leche entera" required>
@@ -278,73 +397,19 @@
                 <div id="mensajeInsumo"></div>
                 <div class="botones">
                     <button type="button" class="btn-cancelar" id="btnCancelarModalInsumo">Cancelar</button>
-                    <button type="submit" class="btn-registrar">Registrar</button>
+                    <button type="submit" class="btn-registrar" id="btnSubmitInsumo">Registrar</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- MODAL EDITAR INSUMO -->
-    <div id="modalEditarInsumo" class="modal">
-        <div class="modal-contenido">
-            <button class="modal-cerrar" id="btnCerrarModalEditar">×</button>
-            <h2>Editar Insumo</h2>
-            <p>Modifica los datos del insumo</p>
-            <form id="formEditarInsumo">
-                <input type="hidden" id="editIdInsumo">
-                <div class="form-group">
-                    <label>Nombre del insumo</label>
-                    <input type="text" id="editNombreInsumo" placeholder="Ej: Leche entera" required>
-                </div>
-                <div class="form-group">
-                    <label>Categoría</label>
-                    <select id="editTipoInsumo" required>
-                        <option value="Saborizantes">Saborizantes</option>
-                        <option value="Lácteos">Lácteos</option>
-                        <option value="Frutas">Frutas</option>
-                        <option value="Granos/cereales">Granos/cereales</option>
-                        <option value="Endulzantes">Endulzantes</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Stock</label>
-                    <input type="number" id="editStock" min="0" step="0.01" required>
-                </div>
-                <div class="form-group">
-                    <label>Stock mínimo</label>
-                    <input type="number" id="editStockMinimo" min="0" step="0.01" required>
-                </div>
-                <div class="form-group">
-                    <label>Unidad de medida</label>
-                    <select id="editUnidadMedida" required>
-                        <option value="L">Litros (L)</option>
-                        <option value="kg">Kilogramos (kg)</option>
-                        <option value="g">Gramos (g)</option>
-                        <option value="ml">Mililitros (ml)</option>
-                        <option value="Unidades">Unidades</option>
-                        <option value="Cajas">Cajas</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Fecha de caducidad <span style="color: #999; font-weight: normal;">(opcional)</span></label>
-                    <input type="date" id="editFechaCaducidad">
-                </div>
-                <div id="mensajeEditarInsumo"></div>
-                <div class="botones">
-                    <button type="button" class="btn-cancelar" id="btnCancelarModalEditar">Cancelar</button>
-                    <button type="submit" class="btn-registrar">Guardar cambios</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- MODAL REGISTRO PROVEEDOR -->
+    <!-- MODAL PROVEEDOR (registro y edición) -->
     <div id="modalProveedor" class="modal">
         <div class="modal-contenido">
             <button class="modal-cerrar" id="btnCerrarModalProveedor">×</button>
-            <h2>Registrar Proveedor</h2>
-            <p>Agrega un nuevo proveedor</p>
-            <form id="formNuevoProveedor">
+            <h2 id="tituloModalProveedor">Registrar Proveedor</h2>
+            <form id="formProveedor">
+                <input type="hidden" id="idProveedorEditar">
                 <div class="form-group">
                     <label>Nombre <span style="color:#d9534f">*</span></label>
                     <input type="text" id="nombreProveedor" placeholder="Ej: Lácteos del Valle" required>
@@ -364,46 +429,13 @@
                 <div id="mensajeProveedor"></div>
                 <div class="botones">
                     <button type="button" class="btn-cancelar" id="btnCancelarModalProveedor">Cancelar</button>
-                    <button type="submit" class="btn-registrar">Registrar</button>
+                    <button type="submit" class="btn-registrar" id="btnSubmitProveedor">Registrar</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- MODAL EDITAR PROVEEDOR -->
-    <div id="modalEditarProveedor" class="modal">
-        <div class="modal-contenido">
-            <button class="modal-cerrar" id="btnCerrarModalEditarProveedor">×</button>
-            <h2>Editar Proveedor</h2>
-            <p>Modifica los datos del proveedor</p>
-            <form id="formEditarProveedor">
-                <input type="hidden" id="editIdProveedor">
-                <div class="form-group">
-                    <label>Nombre <span style="color:#d9534f">*</span></label>
-                    <input type="text" id="editNombreProveedor" required>
-                </div>
-                <div class="form-group">
-                    <label>Contacto</label>
-                    <input type="text" id="editContactoProveedor">
-                </div>
-                <div class="form-group">
-                    <label>Teléfono</label>
-                    <input type="text" id="editTelefonoProveedor">
-                </div>
-                <div class="form-group">
-                    <label>Correo</label>
-                    <input type="email" id="editCorreoProveedor">
-                </div>
-                <div id="mensajeEditarProveedor"></div>
-                <div class="botones">
-                    <button type="button" class="btn-cancelar" id="btnCancelarModalEditarProveedor">Cancelar</button>
-                    <button type="submit" class="btn-registrar">Guardar cambios</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- MODAL REGISTRO COMPRA -->
+    <!-- MODAL COMPRA -->
     <div id="modalCompra" class="modal">
         <div class="modal-contenido" style="max-width: 800px;">
             <button class="modal-cerrar" id="btnCerrarModalCompra">×</button>
@@ -422,9 +454,7 @@
                         <input type="date" id="fechaCompra">
                     </div>
                 </div>
-
                 <h4 style="margin: 20px 0 10px; color: #a47c7c;">Detalles de la compra</h4>
-
                 <div style="max-height: 200px; overflow-y: auto; margin-bottom: 15px;">
                     <table style="width: 100%; border-collapse: collapse;">
                         <thead style="background: #f5e6e6; position: sticky; top: 0;">
@@ -446,7 +476,6 @@
                         </tfoot>
                     </table>
                 </div>
-
                 <div style="background: #f9f9f9; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
                     <h5 style="margin: 0 0 10px; color: #666; font-size: 13px;">Agregar insumo</h5>
                     <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 10px; align-items: end;">
@@ -473,12 +502,157 @@
                         </button>
                     </div>
                 </div>
-
                 <div id="mensajeCompra"></div>
-
                 <div class="botones">
                     <button type="button" class="btn-cancelar" id="btnCancelarModalCompra">Cancelar</button>
                     <button type="submit" class="btn-registrar" id="btnRegistrarCompra" disabled>Registrar compra</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL PRODUCTO (registro y edición) -->
+    <div id="modalProducto" class="modal">
+        <div class="modal-contenido">
+            <button class="modal-cerrar" id="btnCerrarModalProducto">×</button>
+            <h2 id="tituloModalProducto">Registrar Producto</h2>
+            <form id="formProducto">
+                <input type="hidden" id="idProductoEditar">
+                <div class="form-group">
+                    <label>Nombre <span style="color:#d9534f">*</span></label>
+                    <input type="text" id="nombreProducto" placeholder="Ej: Copa Queso" required>
+                </div>
+                <div class="form-group">
+                    <label>Descripción <span style="color: #999; font-weight: normal;">(opcional)</span></label>
+                    <textarea id="descripcionProducto" placeholder="Ej: Dos bolas de helado con queso, chantilly..." rows="3" style="resize: vertical;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Categoría <span style="color:#d9534f">*</span></label>
+                    <select id="categoriaProducto" required>
+                        <option value="" disabled selected>Selecciona categoría</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Precio base <span style="color:#d9534f">*</span></label>
+                    <input type="number" id="precioProducto" min="0" step="100" placeholder="Ej: 15000" required>
+                </div>
+                <div id="mensajeProducto"></div>
+                <div class="botones">
+                    <button type="button" class="btn-cancelar" id="btnCancelarModalProducto">Cancelar</button>
+                    <button type="submit" class="btn-registrar" id="btnSubmitProducto">Registrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL CATEGORÍA (registro y edición) -->
+    <div id="modalCategoria" class="modal">
+        <div class="modal-contenido">
+            <button class="modal-cerrar" id="btnCerrarModalCategoria">×</button>
+            <h2 id="tituloModalCategoria">Registrar Categoría</h2>
+            <form id="formCategoria">
+                <input type="hidden" id="idCategoriaEditar">
+                <div class="form-group">
+                    <label>Nombre <span style="color:#d9534f">*</span></label>
+                    <input type="text" id="nombreCategoria" placeholder="Ej: Copas" required>
+                </div>
+                <div id="mensajeCategoria"></div>
+                <div class="botones">
+                    <button type="button" class="btn-cancelar" id="btnCancelarModalCategoria">Cancelar</button>
+                    <button type="submit" class="btn-registrar" id="btnSubmitCategoria">Registrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL SABOR (registro y edición) -->
+    <div id="modalSabor" class="modal">
+        <div class="modal-contenido">
+            <button class="modal-cerrar" id="btnCerrarModalSabor">×</button>
+            <h2 id="tituloModalSabor">Registrar Sabor</h2>
+            <form id="formSabor">
+                <input type="hidden" id="idSaborEditar">
+                <div class="form-group">
+                    <label>Nombre <span style="color:#d9534f">*</span></label>
+                    <input type="text" id="nombreSabor" placeholder="Ej: Chocolate" required>
+                </div>
+                <div id="mensajeSabor"></div>
+                <div class="botones">
+                    <button type="button" class="btn-cancelar" id="btnCancelarModalSabor">Cancelar</button>
+                    <button type="submit" class="btn-registrar" id="btnSubmitSabor">Registrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL PEDIDO -->
+    <div id="modalPedido" class="modal">
+        <div class="modal-contenido" style="max-width: 800px;">
+            <button class="modal-cerrar" id="btnCerrarModalPedido">×</button>
+            <h2>Registrar Pedido</h2>
+            <p>Agrega los productos del pedido</p>
+            <form id="formNuevoPedido">
+                <h4 style="margin: 0 0 10px; color: #a47c7c;">Productos del pedido</h4>
+                <div style="max-height: 200px; overflow-y: auto; margin-bottom: 15px;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead style="background: #f5e6e6; position: sticky; top: 0;">
+                            <tr>
+                                <th style="padding: 10px; text-align: left; font-size: 13px;">Producto</th>
+                                <th style="padding: 10px; text-align: left; font-size: 13px;">Cant.</th>
+                                <th style="padding: 10px; text-align: left; font-size: 13px;">Sabores</th>
+                                <th style="padding: 10px; text-align: left; font-size: 13px;">Adicionales</th>
+                                <th style="padding: 10px; text-align: left; font-size: 13px;">Subtotal</th>
+                                <th style="padding: 10px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaDetallesPedido"></tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4" style="padding: 10px; text-align: right; font-weight: 600;">Total:</td>
+                                <td style="padding: 10px; font-weight: 600; color: #a47c7c;" id="totalPedido">$0.00</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div style="background: #f9f9f9; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                    <h5 style="margin: 0 0 10px; color: #666; font-size: 13px;">Agregar producto</h5>
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px;">
+                        <div class="form-group" style="margin: 0;">
+                            <label style="font-size: 12px;">Producto</label>
+                            <select id="detalleProducto">
+                                <option value="" disabled selected>Selecciona un producto</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin: 0;">
+                            <label style="font-size: 12px;">Cantidad</label>
+                            <input type="number" id="detalleCantidadPedido" min="1" value="1">
+                        </div>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <div class="form-group" style="margin: 0;">
+                            <label style="font-size: 12px;">Sabores <span style="color:#999; font-weight:normal;">(selecciona uno o más)</span></label>
+                            <div id="listaSabores" style="display: flex; flex-wrap: wrap; gap: 8px; padding: 10px; background: white; border: 1px solid #eee; border-radius: 8px; min-height: 40px;"></div>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; margin-top: 10px; align-items: end;">
+                        <div class="form-group" style="margin: 0;">
+                            <label style="font-size: 12px;">Adicionales <span style="color:#999; font-weight:normal;">(opcional)</span></label>
+                            <input type="text" id="detalleAdicionales" placeholder="Ej: Queso extra, chantilly">
+                        </div>
+                        <div class="form-group" style="margin: 0;">
+                            <label style="font-size: 12px;">Precio adicionales</label>
+                            <input type="number" id="detallePrecioAdicionales" min="0" step="100" placeholder="0">
+                        </div>
+                        <button type="button" class="btn-registrar" style="padding: 10px 16px;" onclick="agregarDetallePedido()">
+                            + Agregar
+                        </button>
+                    </div>
+                </div>
+                <div id="mensajePedido"></div>
+                <div class="botones">
+                    <button type="button" class="btn-cancelar" id="btnCancelarModalPedido">Cancelar</button>
+                    <button type="submit" class="btn-registrar" id="btnRegistrarPedido" disabled>Registrar pedido</button>
                 </div>
             </form>
         </div>
@@ -504,5 +678,7 @@
     <script src="../js/inventario.js"></script>
     <script src="../js/proveedores.js"></script>
     <script src="../js/compras.js"></script>
+    <script src="../js/productos.js"></script>
+    <script src="../js/pedidos.js"></script>
 </body>
 </html>

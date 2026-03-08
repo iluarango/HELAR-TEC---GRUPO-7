@@ -7,6 +7,10 @@ const usuarioRoutes = require('./routes/usuarioRoutes')
 const insumoRoutes = require('./routes/insumoRoutes')
 const proveedorRoutes = require('./routes/proveedorRoutes')
 const compraRoutes = require('./routes/compraRoutes')
+const productoRoutes = require('./routes/productoRoutes')
+const pedidoRoutes = require('./routes/pedidoRoutes')
+const categoriaRoutes = require('./routes/categoriaRoutes')
+const saborRoutes = require('./routes/saborRoutes')
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -32,6 +36,10 @@ app.use('/api/usuarios', usuarioRoutes)
 app.use('/api/insumos', insumoRoutes)
 app.use('/api/proveedores', proveedorRoutes)
 app.use('/api/compras', compraRoutes)
+app.use('/api/productos', productoRoutes)
+app.use('/api/pedidos', pedidoRoutes)
+app.use('/api/categorias', categoriaRoutes)
+app.use('/api/sabores', saborRoutes)
 
 // Manejo de errores
 app.use((err, req, res, next) => {

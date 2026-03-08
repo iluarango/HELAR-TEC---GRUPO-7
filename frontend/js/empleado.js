@@ -30,6 +30,8 @@ function cambiarSeccion(seccion, elemento) {
     if (seccion === 'inventario') cargarInsumos()
     if (seccion === 'proveedores') cargarProveedores()
     if (seccion === 'compras') cargarCompras()   
+    if (seccion === 'productos') cargarProductos()
+    if (seccion === 'pedidos') cargarPedidos()
 }
 
 // ── LOGOUT ─────────────────────────────────────────────────

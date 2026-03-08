@@ -903,6 +903,32 @@ body {
     color: #333;
 }
 
+.pestanas {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.pestana {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 20px;
+    background: #f5e6e6;
+    color: #a47c7c;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pestana.activa {
+    background: #a47c7c;
+    color: white;
+}
+
+.pestana:hover:not(.activa) {
+    background: #ead5d5;
+}
+
 /* ============================================
    RESPONSIVE - CORREGIDO
    ============================================ */
