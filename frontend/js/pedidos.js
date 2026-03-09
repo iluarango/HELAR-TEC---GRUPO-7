@@ -1,333 +1,341 @@
-const API_PEDIDOS = 'http://localhost:3000/api/pedidos'
-const API_PRODUCTOS_PEDIDO = 'http://localhost:3000/api/productos'
+// ELIMINADA la declaración de token (ya está en empleado.js)
+const API_PEDIDOS = "http://localhost:3000/api/pedidos";
+const API_PRODUCTOS_PED = "http://localhost:3000/api/productos";
+const API_SABORES_PED = "http://localhost:3000/api/sabores";
 
-// ── LISTA EN MEMORIA ───────────────────────────────────────
-let listaPedidos = []
-let detallesPedido = []
+// ── LISTA EN MEMORIA ──────────────────────────────────────────
+let listaPedidos = [];
 
-// ── CARGAR PEDIDOS ─────────────────────────────────────────
+// Función auxiliar para mensajes de tabla
+function mensajeFilaPedido(texto, colspan) {
+    return `<tr><td colspan="${colspan}" style="text-align:center; padding:40px; color:#999;">${texto}</td></tr>`;
+}
+
+// ── CARGAR PEDIDOS ────────────────────────────────────────────
 async function cargarPedidos() {
-    const tbody = document.getElementById('cuerpoTablaPedidos')
-
+    const tbody = document.getElementById("cuerpoTablaPedidos");
     try {
-        const response = await fetch(API_PEDIDOS, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        })
-
-        const data = await response.json()
-
+        const res = await fetch(API_PEDIDOS, {
+            headers: { "Authorization": "Bearer " + token }
+        });
+        const data = await res.json();
         if (data.success) {
-            listaPedidos = data.pedidos
-            renderTablaPedidos(listaPedidos)
+            listaPedidos = data.pedidos;
+            renderTablaPedidos(listaPedidos);
         } else {
-            tbody.innerHTML = mensajeFilaPedido('Error al cargar pedidos', 6)
+            tbody.innerHTML = mensajeFilaPedido("Error al cargar pedidos", 6);
         }
     } catch (error) {
-        tbody.innerHTML = mensajeFilaPedido('No se pudo conectar con el servidor', 6)
+        tbody.innerHTML = mensajeFilaPedido("No se pudo conectar con el servidor", 6);
     }
 }
 
-// ── RENDER TABLA ───────────────────────────────────────────
+// ── RENDER TABLA ──────────────────────────────────────────────
 function renderTablaPedidos(pedidos) {
-    const tbody = document.getElementById('cuerpoTablaPedidos')
-
+    const tbody = document.getElementById("cuerpoTablaPedidos");
     if (pedidos.length === 0) {
-        tbody.innerHTML = mensajeFilaPedido('No hay pedidos registrados', 6)
-        return
+        tbody.innerHTML = mensajeFilaPedido("No hay pedidos registrados", 6);
+        return;
     }
-
     tbody.innerHTML = pedidos.map(p => {
-        const total = p.detalles.reduce((acc, d) => acc + parseFloat(d.subtotal), 0)
-        const esPendiente = p.estadopedido === 'pendiente'
-
+        const fecha = new Date(p.fechapedido).toLocaleDateString("es-CO");
+        const total = parseFloat(p.totalventa || 0).toLocaleString("es-CO");
+        const esEntregado = p.estadopedido === "entregado";
         return `
             <tr>
                 <td>#${p.idpedido}</td>
-                <td>${new Date(p.fechapedido).toLocaleDateString('es-CO')}</td>
+                <td>${fecha}</td>
                 <td>${p.nombreusuario}</td>
-                <td>$${total.toLocaleString('es-CO')}</td>
+                <td>$${total}</td>
                 <td>
-                    <span class="${esPendiente ? 'estado-pendiente' : 'estado-completado'}">
+                    <span class="badge-estado ${esEntregado ? 'estado-disponible' : 'estado-pendiente'}">
                         ${p.estadopedido}
                     </span>
                 </td>
                 <td>
                     <div class="botones-accion">
-                        <button class="boton-accion" title="Ver detalles" onclick="verDetallesPedido(${p.idpedido})">
+                        ${!esEntregado ? `
+                        <button class="boton-accion" title="Marcar entregado"
+                            onclick="marcarEntregado(${p.idpedido})">
+                            <i class="fas fa-check"></i>
+                        </button>` : ""}
+                        <button class="boton-accion" title="Ver detalles"
+                            onclick="verDetallesPedido(${p.idpedido})">
                             <i class="fas fa-eye"></i>
                         </button>
-                        ${esPendiente ? `
-                        <button class="boton-accion" title="Marcar como entregado" onclick="marcarEntregado(${p.idpedido})" style="color: #065f46;">
-                            <i class="fas fa-check"></i>
-                        </button>` : ''}
                     </div>
                 </td>
             </tr>
-        `
-    }).join('')
+        `;
+    }).join("");
 }
 
-function mensajeFilaPedido(texto, colspan) {
-    return `
-        <tr>
-            <td colspan="${colspan}" style="text-align: center; padding: 40px; color: #999;">
-                ${texto}
-            </td>
-        </tr>
-    `
-}
-
-// ── BÚSQUEDA ───────────────────────────────────────────────
-document.getElementById('inputBusquedaPedido').addEventListener('input', (e) => {
-    const termino = e.target.value.toLowerCase().trim()
-
+// ── BÚSQUEDA ──────────────────────────────────────────────────
+document.getElementById("inputBusquedaPedido").addEventListener("input", (e) => {
+    const termino = e.target.value.toLowerCase().trim();
     const filtrados = listaPedidos.filter(p =>
-        p.idpedido.toString().includes(termino) ||
+        String(p.idpedido).includes(termino) ||
         p.estadopedido.toLowerCase().includes(termino) ||
         p.nombreusuario.toLowerCase().includes(termino)
-    )
+    );
+    renderTablaPedidos(filtrados);
+});
 
-    renderTablaPedidos(filtrados)
-})
-
-// ── MARCAR COMO ENTREGADO ──────────────────────────────────
-async function marcarEntregado(id) {
-    if (!confirm('¿Confirmas que el pedido fue entregado al cliente?')) return
-
+// ── MARCAR ENTREGADO ──────────────────────────────────────────
+window.marcarEntregado = async function(id) {
+    if (!confirm("¿Marcar este pedido como entregado?")) return;
     try {
-        const response = await fetch(`${API_PEDIDOS}/${id}/entregar`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        })
-
-        const data = await response.json()
-
+        const res = await fetch(`${API_PEDIDOS}/${id}/entregar`, {
+            method: "PUT",
+            headers: { "Authorization": "Bearer " + token }
+        });
+        const data = await res.json();
         if (data.success) {
-            await cargarPedidos()
+            alert("Pedido entregado. Venta registrada.");
+            await cargarPedidos();
         } else {
-            alert(data.message || 'Error al actualizar el pedido')
+            alert(data.message || "Error al entregar pedido");
         }
     } catch (error) {
-        alert('No se pudo conectar con el servidor')
+        console.error("Error:", error);
     }
-}
+};
 
-// ── VER DETALLES ───────────────────────────────────────────
-function verDetallesPedido(id) {
-    const pedido = listaPedidos.find(p => p.idpedido === id)
-    if (!pedido) return
+// ── VER DETALLES ──────────────────────────────────────────────
+window.verDetallesPedido = function(id) {
+    alert("Detalles del pedido #" + id);
+};
 
-    const total = pedido.detalles.reduce((acc, d) => acc + parseFloat(d.subtotal), 0)
+// ══════════════════════════════════════════════════════════════
+// MODAL REGISTRAR PEDIDO
+// ══════════════════════════════════════════════════════════════
 
-    const info = `
-Pedido #${pedido.idpedido}
-Fecha: ${new Date(pedido.fechapedido).toLocaleDateString('es-CO')}
-Empleado: ${pedido.nombreusuario}
-Estado: ${pedido.estadopedido}
+// Declaraciones del modal
+const modalPedido = document.getElementById("modalPedido");
+const btnAbrirModal = document.getElementById("btnAbrirModalPedido");
+const btnCerrarModal = document.getElementById("btnCerrarModalPedido");
+const btnCancelar = document.getElementById("btnCancelarModalPedido");
+const btnRegistrar = document.getElementById("btnRegistrarPedido");
+const btnAgregarDetalle = document.getElementById("btnAgregarDetalle"); // ✅ AGREGADO
 
-Productos:
-${pedido.detalles.map(d => {
-    let linea = `- ${d.nombreproducto} x${d.cantidad} = $${parseFloat(d.subtotal).toLocaleString('es-CO')}`
-    if (d.toppings) linea += `\n  Toppings: ${d.toppings}`
-    if (d.adicionales) linea += `\n  Adicionales: ${d.adicionales} (+$${parseFloat(d.precioadicionales).toLocaleString('es-CO')})`
-    return linea
-}).join('\n')}
+const selectProducto = document.getElementById("detalleProducto");
+const inputCantidad = document.getElementById("detalleCantidad");
+const inputAdicionales = document.getElementById("detalleAdicionales");
+const inputPrecioAdicionales = document.getElementById("detallePrecioAdicionales");
+const listaSabores = document.getElementById("listaSabores");
+const mensajePedido = document.getElementById("mensajePedido"); // ✅ AGREGADO
 
-Total: $${total.toLocaleString('es-CO')}
-    `
-    alert(info)
-}
+let detallesPedido = [];
+let saboresDisponibles = [];
+let saboresSeleccionados = [];
 
-// ── MODAL REGISTRO ─────────────────────────────────────────
-const modalPedido = document.getElementById('modalPedido')
+// ── ABRIR MODAL ───────────────────────────────────────────────
+btnAbrirModal.addEventListener("click", async () => {
+    await cargarProductosModal();
+    await cargarSaboresModal();
+    detallesPedido = [];
+    saboresSeleccionados = [];
+    renderDetallesPedido();
+    actualizarBtnRegistrar();
+    modalPedido.style.display = "flex";
+});
 
-document.getElementById('btnAbrirModalPedido').addEventListener('click', async () => {
-    await cargarSelectoresProductos()
-    detallesPedido = []
-    renderDetallesPedido()
-    modalPedido.style.display = 'flex'
-})
+// ── EVENT LISTENER PARA EL BOTÓN AGREGAR ──────────────────────
+btnAgregarDetalle.addEventListener("click", agregarDetallePedido); // ✅ AGREGADO
 
-document.getElementById('btnCerrarModalPedido').addEventListener('click', cerrarModalPedido)
-document.getElementById('btnCancelarModalPedido').addEventListener('click', cerrarModalPedido)
-
-modalPedido.addEventListener('click', (e) => {
-    if (e.target === modalPedido) cerrarModalPedido()
-})
-
+// ── CERRAR MODAL ──────────────────────────────────────────────
 function cerrarModalPedido() {
-    modalPedido.style.display = 'none'
-    document.getElementById('formNuevoPedido').reset()
-    detallesPedido = []
-    renderDetallesPedido()
-    ocultarMensajePedido('mensajePedido')
-    document.getElementById('btnRegistrarPedido').disabled = true
+    modalPedido.style.display = "none";
+    detallesPedido = [];
+    saboresSeleccionados = [];
 }
 
-// Cargar productos activos en el selector
-async function cargarSelectoresProductos() {
+btnCerrarModal.addEventListener("click", cerrarModalPedido);
+btnCancelar.addEventListener("click", cerrarModalPedido);
+modalPedido.addEventListener("click", (e) => {
+    if (e.target === modalPedido) cerrarModalPedido();
+});
+
+// ── CARGAR PRODUCTOS ──────────────────────────────────────────
+async function cargarProductosModal() {
     try {
-        const response = await fetch(API_PRODUCTOS_PEDIDO, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        })
-
-        const data = await response.json()
-
-        const select = document.getElementById('detalleProducto')
-        select.innerHTML = '<option value="" disabled selected>Selecciona un producto</option>'
-
-        // Agrupar por categoría
-        const categorias = {}
+        const res = await fetch(API_PRODUCTOS_PED, {
+            headers: { "Authorization": "Bearer " + token }
+        });
+        const data = await res.json();
+        selectProducto.innerHTML = `<option value="" disabled selected>Selecciona un producto</option>`;
         data.productos
-            .filter(p => p.estado === 'activo')
-            .forEach(p => {
-                if (!categorias[p.categoria]) categorias[p.categoria] = []
-                categorias[p.categoria].push(p)
-            })
-
-        Object.entries(categorias).forEach(([categoria, productos]) => {
-            const optgroup = document.createElement('optgroup')
-            optgroup.label = categoria
-            productos.forEach(p => {
-                optgroup.innerHTML += `<option value="${p.idproducto}" data-precio="${p.preciobase}">${p.nombreproducto} - $${parseFloat(p.preciobase).toLocaleString('es-CO')}</option>`
-            })
-            select.appendChild(optgroup)
-        })
+            .filter(p => p.estado === "activo")
+            .forEach(prod => {
+                const option = document.createElement("option");
+                option.value = prod.idproducto;
+                option.textContent = prod.nombreproducto;
+                option.dataset.precio = prod.preciobase;
+                selectProducto.appendChild(option);
+            });
     } catch (error) {
-        console.error('Error al cargar productos:', error)
+        console.error("Error cargando productos", error);
     }
 }
 
-// ── AGREGAR DETALLE ────────────────────────────────────────
-function agregarDetallePedido() {
-    const selectProducto = document.getElementById('detalleProducto')
-    const cantidad = parseInt(document.getElementById('detalleCantidadPedido').value)
-    const toppings = document.getElementById('detalleToppings').value.trim()
-    const adicionales = document.getElementById('detalleAdicionales').value.trim()
-    const precioAdicionales = parseFloat(document.getElementById('detallePrecioAdicionales').value) || 0
-
-    if (!selectProducto.value || !cantidad) {
-        alert('Selecciona un producto y una cantidad')
-        return
-    }
-
-    const idProducto = parseInt(selectProducto.value)
-    const nombreProducto = selectProducto.options[selectProducto.selectedIndex].text
-    const precio = parseFloat(selectProducto.options[selectProducto.selectedIndex].dataset.precio)
-
-    detallesPedido.push({ idProducto, nombreProducto, cantidad, precio, toppings, adicionales, precioAdicionales })
-
-    // Limpiar campos
-    selectProducto.value = ''
-    document.getElementById('detalleCantidadPedido').value = 1
-    document.getElementById('detalleToppings').value = ''
-    document.getElementById('detalleAdicionales').value = ''
-    document.getElementById('detallePrecioAdicionales').value = ''
-
-    renderDetallesPedido()
-}
-
-// Renderiza la tabla de detalles dentro del modal
-function renderDetallesPedido() {
-    const tbody = document.getElementById('tablaDetallesPedido')
-    const btnRegistrar = document.getElementById('btnRegistrarPedido')
-
-    if (detallesPedido.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px; color: #999;">Sin productos agregados</td></tr>`
-        btnRegistrar.disabled = true
-        document.getElementById('totalPedido').textContent = '$0.00'
-        return
-    }
-
-    let total = 0
-
-    tbody.innerHTML = detallesPedido.map((d, index) => {
-        const subtotal = (d.precio * d.cantidad) + d.precioAdicionales
-        total += subtotal
-
-        return `
-            <tr>
-                <td style="padding: 10px;">${d.nombreProducto}</td>
-                <td style="padding: 10px;">${d.cantidad}</td>
-                <td style="padding: 10px;">${d.toppings || '<span style="color:#ccc">-</span>'}</td>
-                <td style="padding: 10px;">${d.adicionales || '<span style="color:#ccc">-</span>'}${d.precioAdicionales > 0 ? ` <span style="color:#a47c7c">(+$${d.precioAdicionales.toLocaleString('es-CO')})</span>` : ''}</td>
-                <td style="padding: 10px;">$${subtotal.toLocaleString('es-CO')}</td>
-                <td style="padding: 10px;">
-                    <button type="button" onclick="eliminarDetallePedido(${index})" style="background:none; border:none; color:#d9534f; cursor:pointer;">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </td>
-            </tr>
-        `
-    }).join('')
-
-    document.getElementById('totalPedido').textContent = `$${total.toLocaleString('es-CO')}`
-    btnRegistrar.disabled = false
-}
-
-function eliminarDetallePedido(index) {
-    detallesPedido.splice(index, 1)
-    renderDetallesPedido()
-}
-
-// ── REGISTRAR PEDIDO ───────────────────────────────────────
-document.getElementById('formNuevoPedido').addEventListener('submit', async (e) => {
-    e.preventDefault()
-
-    if (detallesPedido.length === 0) {
-        mostrarMensajePedido('mensajePedido', 'Agrega al menos un producto', 'error')
-        return
-    }
-
-    const btnRegistrar = document.getElementById('btnRegistrarPedido')
-    btnRegistrar.disabled = true
-    btnRegistrar.textContent = 'Registrando...'
-
+// ── CARGAR SABORES ────────────────────────────────────────────
+async function cargarSaboresModal() {
     try {
-        const response = await fetch(API_PEDIDOS, {
-            method: 'POST',
+        const res = await fetch(API_SABORES_PED, {
+            headers: { "Authorization": "Bearer " + token }
+        });
+        const data = await res.json();
+        saboresDisponibles = data.sabores.filter(s => s.estado === "activo");
+        renderSabores();
+    } catch (error) {
+        console.error("Error cargando sabores", error);
+    }
+}
+
+// ── RENDER BOTONES SABORES ────────────────────────────────────
+function renderSabores() {
+    listaSabores.innerHTML = "";
+    saboresDisponibles.forEach(sabor => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "btn-sabor";
+        btn.textContent = sabor.nombresabor;
+        btn.dataset.id = sabor.idsabor;
+        btn.dataset.nombre = sabor.nombresabor;
+        btn.addEventListener("click", () => seleccionarSabor(btn));
+        listaSabores.appendChild(btn);
+    });
+}
+
+// ── SELECCIONAR / DESELECCIONAR SABOR ─────────────────────────
+function seleccionarSabor(btn) {
+    const id = parseInt(btn.dataset.id);
+    const nombre = btn.dataset.nombre;
+    const index = saboresSeleccionados.findIndex(s => s.id === id);
+    if (index >= 0) {
+        saboresSeleccionados.splice(index, 1);
+        btn.classList.remove("activo");
+    } else {
+        saboresSeleccionados.push({ id, nombre });
+        btn.classList.add("activo");
+    }
+}
+
+// ── LIMPIAR SABORES ───────────────────────────────────────────
+function limpiarSabores() {
+    saboresSeleccionados = [];
+    listaSabores.querySelectorAll(".btn-sabor").forEach(b => b.classList.remove("activo"));
+}
+
+// ── AGREGAR DETALLE ───────────────────────────────────────────
+window.agregarDetallePedido = function() {
+    const option = selectProducto.selectedOptions[0];
+    if (!option || !option.value) {
+        alert("Seleccione un producto");
+        return;
+    }
+    const idProducto = parseInt(option.value);
+    const nombreProducto = option.textContent.trim();
+    const precio = parseFloat(option.dataset.precio) || 0;
+    const cantidad = parseInt(inputCantidad.value) || 1;
+    const adicionales = inputAdicionales.value.trim() || null;
+    const precioAdicionales = parseFloat(inputPrecioAdicionales.value) || 0;
+    const sabores = saboresSeleccionados.map(s => s.id);
+    const nombresSabores = saboresSeleccionados.map(s => s.nombre);
+
+    detallesPedido.push({
+        idProducto,
+        nombreProducto,
+        cantidad,
+        precio,
+        sabores,
+        nombresSabores,
+        adicionales,
+        precioAdicionales
+    });
+
+    limpiarFormularioDetalle();
+    renderDetallesPedido();
+    actualizarBtnRegistrar();
+};
+
+// ── LIMPIAR FORMULARIO ────────────────────────────────────────
+function limpiarFormularioDetalle() {
+    selectProducto.value = "";
+    inputCantidad.value = 1;
+    inputAdicionales.value = "";
+    inputPrecioAdicionales.value = "";
+    limpiarSabores();
+}
+
+// ── RENDER TABLA DETALLES ─────────────────────────────────────
+function renderDetallesPedido() {
+    const tabla = document.getElementById("tablaDetallesPedido");
+    const totalSpan = document.getElementById("totalPedido");
+    tabla.innerHTML = "";
+    let total = 0;
+
+    detallesPedido.forEach((det, index) => {
+        const subtotal = (det.precio * det.cantidad) + det.precioAdicionales;
+        total += subtotal;
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${det.nombreProducto}</td>
+            <td>${det.cantidad}</td>
+            <td>${det.nombresSabores.length ? det.nombresSabores.join(", ") : "-"}</td>
+            <td>${det.adicionales ?? "-"}</td>
+            <td>$${subtotal.toLocaleString("es-CO")}</td>
+            <td>
+                <button onclick="eliminarDetallePedido(${index})"
+                        style="background:none;border:none;cursor:pointer;font-size:16px;">
+                    ❌
+                </button>
+            </td>
+        `;
+        tabla.appendChild(tr);
+    });
+
+    totalSpan.textContent = "$" + total.toLocaleString("es-CO");
+}
+
+// ── ELIMINAR DETALLE ──────────────────────────────────────────
+window.eliminarDetallePedido = function(index) {
+    detallesPedido.splice(index, 1);
+    renderDetallesPedido();
+    actualizarBtnRegistrar();
+};
+
+// ── HABILITAR / DESHABILITAR BOTÓN REGISTRAR ─────────────────
+function actualizarBtnRegistrar() {
+    btnRegistrar.disabled = detallesPedido.length === 0;
+}
+
+// ── REGISTRAR PEDIDO ──────────────────────────────────────────
+document.getElementById("formNuevoPedido").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (detallesPedido.length === 0) {
+        alert("Debe agregar al menos un producto");
+        return;
+    }
+    try {
+        const res = await fetch(API_PEDIDOS, {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
             },
             body: JSON.stringify({ detalles: detallesPedido })
-        })
-
-        const data = await response.json()
-
+        });
+        const data = await res.json();
         if (data.success) {
-            mostrarMensajePedido('mensajePedido', 'Pedido registrado exitosamente', 'success')
-            await cargarPedidos()
-            setTimeout(() => cerrarModalPedido(), 1500)
+            alert("Pedido registrado correctamente");
+            cerrarModalPedido();
+            await cargarPedidos();
         } else {
-            mostrarMensajePedido('mensajePedido', data.message || 'Error al registrar', 'error')
+            alert(data.message || "Error al registrar pedido");
         }
     } catch (error) {
-        mostrarMensajePedido('mensajePedido', 'No se pudo conectar con el servidor', 'error')
-    } finally {
-        btnRegistrar.disabled = false
-        btnRegistrar.textContent = 'Registrar pedido'
+        console.error("Error registrando pedido", error);
     }
-})
-
-// ── HELPERS ────────────────────────────────────────────────
-function mostrarMensajePedido(elementId, texto, tipo) {
-    const el = document.getElementById(elementId)
-    el.textContent = texto
-    el.style.display = 'block'
-    el.style.padding = '10px 14px'
-    el.style.borderRadius = '10px'
-    el.style.fontSize = '13px'
-    el.style.marginBottom = '10px'
-    el.style.backgroundColor = tipo === 'success' ? '#d1fae5' : '#fee2e2'
-    el.style.color = tipo === 'success' ? '#065f46' : '#991b1b'
-}
-
-function ocultarMensajePedido(elementId) {
-    const el = document.getElementById(elementId)
-    el.textContent = ''
-    el.style.display = 'none'
-}
+});

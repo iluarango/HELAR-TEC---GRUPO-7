@@ -584,80 +584,191 @@
             </form>
         </div>
     </div>
-
     <!-- MODAL PEDIDO -->
-    <div id="modalPedido" class="modal">
-        <div class="modal-contenido" style="max-width: 800px;">
-            <button class="modal-cerrar" id="btnCerrarModalPedido">×</button>
-            <h2>Registrar Pedido</h2>
-            <p>Agrega los productos del pedido</p>
-            <form id="formNuevoPedido">
-                <h4 style="margin: 0 0 10px; color: #a47c7c;">Productos del pedido</h4>
-                <div style="max-height: 200px; overflow-y: auto; margin-bottom: 15px;">
-                    <table style="width: 100%; border-collapse: collapse;">
-                        <thead style="background: #f5e6e6; position: sticky; top: 0;">
-                            <tr>
-                                <th style="padding: 10px; text-align: left; font-size: 13px;">Producto</th>
-                                <th style="padding: 10px; text-align: left; font-size: 13px;">Cant.</th>
-                                <th style="padding: 10px; text-align: left; font-size: 13px;">Sabores</th>
-                                <th style="padding: 10px; text-align: left; font-size: 13px;">Adicionales</th>
-                                <th style="padding: 10px; text-align: left; font-size: 13px;">Subtotal</th>
-                                <th style="padding: 10px;"></th>
-                            </tr>
-                        </thead>
-                        <tbody id="tablaDetallesPedido"></tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="4" style="padding: 10px; text-align: right; font-weight: 600;">Total:</td>
-                                <td style="padding: 10px; font-weight: 600; color: #a47c7c;" id="totalPedido">$0.00</td>
-                                <td></td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-                <div style="background: #f9f9f9; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
-                    <h5 style="margin: 0 0 10px; color: #666; font-size: 13px;">Agregar producto</h5>
-                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px;">
-                        <div class="form-group" style="margin: 0;">
-                            <label style="font-size: 12px;">Producto</label>
-                            <select id="detalleProducto">
-                                <option value="" disabled selected>Selecciona un producto</option>
-                            </select>
-                        </div>
-                        <div class="form-group" style="margin: 0;">
-                            <label style="font-size: 12px;">Cantidad</label>
-                            <input type="number" id="detalleCantidadPedido" min="1" value="1">
-                        </div>
-                    </div>
-                    <div style="margin-top: 10px;">
-                        <div class="form-group" style="margin: 0;">
-                            <label style="font-size: 12px;">Sabores <span style="color:#999; font-weight:normal;">(selecciona uno o más)</span></label>
-                            <div id="listaSabores" style="display: flex; flex-wrap: wrap; gap: 8px; padding: 10px; background: white; border: 1px solid #eee; border-radius: 8px; min-height: 40px;"></div>
-                        </div>
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; margin-top: 10px; align-items: end;">
-                        <div class="form-group" style="margin: 0;">
-                            <label style="font-size: 12px;">Adicionales <span style="color:#999; font-weight:normal;">(opcional)</span></label>
-                            <input type="text" id="detalleAdicionales" placeholder="Ej: Queso extra, chantilly">
-                        </div>
-                        <div class="form-group" style="margin: 0;">
-                            <label style="font-size: 12px;">Precio adicionales</label>
-                            <input type="number" id="detallePrecioAdicionales" min="0" step="100" placeholder="0">
-                        </div>
-                        <button type="button" class="btn-registrar" style="padding: 10px 16px;" onclick="agregarDetallePedido()">
-                            + Agregar
-                        </button>
-                    </div>
-                </div>
-                <div id="mensajePedido"></div>
-                <div class="botones">
-                    <button type="button" class="btn-cancelar" id="btnCancelarModalPedido">Cancelar</button>
-                    <button type="submit" class="btn-registrar" id="btnRegistrarPedido" disabled>Registrar pedido</button>
-                </div>
-            </form>
-        </div>
-    </div>
+<div id="modalPedido" class="modal">
+    <div class="modal-contenido" style="max-width: 800px;">
 
+        <button class="modal-cerrar" id="btnCerrarModalPedido">×</button>
+
+        <h2>Registrar Pedido</h2>
+        <p>Agrega los productos del pedido</p>
+
+        <form id="formNuevoPedido">
+
+            <h4 style="margin: 0 0 10px; color: #a47c7c;">
+                Productos del pedido
+            </h4>
+
+            <div style="max-height: 200px; overflow-y: auto; margin-bottom: 15px;">
+
+                <table style="width: 100%; border-collapse: collapse;">
+
+                    <thead style="background: #f5e6e6; position: sticky; top: 0;">
+                        <tr>
+                            <th style="padding: 10px; text-align: left; font-size: 13px;">Producto</th>
+                            <th style="padding: 10px; text-align: left; font-size: 13px;">Cant.</th>
+                            <th style="padding: 10px; text-align: left; font-size: 13px;">Sabores</th>
+                            <th style="padding: 10px; text-align: left; font-size: 13px;">Adicionales</th>
+                            <th style="padding: 10px; text-align: left; font-size: 13px;">Subtotal</th>
+                            <th style="padding: 10px;"></th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tablaDetallesPedido"></tbody>
+
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" style="padding: 10px; text-align: right; font-weight: 600;">
+                                Total:
+                            </td>
+
+                            <td style="padding: 10px; font-weight: 600; color: #a47c7c;" id="totalPedido">
+                                $0.00
+                            </td>
+
+                            <td></td>
+                        </tr>
+                    </tfoot>
+
+                </table>
+
+            </div>
+
+
+            <!-- AGREGAR PRODUCTO -->
+            <div style="background: #f9f9f9; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+
+                <h5 style="margin: 0 0 10px; color: #666; font-size: 13px;">
+                    Agregar producto
+                </h5>
+
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px;">
+
+                    <div class="form-group" style="margin: 0;">
+                        <label style="font-size: 12px;">Producto</label>
+
+                        <select id="detalleProducto">
+                            <option value="" disabled selected>
+                                Selecciona un producto
+                            </option>
+                        </select>
+
+                    </div>
+
+                    <div class="form-group" style="margin: 0;">
+                        <label style="font-size: 12px;">Cantidad</label>
+
+                        <input type="number"
+                               id="detalleCantidad"
+                               min="1"
+                               value="1">
+
+                    </div>
+
+                </div>
+
+
+                <!-- SABORES -->
+                <div style="margin-top: 10px;">
+
+                    <div class="form-group" style="margin: 0;">
+
+                        <label style="font-size: 12px;">
+                            Sabores
+                            <span style="color:#999; font-weight:normal;">
+                                (selecciona uno o más)
+                            </span>
+                        </label>
+
+                        <div id="listaSabores"
+                             style="display: flex;
+                             flex-wrap: wrap;
+                             gap: 8px;
+                             padding: 10px;
+                             background: white;
+                             border: 1px solid #eee;
+                             border-radius: 8px;
+                             min-height: 40px;">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ADICIONALES -->
+                <div style="display: grid;
+                            grid-template-columns: 1fr 1fr auto;
+                            gap: 10px;
+                            margin-top: 10px;
+                            align-items: end;">
+
+                    <div class="form-group" style="margin: 0;">
+                        <label style="font-size: 12px;">
+                            Adicionales
+                            <span style="color:#999; font-weight:normal;">
+                                (opcional)
+                            </span>
+                        </label>
+
+                        <input type="text"
+                               id="detalleAdicionales"
+                               placeholder="Ej: Queso extra, chantilly">
+
+                    </div>
+
+                    <div class="form-group" style="margin: 0;">
+                        <label style="font-size: 12px;">
+                            Precio adicionales
+                        </label>
+
+                        <input type="number"
+                               id="detallePrecioAdicionales"
+                               min="0"
+                               step="100"
+                               placeholder="0">
+
+                    </div>
+
+
+                    <!-- BOTON AGREGAR -->
+                    <button type="button"
+                            id="btnAgregarDetalle"
+                            class="btn-registrar"
+                            style="padding: 10px 16px;">
+                        + Agregar
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div id="mensajePedido"></div>
+
+
+            <!-- BOTONES -->
+            <div class="botones">
+
+                <button type="button"
+                        class="btn-cancelar"
+                        id="btnCancelarModalPedido">
+                    Cancelar
+                </button>
+
+                <button type="submit"
+                        class="btn-registrar"
+                        id="btnRegistrarPedido"
+                        disabled>
+                    Registrar pedido
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+</div>
     <!-- MODAL CONFIRMACIÓN LOGOUT -->
     <div id="modalLogout" class="modal-logout">
         <div class="modal-logout-contenido">
@@ -680,5 +791,6 @@
     <script src="../js/compras.js"></script>
     <script src="../js/productos.js"></script>
     <script src="../js/pedidos.js"></script>
+    <script src="../js/categorias.js"></script>
 </body>
 </html>

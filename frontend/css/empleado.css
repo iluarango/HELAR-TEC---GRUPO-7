@@ -929,6 +929,26 @@ body {
     background: #ead5d5;
 }
 
+.btn-sabor{
+padding:6px 12px;
+border:1px solid #ddd;
+border-radius:20px;
+background:white;
+cursor:pointer;
+font-size:12px;
+transition:0.2s;
+}
+
+.btn-sabor:hover{
+background:#f5e6e6;
+}
+
+.btn-sabor.activo{
+background:#a47c7c;
+color:white;
+border-color:#a47c7c;
+}
+
 /* ============================================
    RESPONSIVE - CORREGIDO
    ============================================ */

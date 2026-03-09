@@ -1,7 +1,21 @@
 const API_PRODUCTOS = 'http://localhost:3000/api/productos'
+const API_CATEGORIAS = 'http://localhost:3000/api/categorias'
 
 // ── LISTA EN MEMORIA ───────────────────────────────────────
 let listaProductos = []
+
+// ── PESTAÑAS ───────────────────────────────────────────────
+function cambiarPestana(pestana) {
+    document.querySelectorAll('.pestana').forEach(p => p.classList.remove('activa'))
+    document.getElementById(`pestana${pestana.charAt(0).toUpperCase() + pestana.slice(1)}`).classList.add('activa')
+
+    document.getElementById('panelProductos').style.display = pestana === 'productos' ? 'block' : 'none'
+    document.getElementById('panelCategorias').style.display = pestana === 'categorias' ? 'block' : 'none'
+    document.getElementById('panelSabores').style.display = pestana === 'sabores' ? 'block' : 'none'
+
+    if (pestana === 'categorias') cargarCategorias()
+    if (pestana === 'sabores') cargarSabores()
+}
 
 // ── CARGAR PRODUCTOS ───────────────────────────────────────
 async function cargarProductos() {
@@ -37,10 +51,10 @@ function renderTablaProductos(productos) {
     tbody.innerHTML = productos.map(p => `
         <tr>
             <td>${p.nombreproducto}</td>
-            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            <td style="max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
                 ${p.descripcionproducto || '<span style="color:#ccc">Sin descripción</span>'}
             </td>
-            <td>${p.categoria}</td>
+            <td>${p.nombrecategoria}</td>
             <td>$${parseFloat(p.preciobase).toLocaleString('es-CO')}</td>
             <td>
                 <div class="estado-dropdown-wrapper">
@@ -56,7 +70,7 @@ function renderTablaProductos(productos) {
             </td>
             <td>
                 <div class="botones-accion">
-                    <button class="boton-accion" title="Editar" onclick="abrirModalEditarProducto(${p.idproducto})">
+                    <button class="boton-accion" title="Editar" onclick="abrirModalProducto(${p.idproducto})">
                         <i class="fas fa-pen"></i>
                     </button>
                 </div>
@@ -66,33 +80,23 @@ function renderTablaProductos(productos) {
 }
 
 function mensajeFilaProducto(texto, colspan) {
-    return `
-        <tr>
-            <td colspan="${colspan}" style="text-align: center; padding: 40px; color: #999;">
-                ${texto}
-            </td>
-        </tr>
-    `
+    return `<tr><td colspan="${colspan}" style="text-align:center; padding:40px; color:#999;">${texto}</td></tr>`
 }
 
 // ── BÚSQUEDA ───────────────────────────────────────────────
 document.getElementById('inputBusquedaProducto').addEventListener('input', (e) => {
     const termino = e.target.value.toLowerCase().trim()
-
     const filtrados = listaProductos.filter(p =>
         p.nombreproducto.toLowerCase().includes(termino) ||
-        p.categoria.toLowerCase().includes(termino)
+        p.nombrecategoria.toLowerCase().includes(termino)
     )
-
     renderTablaProductos(filtrados)
 })
 
 // ── DROPDOWN ESTADO ────────────────────────────────────────
 function toggleDropdownEstadoProducto(id, event) {
     event.stopPropagation()
-
     document.querySelectorAll('.estado-dropdown.abierto').forEach(d => d.classList.remove('abierto'))
-
     const dropdown = document.getElementById(`dropdown-producto-${id}`)
     const rect = event.target.getBoundingClientRect()
     dropdown.style.top = `${rect.bottom + window.scrollY + 4}px`
@@ -106,15 +110,10 @@ async function cambiarEstadoProducto(id, nuevoEstado) {
     try {
         const response = await fetch(`${API_PRODUCTOS}/${id}/estado`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
             body: JSON.stringify({ estado: nuevoEstado })
         })
-
         const data = await response.json()
-
         if (data.success) {
             const producto = listaProductos.find(p => p.idproducto === id)
             if (producto) producto.estado = nuevoEstado
@@ -125,127 +124,102 @@ async function cambiarEstadoProducto(id, nuevoEstado) {
     }
 }
 
-// ── MODAL REGISTRO ─────────────────────────────────────────
+// ── MODAL UNIFICADO ────────────────────────────────────────
 const modalProducto = document.getElementById('modalProducto')
 
-document.getElementById('btnAbrirModalProducto').addEventListener('click', () => {
-    modalProducto.style.display = 'flex'
-})
+async function abrirModalProducto(id = null) {
+    const titulo = document.getElementById('tituloModalProducto')
+    const btnSubmit = document.getElementById('btnSubmitProducto')
 
+    document.getElementById('formProducto').reset()
+    document.getElementById('idProductoEditar').value = ''
+    ocultarMensajeProducto('mensajeProducto')
+
+    // Cargar categorías en el selector
+    await cargarCategoriasSelector()
+
+    if (id) {
+        const producto = listaProductos.find(p => p.idproducto === id)
+        if (!producto) return
+
+        titulo.textContent = 'Editar Producto'
+        btnSubmit.textContent = 'Guardar cambios'
+
+        document.getElementById('idProductoEditar').value = producto.idproducto
+        document.getElementById('nombreProducto').value = producto.nombreproducto
+        document.getElementById('descripcionProducto').value = producto.descripcionproducto || ''
+        document.getElementById('categoriaProducto').value = producto.idcategoria
+        document.getElementById('precioProducto').value = producto.preciobase
+    } else {
+        titulo.textContent = 'Registrar Producto'
+        btnSubmit.textContent = 'Registrar'
+    }
+
+    modalProducto.style.display = 'flex'
+}
+
+async function cargarCategoriasSelector() {
+    try {
+        const response = await fetch(API_CATEGORIAS, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        })
+        const data = await response.json()
+        const select = document.getElementById('categoriaProducto')
+        select.innerHTML = '<option value="" disabled selected>Selecciona categoría</option>'
+        data.categorias
+            .filter(c => c.estado === 'activo')
+            .forEach(c => {
+                select.innerHTML += `<option value="${c.idcategoria}">${c.nombrecategoria}</option>`
+            })
+    } catch (error) {
+        console.error('Error al cargar categorías:', error)
+    }
+}
+
+document.getElementById('btnAbrirModalProducto').addEventListener('click', () => abrirModalProducto())
 document.getElementById('btnCerrarModalProducto').addEventListener('click', cerrarModalProducto)
 document.getElementById('btnCancelarModalProducto').addEventListener('click', cerrarModalProducto)
-
-modalProducto.addEventListener('click', (e) => {
-    if (e.target === modalProducto) cerrarModalProducto()
-})
+modalProducto.addEventListener('click', (e) => { if (e.target === modalProducto) cerrarModalProducto() })
 
 function cerrarModalProducto() {
     modalProducto.style.display = 'none'
-    document.getElementById('formNuevoProducto').reset()
+    document.getElementById('formProducto').reset()
     ocultarMensajeProducto('mensajeProducto')
 }
 
-document.getElementById('formNuevoProducto').addEventListener('submit', async (e) => {
+// ── SUBMIT FORM ────────────────────────────────────────────
+document.getElementById('formProducto').addEventListener('submit', async (e) => {
     e.preventDefault()
 
-    const nombreProducto = document.getElementById('nombreProducto').value.trim()
-    const descripcionProducto = document.getElementById('descripcionProducto').value.trim()
-    const categoriaProducto = document.getElementById('categoriaProducto').value
-    const precioProducto = document.getElementById('precioProducto').value
+    const id = document.getElementById('idProductoEditar').value
+    const body = {
+        nombreProducto: document.getElementById('nombreProducto').value.trim(),
+        descripcionProducto: document.getElementById('descripcionProducto').value.trim(),
+        idCategoria: document.getElementById('categoriaProducto').value,
+        precioBase: document.getElementById('precioProducto').value
+    }
+
+    const url = id ? `${API_PRODUCTOS}/${id}` : API_PRODUCTOS
+    const method = id ? 'PUT' : 'POST'
 
     try {
-        const response = await fetch(API_PRODUCTOS, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                nombreProducto,
-                descripcionProducto,
-                categoria: categoriaProducto,
-                precioBase: precioProducto
-            })
+        const response = await fetch(url, {
+            method,
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify(body)
         })
 
         const data = await response.json()
 
         if (data.success) {
-            mostrarMensajeProducto('mensajeProducto', 'Producto registrado exitosamente', 'success')
+            mostrarMensajeProducto('mensajeProducto', id ? 'Producto actualizado exitosamente' : 'Producto registrado exitosamente', 'success')
             await cargarProductos()
             setTimeout(() => cerrarModalProducto(), 1500)
         } else {
-            mostrarMensajeProducto('mensajeProducto', data.message || 'Error al registrar', 'error')
+            mostrarMensajeProducto('mensajeProducto', data.message || 'Error al guardar', 'error')
         }
     } catch (error) {
         mostrarMensajeProducto('mensajeProducto', 'No se pudo conectar con el servidor', 'error')
-    }
-})
-
-// ── MODAL EDITAR ───────────────────────────────────────────
-const modalEditarProducto = document.getElementById('modalEditarProducto')
-
-function abrirModalEditarProducto(id) {
-    const producto = listaProductos.find(p => p.idproducto === id)
-    if (!producto) return
-
-    document.getElementById('editIdProducto').value = producto.idproducto
-    document.getElementById('editNombreProducto').value = producto.nombreproducto
-    document.getElementById('editDescripcionProducto').value = producto.descripcionproducto || ''
-    document.getElementById('editCategoriaProducto').value = producto.categoria
-    document.getElementById('editPrecioProducto').value = producto.preciobase
-
-    modalEditarProducto.style.display = 'flex'
-}
-
-document.getElementById('btnCerrarModalEditarProducto').addEventListener('click', cerrarModalEditarProducto)
-document.getElementById('btnCancelarModalEditarProducto').addEventListener('click', cerrarModalEditarProducto)
-
-modalEditarProducto.addEventListener('click', (e) => {
-    if (e.target === modalEditarProducto) cerrarModalEditarProducto()
-})
-
-function cerrarModalEditarProducto() {
-    modalEditarProducto.style.display = 'none'
-    document.getElementById('formEditarProducto').reset()
-    ocultarMensajeProducto('mensajeEditarProducto')
-}
-
-document.getElementById('formEditarProducto').addEventListener('submit', async (e) => {
-    e.preventDefault()
-
-    const id = document.getElementById('editIdProducto').value
-    const nombreProducto = document.getElementById('editNombreProducto').value.trim()
-    const descripcionProducto = document.getElementById('editDescripcionProducto').value.trim()
-    const categoriaProducto = document.getElementById('editCategoriaProducto').value
-    const precioProducto = document.getElementById('editPrecioProducto').value
-
-    try {
-        const response = await fetch(`${API_PRODUCTOS}/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                nombreProducto,
-                descripcionProducto,
-                categoria: categoriaProducto,
-                precioBase: precioProducto
-            })
-        })
-
-        const data = await response.json()
-
-        if (data.success) {
-            mostrarMensajeProducto('mensajeEditarProducto', 'Producto actualizado exitosamente', 'success')
-            await cargarProductos()
-            setTimeout(() => cerrarModalEditarProducto(), 1500)
-        } else {
-            mostrarMensajeProducto('mensajeEditarProducto', data.message || 'Error al actualizar', 'error')
-        }
-    } catch (error) {
-        mostrarMensajeProducto('mensajeEditarProducto', 'No se pudo conectar con el servidor', 'error')
     }
 })
 
