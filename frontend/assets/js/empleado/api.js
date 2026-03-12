@@ -11,37 +11,40 @@ function getToken() {
     return localStorage.getItem('token');
 }
 
-/** Wrapper de fetch que inyecta el token JWT y devuelve el JSON parseado */
-async function apiFetch(path, options = {}) {
+/** Wrapper de fetch que inyecta el token JWT y devuelve el JSON parseado.
+ *  Reintenta una vez tras 3 s si el servidor está despertando (Render cold start). */
+async function apiFetch(path, options = {}, _retry = true) {
     const token = getToken();
-    
+
     const headers = {
         'Content-Type': 'application/json',
         ...(options.headers || {})
     };
-    
-    // Si hay token, agregarlo al header Authorization
+
     if (token) {
         headers['Authorization'] = `Bearer ${token}`;
     }
-    
+
     try {
         const res = await fetch(`${API_BASE}${path}`, {
             ...options,
             headers: headers,
             credentials: 'include'
         });
-        
-        // Verificar si la respuesta es OK
+
         if (!res.ok) {
             throw new Error(`Error HTTP: ${res.status}`);
         }
-        
-        // Parsear JSON
-        const data = await res.json();
-        return data;
-        
+
+        return await res.json();
+
     } catch (error) {
+        // Render free tier: el servidor puede estar despertando — reintenta una vez
+        if (_retry) {
+            console.warn('Servidor no disponible, reintentando en 4 s...', path);
+            await new Promise(r => setTimeout(r, 4000));
+            return apiFetch(path, options, false);
+        }
         console.error('Error en apiFetch:', error);
         throw error;
     }
