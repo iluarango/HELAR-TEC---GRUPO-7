@@ -1,9 +1,10 @@
-// Detectar entorno y usar la URL correcta
-const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-    ? 'http://localhost:3000/api'  // Desarrollo local
-    : 'https://helar-tec-grupo-7.onrender.com/api';  // Producción en Render
+// ============================================
+// CONFIGURACIÓN PARA PRODUCCIÓN EN RENDER
+// ============================================
+// FORZAMOS el uso de la URL de Render para todas las peticiones
+const API_BASE = 'https://helar-tec-grupo-7.onrender.com/api';
 
-console.log('API Base URL:', API_BASE);
+console.log('Conectando a API:', API_BASE);
 
 // Obtener token del localStorage
 function getToken() {
@@ -64,6 +65,13 @@ const api = {
     createProducto: (data) => apiFetch('/productos', { 
         method: 'POST', 
         body: JSON.stringify(data) 
+    }),
+    updateProducto: (id, data) => apiFetch(`/productos/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+    }),
+    deleteProducto: (id) => apiFetch(`/productos/${id}`, {
+        method: 'DELETE'
     }),
     
     // Usuarios
