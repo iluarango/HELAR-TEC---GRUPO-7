@@ -28,6 +28,9 @@ function renderTablaPedidos(pedidos) {
         const fecha = new Date(p.fechapedido).toLocaleDateString("es-CO");
         const total = parseFloat(p.totalventa || 0).toLocaleString("es-CO");
         const esEntregado = p.estadopedido === "entregado";
+        const esCancelado = p.estadopedido === "cancelado";
+        const esPendiente = !esEntregado && !esCancelado;
+        const claseEstado = esEntregado ? 'estado-disponible' : esCancelado ? 'estado-cancelado' : 'estado-pendiente';
         return `
             <tr>
                 <td>#${p.idpedido}</td>
@@ -35,16 +38,20 @@ function renderTablaPedidos(pedidos) {
                 <td>${p.nombreusuario}</td>
                 <td>$${total}</td>
                 <td>
-                    <span class="badge-estado ${esEntregado ? 'estado-disponible' : 'estado-pendiente'}">
+                    <span class="badge-estado ${claseEstado}">
                         ${p.estadopedido}
                     </span>
                 </td>
                 <td>
                     <div class="botones-accion">
-                        ${!esEntregado ? `
+                        ${esPendiente ? `
                         <button class="boton-accion" title="Marcar entregado"
-                            onclick="marcarEntregado(${p.idpedido})">
+                            onclick="abrirConfirmarEntrega(${p.idpedido})">
                             <i class="fas fa-check"></i>
+                        </button>
+                        <button class="boton-accion boton-cancelar-pedido" title="Cancelar pedido"
+                            onclick="abrirCancelarPedido(${p.idpedido})">
+                            <i class="fas fa-times"></i>
                         </button>` : ""}
                         <button class="boton-accion" title="Ver detalles"
                             onclick="verDetallesPedido(${p.idpedido})">
@@ -68,21 +75,52 @@ document.getElementById("inputBusquedaPedido").addEventListener("input", (e) => 
     renderTablaPedidos(filtrados);
 });
 
-// ── MARCAR ENTREGADO ──────────────────────────────────────────
-async function marcarEntregado(id) {
-    if (!confirm("¿Marcar este pedido como entregado?")) return;
-    try {
-        const data = await apiFetch(`/pedidos/${id}/entregar`, { method: "PUT" });
-        if (data.success) {
-            alert("Pedido entregado. Venta registrada.");
-            await cargarPedidos();
-        } else {
-            alert(data.message || "Error al entregar pedido");
-        }
-    } catch (error) {
-        console.error("Error:", error);
-    }
+// ── MODALES CONFIRMAR ENTREGA / CANCELAR ──────────────────────
+let _idPedidoAccion = null
+
+function abrirConfirmarEntrega(id) {
+    _idPedidoAccion = id
+    document.getElementById('modalConfirmarEntrega').style.display = 'flex'
 }
+
+function cerrarConfirmarEntrega() {
+    _idPedidoAccion = null
+    document.getElementById('modalConfirmarEntrega').style.display = 'none'
+}
+
+function abrirCancelarPedido(id) {
+    _idPedidoAccion = id
+    document.getElementById('modalCancelarPedido').style.display = 'flex'
+}
+
+function cerrarCancelarPedido() {
+    _idPedidoAccion = null
+    document.getElementById('modalCancelarPedido').style.display = 'none'
+}
+
+document.getElementById('btnConfirmarEntrega').addEventListener('click', async () => {
+    if (!_idPedidoAccion) return
+    const id = _idPedidoAccion
+    cerrarConfirmarEntrega()
+    try {
+        const data = await apiFetch(`/pedidos/${id}/entregar`, { method: "PUT" })
+        if (data.success) await cargarPedidos()
+    } catch (error) {
+        console.error("Error al entregar pedido:", error)
+    }
+})
+
+document.getElementById('btnConfirmarCancelar').addEventListener('click', async () => {
+    if (!_idPedidoAccion) return
+    const id = _idPedidoAccion
+    cerrarCancelarPedido()
+    try {
+        const data = await apiFetch(`/pedidos/${id}/cancelar`, { method: "PUT" })
+        if (data.success) await cargarPedidos()
+    } catch (error) {
+        console.error("Error al cancelar pedido:", error)
+    }
+})
 
 // ── VER DETALLES ──────────────────────────────────────────────
 function verDetallesPedido(id) {
@@ -98,6 +136,7 @@ function verDetallesPedido(id) {
     const tbody = document.getElementById('cuerpoDetallesPedido')
     tbody.innerHTML = pedido.detalles.map(d => {
         const sabores = d.sabores || '-'
+        const salsas = d.salsas || '-'
         const ads = Array.isArray(d.adicionales) && d.adicionales.length
             ? d.adicionales.map(a => a.nombre).join(', ')
             : '-'
@@ -106,6 +145,7 @@ function verDetallesPedido(id) {
                 <td>${d.nombreproducto}</td>
                 <td>${d.cantidad}</td>
                 <td>${sabores}</td>
+                <td>${salsas}</td>
                 <td>${ads}</td>
                 <td>$${parseFloat(d.subtotal).toLocaleString('es-CO')}</td>
             </tr>`
@@ -139,33 +179,53 @@ const selectProducto       = document.getElementById("detalleProducto");
 const inputCantidad        = document.getElementById("detalleCantidadPedido");
 const contenedorSabores    = document.getElementById("listaSabores");
 const contenedorAdicionales = document.getElementById("listaAdicionales");
+const contenedorSalsas = document.getElementById("listaSalsas")
 
 let detallesPedido        = [];
 let saboresDisponibles    = [];
 let saboresSeleccionados  = [];
 let adicionalesDisponibles   = [];
 let adicionalesSeleccionados = []; // [{ idAdicional, nombre, precio, cantidad }]
+let salsasDisponibles    = []
+let salsasSeleccionadas  = []
+
+// ── MOSTRAR DESCRIPCIÓN AL SELECCIONAR PRODUCTO ───────────────
+selectProducto.addEventListener('change', () => {
+    const option = selectProducto.selectedOptions[0];
+    const divDesc = document.getElementById('descripcionProductoSeleccionado');
+    if (!divDesc) return;
+    const desc = option?.dataset?.descripcion?.trim();
+    if (desc) {
+        divDesc.textContent = desc;
+        divDesc.style.display = 'block';
+    } else {
+        divDesc.style.display = 'none';
+    }
+});
 
 // ── ABRIR MODAL ───────────────────────────────────────────────
 btnAbrirModal.addEventListener("click", async () => {
     await Promise.all([
         cargarProductosModal(),
         cargarSaboresModal(),
+        cargarSalsasModal(),
         cargarAdicionalesModal()
     ]);
     detallesPedido = [];
     saboresSeleccionados = [];
     adicionalesSeleccionados = [];
+    salsasSeleccionadas = [];
     renderDetallesPedido();
     actualizarBtnRegistrar();
     modalPedido.style.display = "flex";
 });
 
 // ── AGREGAR DETALLE ───────────────────────────────────────────
+/** Agrega el producto seleccionado con sus sabores, salsas y adicionales al array de detalles */
 function agregarDetallePedido() {
     const option = selectProducto.selectedOptions[0];
     if (!option || !option.value) {
-        alert("Seleccione un producto");
+        mostrarMensaje('mensajePedido', 'Selecciona un producto primero', 'error')
         return;
     }
 
@@ -187,6 +247,8 @@ function agregarDetallePedido() {
         precio,
         sabores: saboresSeleccionados.map(s => s.id),
         nombresSabores: saboresSeleccionados.map(s => s.nombre),
+        salsas: salsasSeleccionadas.map(s => s.id),
+        nombresSalsas: salsasSeleccionadas.map(s => s.nombre),
         adicionales: adicionalesSeleccionados.map(a => ({
             idAdicional: a.idAdicional,
             nombre: a.nombre,
@@ -209,6 +271,7 @@ function cerrarModalPedido() {
     detallesPedido = [];
     saboresSeleccionados = [];
     adicionalesSeleccionados = [];
+    salsasSeleccionadas = [];
 }
 
 btnCerrarModal.addEventListener("click", cerrarModalPedido);
@@ -229,6 +292,7 @@ async function cargarProductosModal() {
                 option.value = prod.idproducto;
                 option.textContent = prod.nombreproducto;
                 option.dataset.precio = prod.preciobase;
+                option.dataset.descripcion = prod.descripcionproducto || '';
                 selectProducto.appendChild(option);
             });
     } catch (error) {
@@ -334,11 +398,62 @@ function limpiarAdicionales() {
     contenedorAdicionales.querySelectorAll(".btn-sabor").forEach(b => b.classList.remove("activo"));
 }
 
+// ── CARGAR SALSAS ─────────────────────────────────────────────
+async function cargarSalsasModal() {
+    try {
+        const data = await apiFetch('/salsas')
+        salsasDisponibles = data.salsas.filter(s => s.estado === 'activo')
+        renderSalsas()
+    } catch (error) {
+        console.error('Error cargando salsas', error)
+    }
+}
+
+// ── RENDER BOTONES SALSAS ─────────────────────────────────────
+function renderSalsas() {
+    if (!contenedorSalsas) return
+    contenedorSalsas.innerHTML = ''
+    salsasDisponibles.forEach(salsa => {
+        const btn = document.createElement('button')
+        btn.type = 'button'
+        btn.className = 'btn-sabor'
+        btn.textContent = salsa.nombresalsa
+        btn.dataset.id = salsa.idsalsa
+        btn.dataset.nombre = salsa.nombresalsa
+        btn.addEventListener('click', () => seleccionarSalsa(btn))
+        contenedorSalsas.appendChild(btn)
+    })
+}
+
+// ── SELECCIONAR SALSA ─────────────────────────────────────────
+function seleccionarSalsa(btn) {
+    const id = parseInt(btn.dataset.id)
+    const nombre = btn.dataset.nombre
+    const index = salsasSeleccionadas.findIndex(s => s.id === id)
+    if (index >= 0) {
+        salsasSeleccionadas.splice(index, 1)
+        btn.classList.remove('activo')
+    } else {
+        salsasSeleccionadas.push({ id, nombre })
+        btn.classList.add('activo')
+    }
+}
+
+// ── LIMPIAR SALSAS ────────────────────────────────────────────
+function limpiarSalsas() {
+    salsasSeleccionadas = []
+    if (contenedorSalsas) contenedorSalsas.querySelectorAll('.btn-sabor').forEach(b => b.classList.remove('activo'))
+}
+
 // ── LIMPIAR FORMULARIO ────────────────────────────────────────
+/** Resetea producto, cantidad, sabores, salsas y adicionales del formulario de detalle */
 function limpiarFormularioDetalle() {
     selectProducto.value = "";
     inputCantidad.value = 1;
+    const divDesc = document.getElementById('descripcionProductoSeleccionado');
+    if (divDesc) divDesc.style.display = 'none';
     limpiarSabores();
+    limpiarSalsas();
     limpiarAdicionales();
 }
 
@@ -356,17 +471,22 @@ function renderDetallesPedido() {
             ? det.adicionales.map(a => `${a.nombre}`).join(", ")
             : "-";
 
+        const saboresTexto = det.nombresSabores.length ? det.nombresSabores.join(", ") : "-";
+        const salsasTexto = (det.nombresSalsas && det.nombresSalsas.length) ? det.nombresSalsas.join(", ") : "-";
+        const adTexto = nombresAd !== "-" ? `<br><span style="color:#999;font-size:11px;">${nombresAd}</span>` : "";
+
         const tr = document.createElement("tr");
+        tr.style.borderBottom = "1px solid #f0f0f0";
         tr.innerHTML = `
-            <td>${det.nombreProducto}</td>
-            <td>${det.cantidad}</td>
-            <td>${det.nombresSabores.length ? det.nombresSabores.join(", ") : "-"}</td>
-            <td>${nombresAd}</td>
-            <td>$${det.subtotal.toLocaleString("es-CO")}</td>
-            <td>
+            <td style="padding:8px;">${det.nombreProducto}${adTexto}</td>
+            <td style="padding:8px; text-align:center;">${det.cantidad}</td>
+            <td style="padding:8px; font-size:12px; color:#666;">${saboresTexto}</td>
+            <td style="padding:8px; font-size:12px; color:#666;">${salsasTexto}</td>
+            <td style="padding:8px; text-align:right; font-weight:600; color:#a47c7c;">$${det.subtotal.toLocaleString("es-CO")}</td>
+            <td style="padding:8px; text-align:center;">
                 <button onclick="eliminarDetallePedido(${index})"
-                        style="background:none;border:none;cursor:pointer;font-size:16px;">
-                    ❌
+                        style="background:none;border:none;cursor:pointer;color:#d9534f;font-size:14px;">
+                    <i class="fas fa-trash"></i>
                 </button>
             </td>
         `;
@@ -384,6 +504,7 @@ function eliminarDetallePedido(index) {
 }
 
 // ── HABILITAR BOTÓN REGISTRAR ─────────────────────────────────
+/** Habilita o deshabilita el botón registrar según si hay detalles en el pedido */
 function actualizarBtnRegistrar() {
     btnRegistrar.disabled = detallesPedido.length === 0;
 }
@@ -392,7 +513,7 @@ function actualizarBtnRegistrar() {
 document.getElementById("formNuevoPedido").addEventListener("submit", async (e) => {
     e.preventDefault();
     if (detallesPedido.length === 0) {
-        alert("Debe agregar al menos un producto");
+        mostrarMensaje('mensajePedido', 'Agrega al menos un producto al pedido', 'error')
         return;
     }
 
@@ -402,6 +523,7 @@ document.getElementById("formNuevoPedido").addEventListener("submit", async (e) 
         cantidad:    det.cantidad,
         precio:      det.precio,
         sabores:     det.nombresSabores,
+        salsas:      det.nombresSalsas,
         adicionales: det.adicionales.map(a => ({
             idAdicional: a.idAdicional,
             cantidad:    a.cantidad

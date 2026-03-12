@@ -1,0 +1,131 @@
+/* Estilos de la sección de reportes del panel admin: pestañas, tarjetas de datos y botón de exportación */
+/* ── PESTAÑAS DE REPORTES ─────────────────────────────────── */
+.pestanas-reportes {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+/* Contenido del tab historial centrado entre sidebar y calendario */
+#contenido-tab-historial {
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+.pestana-reporte {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 20px;
+    background: #f5e6e6;
+    color: var(--color-accent);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+}
+
+.pestana-reporte.activa {
+    background: var(--color-accent);
+    color: white;
+}
+
+.pestana-reporte:hover:not(.activa) {
+    background: #ead5d5;
+}
+
+/* ========================================
+   SECCIÓN REPORTES
+   ======================================== */
+
+.grid-reportes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 24px;
+}
+
+.card-reporte {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    animation: fadeInUp 0.6s ease backwards;
+}
+
+.card-reporte:nth-child(1) { animation-delay: 0.06s; }
+.card-reporte:nth-child(2) { animation-delay: 0.14s; }
+.card-reporte:nth-child(3) { animation-delay: 0.22s; }
+.card-reporte:nth-child(4) { animation-delay: 0.30s; }
+
+.cards-ventas .stat-card:nth-child(1) { animation-delay: 0s; }
+.cards-ventas .stat-card:nth-child(2) { animation-delay: 0.1s; }
+
+.card-reporte h4 {
+    color: var(--color-accent);
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.cards-ventas {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    flex: 1;
+    background: linear-gradient(135deg, #fceaea, #ffddf0);
+    border-radius: 14px;
+    animation: fadeInUp 0.5s ease backwards;
+    padding: 24px;
+    text-align: center;
+}
+
+.stat-card .valor {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--color-accent);
+}
+
+.stat-card .label {
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 4px;
+}
+
+.btn-exportar {
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: opacity 0.2s;
+}
+
+.btn-exportar:hover {
+    opacity: 0.85;
+}
+
+.btn-exportar.pdf {
+    background: #d9534f;
+    color: white;
+}
+
+@media (max-width: 900px) {
+    .grid-reportes {
+        grid-template-columns: 1fr;
+    }
+
+    .cards-ventas {
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,27 @@
+/* Estilos base del panel administrativo: reset, tipografía y estructura del contenedor principal */
+/* Reiniciar márgenes y padding de todos los elementos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilos del cuerpo de la página */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    background-color: var(--bg-page);
+    color: var(--color-text);
+    overflow-x: hidden;
+}
+
+/* Contenedor principal que divide la página en 3 columnas */
+.contenedor-principal {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ── ANIMACIÓN GLOBAL ────────────────────────────────────── */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}

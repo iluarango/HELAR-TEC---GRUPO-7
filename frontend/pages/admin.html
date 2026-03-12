@@ -4,49 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Administrador | HELAR-TEC</title>
-    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link rel="stylesheet" href="../assets/css/admin.css?v=11">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
+<button class="btn-hamburguesa" id="btnHamburguesa" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+</button>
+<div class="overlay-sidebar" id="overlaySidebar" onclick="toggleSidebar()"></div>
     <div class="contenedor-principal">
 
         <!-- BARRA LATERAL IZQUIERDA -->
         <aside class="barra-lateral-izquierda">
-            <div class="logo-empresa">
-                <svg viewBox="0 0 120 40">
-                    <image href="../assets/img/logo-helar.jpeg" width="120" height="40"/>
-                </svg>
-            </div>
-
-            <h2>Panel de Admin</h2>
-
             <nav class="menu">
-                <div class="item-menu activo">
+                <div class="item-menu activo" onclick="cambiarSeccionAdmin('empleados', this)">
                     <svg fill="currentColor" viewBox="0 0 20 20">
                         <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
                     </svg>
                     Empleados
                 </div>
+                <div class="item-menu" onclick="cambiarSeccionAdmin('gastos', this)" style="position:relative;">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    Gastos Operativos
+                    <span id="badge-gastos-vencen" style="display:none; position:absolute; top:6px; right:10px; background:#dc2626; color:white; font-size:11px; font-weight:700; min-width:18px; height:18px; border-radius:9px; align-items:center; justify-content:center; padding:0 4px;"></span>
+                </div>
+                <div class="item-menu" onclick="cambiarSeccionAdmin('reportes', this)">
+                    <i class="fas fa-chart-bar"></i>
+                    Reportes
+                </div>
+                <div class="item-menu" onclick="cambiarSeccionAdmin('alertas', this)" style="position:relative;">
+                    <i class="fas fa-bell"></i>
+                    Alertas
+                    <span id="badge-alertas-admin" style="display:none; position:absolute; top:6px; right:10px; background:#dc2626; color:white; font-size:11px; font-weight:700; min-width:18px; height:18px; border-radius:9px; align-items:center; justify-content:center; padding:0 4px;"></span>
+                </div>
             </nav>
 
             <!-- AJUSTES CON SUBMENU -->
-            <div class="item-menu item-ajustes" id="btnAjustes">
-                <svg fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"/>
-                </svg>
-                Ajustes
-                <i class="fas fa-chevron-right chevron-ajustes" style="margin-left: auto; font-size: 11px;"></i>
-            </div>
-
-            <!-- SUBMENU AJUSTES -->
-            <div class="submenu-ajustes" id="submenuAjustes">
-                <div class="submenu-item">
-                    <i class="fas fa-book"></i>
-                    Manual de usuario
-                </div>
-                <div class="submenu-item cerrar-sesion" id="abrirModalLogout">
-                    <i class="fas fa-sign-out-alt"></i>
-                    Cerrar sesión
+            <div class="menu-ajustes-wrapper-admin">
+                <!-- Popup submenu -->
+                <ul class="submenu-ajustes" id="submenuAjustes">
+                    <li class="submenu-item" onclick="alert('Manual de usuario próximamente')">
+                        <svg class="icono-submenu-admin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        </svg>
+                        Manual de usuario
+                    </li>
+                    <li class="submenu-item" id="btnToggleTema" onclick="toggleTema()">
+                        <svg class="icono-submenu-admin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                        Modo oscuro
+                    </li>
+                    <li class="submenu-item cerrar-sesion" id="abrirModalLogout">
+                        <svg class="icono-submenu-admin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                        </svg>
+                        Cerrar sesión
+                    </li>
+                </ul>
+                <div class="item-menu item-ajustes" id="btnAjustes">
+                    <svg fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"/>
+                    </svg>
+                    Ajustes
                 </div>
             </div>
 
@@ -59,46 +82,154 @@
             </div>
         </aside>
 
+        <!-- CALENDARIO LATERAL -->
         <!-- CONTENIDO PRINCIPAL -->
         <main class="contenido-principal">
-            <div class="encabezado-seccion">
-                <h2><i class="fas fa-users" style="margin-right: 10px;"></i> GESTIÓN DE EMPLEADOS</h2>
-                <button class="boton-generar" id="btnAbrirModalEmpleado">
-                    <span>+</span> Nuevo Empleado
-                </button>
+
+            <!-- SECCIÓN EMPLEADOS -->
+            <div id="seccion-empleados">
+                <div class="encabezado-seccion">
+                    <h2><i class="fas fa-users" style="margin-right: 10px;"></i> GESTIÓN DE EMPLEADOS</h2>
+                    <button class="boton-generar" id="btnAbrirModalEmpleado">
+                        <span>+</span> Nuevo Empleado
+                    </button>
+                </div>
+                <div class="barra-busqueda">
+                    <svg width="20" height="20" fill="#999" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
+                    </svg>
+                    <input type="text" id="inputBusqueda" placeholder="Buscar por nombre o correo...">
+                </div>
+                <div class="tabla-contenedor">
+                    <table class="tabla-empleados">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Usuario</th>
+                                <th>Correo</th>
+                                <th>Rol</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaEmpleadosBody">
+                            <tr>
+                                <td colspan="6" style="text-align: center; padding: 40px;">
+                                    <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: #a47c7c;"></i>
+                                    <p style="margin-top: 10px; color: #666;">Cargando empleados...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-            <!-- BARRA DE BÚSQUEDA -->
-            <div class="barra-busqueda">
-                <svg width="20" height="20" fill="#999" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
-                </svg>
-                <input type="text" id="inputBusqueda" placeholder="Buscar por nombre o correo...">
+            <!-- SECCIÓN GASTOS OPERATIVOS -->
+            <div id="seccion-gastos" style="display:none;">
+                <div class="encabezado-seccion">
+                    <h2><i class="fas fa-file-invoice-dollar" style="margin-right: 10px;"></i> GASTOS OPERATIVOS</h2>
+                    <button class="boton-generar" id="btnAbrirModalGasto">
+                        <span>+</span> Registrar Gasto
+                    </button>
+                </div>
+                <div class="tabla-contenedor">
+                    <table class="tabla-empleados">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Fecha</th>
+                                <th>Categoría</th>
+                                <th>Monto</th>
+                                <th>Método de pago</th>
+                                <th>Vencimiento</th>
+                                <th>Estado</th>
+                                <th>Registrado por</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaGastosBody"></tbody>
+                    </table>
+                </div>
             </div>
 
-            <div class="tabla-contenedor">
-                <table class="tabla-empleados">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Usuario</th>
-                            <th>Correo</th>
-                            <th>Rol</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tablaEmpleadosBody">
-                        <tr>
-                            <td colspan="6" style="text-align: center; padding: 40px;">
-                                <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: #a47c7c;"></i>
-                                <p style="margin-top: 10px; color: #666;">Cargando empleados...</p>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <!-- SECCIÓN ALERTAS ADMIN -->
+            <div id="seccion-alertas-admin" style="display:none;">
+                <div class="encabezado-seccion">
+                    <h2><i class="fas fa-bell" style="margin-right: 10px;"></i> ALERTAS</h2>
+                    <button type="button" class="btn-marcar-todas-admin" onclick="marcarTodasLeidasAdmin()">
+                        <i class="fas fa-check-double"></i> Marcar todas como leídas
+                    </button>
+                </div>
+                <div id="lista-alertas-admin">
+                    <div class="alerta-vacia">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Cargando alertas...</p>
+                    </div>
+                </div>
             </div>
+
+            <!-- SECCIÓN REPORTES -->
+            <div id="seccion-reportes" style="display:none;">
+                <div class="encabezado-seccion">
+                    <h2><i class="fas fa-chart-bar" style="margin-right: 10px;"></i> REPORTES</h2>
+                </div>
+
+                <div id="mensajeReporte" style="display:none; margin-bottom:12px;"></div>
+
+                <!-- Zona de gráficas -->
+                <div id="contenidoReporte">
+                    <div class="cards-ventas">
+                        <div class="stat-card">
+                            <div class="valor" id="reporteVentasHoy">$0</div>
+                            <div class="label">Ventas de hoy</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="valor" id="reporteVentasMes">$0</div>
+                            <div class="label">Ventas del mes</div>
+                        </div>
+                    </div>
+
+                    <div class="grid-reportes">
+                        <div class="card-reporte">
+                            <h4><i class="fas fa-ice-cream" style="margin-right:8px;"></i>Productos más vendidos</h4>
+                            <canvas id="chartProductos"></canvas>
+                        </div>
+                        <div class="card-reporte">
+                            <h4><i class="fas fa-boxes" style="margin-right:8px;"></i>Insumos más usados</h4>
+                            <canvas id="chartInsumos"></canvas>
+                        </div>
+                        <div class="card-reporte">
+                            <h4><i class="fas fa-shopping-cart" style="margin-right:8px;"></i>Costos totales de compras por semana</h4>
+                            <canvas id="chartCompras"></canvas>
+                        </div>
+                        <div class="card-reporte">
+                            <h4><i class="fas fa-tags" style="margin-right:8px;"></i>Comparación de costos de gastos operativos</h4>
+                            <canvas id="chartGastos"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top:20px;">
+                    <button type="button" class="btn-exportar pdf" id="btnGenerarArchivo" onclick="generarArchivo()">
+                        <i class="fas fa-file-arrow-down"></i> Descargar PDF
+                    </button>
+                </div>
+            </div>
+
         </main>
+
+        <!-- CALENDARIO DERECHA -->
+        <aside class="seccion-calendario">
+            <h3 style="margin-bottom:16px; color:#a47c7c;">Calendario</h3>
+            <input id="calendarioAdmin" style="display:none;">
+            <div class="hora-actual">
+                <div class="mostrar-hora" id="horaTiempoRealAdmin">00:00</div>
+                <div class="mostrar-fecha" id="fechaTiempoRealAdmin"></div>
+            </div>
+            <div style="text-align:center; margin-top:20px; padding-top:20px; border-top:1px solid #f0e0e0;">
+                <img src="../assets/img/logo-helar.jpeg" style="width:100%; max-width:220px; height:auto; display:block; margin:0 auto; border-radius:12px;">
+            </div>
+        </aside>
+
     </div>
 
     <!-- MODAL REGISTRO EMPLEADO -->
@@ -109,10 +240,10 @@
                 <button class="modal-cerrar" id="btnCerrarModal">&times;</button>
             </div>
 
-            <form id="formRegistroEmpleado">
+            <form id="formRegistroEmpleado" novalidate>
                 <div class="form-group">
                     <label><i class="fas fa-user"></i> Nombre de Usuario</label>
-                    <input type="text" id="nombreUsuario" placeholder="Ej: juan.perez" required>
+                    <input type="text" id="nombreUsuario" placeholder="Ej: juan.perez" required minlength="3" maxlength="50" pattern="[a-zA-Z0-9._\-]+" title="Solo letras, números, puntos, guiones y guiones bajos">
                 </div>
 
                 <div class="form-group">
@@ -122,7 +253,7 @@
 
                 <div class="form-group">
                     <label><i class="fas fa-lock"></i> Contraseña</label>
-                    <input type="password" id="contrasenaUsuario" placeholder="Entre 12 y 16 caracteres" required>
+                    <input type="password" id="contrasenaUsuario" placeholder="Entre 12 y 16 caracteres" required minlength="12" maxlength="16" title="Entre 12 y 16 caracteres, con mayúscula, minúscula, número y símbolo especial">
                     <div id="requisitosContrasena" style="margin-top: 10px; font-size: 12px; display: none;">
                         <div id="req-length"><i class="fas fa-circle"></i> Entre 12 y 16 caracteres</div>
                         <div id="req-uppercase"><i class="fas fa-circle"></i> Al menos una mayúscula</div>
@@ -163,7 +294,7 @@
                 <button class="modal-cerrar" id="btnCerrarModalEditar">&times;</button>
             </div>
 
-            <form id="formEditarRol">
+            <form id="formEditarRol" novalidate>
                 <input type="hidden" id="editIdUsuario">
 
                 <div class="form-group">
@@ -226,8 +357,175 @@
         </div>
     </div>
 
-    <script src="../assets/js/admin/ui.js"></script>
-    <script src="../assets/js/admin/usuarios.js"></script>
-    <script src="../assets/js/admin/admin.js"></script>
+    <!-- MODAL PAGAR GASTO -->
+    <div id="modalPagarGasto" class="modal">
+        <div class="modal-contenido" style="max-width:400px;">
+            <div class="modal-header">
+                <h2><i class="fas fa-money-bill"></i> Registrar pago</h2>
+                <button class="modal-cerrar" id="btnCerrarModalPago">&times;</button>
+            </div>
+            <form id="formPagarGasto" novalidate>
+                <input type="hidden" id="idGastoPagar">
+                <div class="form-group">
+                    <label>Método de pago *</label>
+                    <select id="metodoPagarGasto" required>
+                        <option value="" disabled selected>Selecciona</option>
+                        <option value="efectivo">Efectivo</option>
+                        <option value="tarjeta">Tarjeta</option>
+                        <option value="transferencia">Transferencia</option>
+                        <option value="nequi">Nequi</option>
+                        <option value="daviplata">Daviplata</option>
+                    </select>
+                </div>
+                <div id="mensajePago"></div>
+                <div class="modal-botones">
+                    <button type="button" class="btn-cancelar" id="btnCancelarModalPago">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button type="submit" class="btn-registrar">
+                        <i class="fas fa-check"></i> Confirmar pago
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL REGISTRAR GASTO -->
+    <div id="modalGasto" class="modal">
+        <div class="modal-contenido">
+            <div class="modal-header">
+                <h2><i class="fas fa-file-invoice-dollar"></i> Registrar Gasto</h2>
+                <button class="modal-cerrar" id="btnCerrarModalGasto">&times;</button>
+            </div>
+            <form id="formGasto" novalidate>
+                <div class="form-group">
+                    <label>Fecha del gasto *</label>
+                    <input type="date" id="fechaGasto" required>
+                </div>
+                <div class="form-group">
+                    <label>Categoría *</label>
+                    <select id="categoriaGasto" required>
+                        <option value="" disabled selected>Selecciona una categoría</option>
+                        <option value="Arriendo">Arriendo</option>
+                        <option value="Servicios públicos">Servicios públicos</option>
+                        <option value="Nómina">Nómina</option>
+                        <option value="Mantenimiento">Mantenimiento</option>
+                        <option value="Insumos">Insumos</option>
+                        <option value="Transporte">Transporte</option>
+                        <option value="Otros">Otros</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Monto *</label>
+                    <input type="number" id="montoGasto" min="0" placeholder="Ej: 500000" required>
+                </div>
+                <div class="form-group">
+                    <label>Método de pago *</label>
+                    <select id="metodoPagoGasto" required>
+                        <option value="" disabled selected>Selecciona</option>
+                        <option value="efectivo">Efectivo</option>
+                        <option value="tarjeta">Tarjeta</option>
+                        <option value="transferencia">Transferencia</option>
+                        <option value="nequi">Nequi</option>
+                        <option value="daviplata">Daviplata</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Fecha de vencimiento (opcional)</label>
+                    <input type="date" id="fechaVencimientoGasto">
+                </div>
+                <div id="mensajeGasto"></div>
+                <div class="modal-botones">
+                    <button type="button" class="btn-cancelar" id="btnCancelarModalGasto">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button type="submit" class="btn-registrar" id="btnRegistrarGasto">
+                        <i class="fas fa-save"></i> Registrar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Calendario y reloj admin
+        document.addEventListener('DOMContentLoaded', () => {
+            flatpickr("#calendarioAdmin", { inline: true, defaultDate: "today", locale: "es" })
+
+            const meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"]
+            const dias  = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"]
+            function actualizarHoraAdmin() {
+                const ahora = new Date()
+                const h = String(ahora.getHours()).padStart(2, "0")
+                const m = String(ahora.getMinutes()).padStart(2, "0")
+                document.getElementById('horaTiempoRealAdmin').textContent = h + ":" + m
+                document.getElementById('fechaTiempoRealAdmin').textContent =
+                    dias[ahora.getDay()] + ", " + ahora.getDate() + " de " + meses[ahora.getMonth()]
+            }
+            actualizarHoraAdmin()
+            setInterval(actualizarHoraAdmin, 60000)
+        })
+    </script>
+    <script src="../assets/js/admin/ui.js?v=3"></script>
+    <script src="../assets/js/admin/usuarios.js?v=3"></script>
+    <script src="../assets/js/admin/admin.js?v=3"></script>
+    <script src="../assets/js/admin/gastos.js?v=3"></script>
+    <script src="../assets/js/admin/reportes.js?v=6"></script>
+    <script src="../assets/js/admin/alertas.js?v=1"></script>
+
+    <!-- TOAST REPORTE GUARDADO -->
+    <div id="toastReporte" style="
+        display: none;
+        position: fixed;
+        top: 24px;
+        right: 24px;
+        background: #a47c7c;
+        color: white;
+        padding: 14px 20px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        z-index: 9999;
+        align-items: center;
+        gap: 10px;
+    ">
+        <i class="fas fa-check-circle"></i>
+        <span class="toast-texto"></span>
+    </div>
+
+    <!-- TOAST NOTIFICACIÓN -->
+    <div id="toastLogin" style="
+        display: none;
+        position: fixed;
+        top: 24px;
+        right: 24px;
+        background: #10b981;
+        color: white;
+        padding: 14px 20px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        z-index: 9999;
+        align-items: center;
+        gap: 10px;
+    ">
+        <i class="fas fa-check-circle"></i>
+        Inicio de sesión exitoso
+    </div>
+
+    <script>
+        if (sessionStorage.getItem('loginExitoso')) {
+            sessionStorage.removeItem('loginExitoso')
+            const toast = document.getElementById('toastLogin')
+            toast.style.display = 'flex'
+            setTimeout(() => {
+                toast.style.transition = 'opacity 0.5s'
+                toast.style.opacity = '0'
+                setTimeout(() => toast.style.display = 'none', 500)
+            }, 3000)
+        }
+    </script>
 </body>
 </html>

@@ -1,11 +1,12 @@
-const token = localStorage.getItem("token") || "";  // ✅ Agregado || "" para evitar undefined
+const token = localStorage.getItem("token") || "";  // || "" para evitar undefined al leer el token
 
 if (!token) {
     window.location.href = "../pages/login.html"
-    throw new Error("No hay token");  // ✅ Detiene la ejecución
+    throw new Error("No hay token");  // detiene la ejecución del resto del script
 }
 
 // ── DECODIFICAR JWT ───────────────────────────────────────────
+/** Decodifica el payload de un JWT sin verificar firma (solo para leer datos del cliente) */
 function decodeJWT(t) {
     try {
         return JSON.parse(atob(t.split(".")[1]))
@@ -24,6 +25,7 @@ if (payload) {
 }
 
 // ── CAMBIAR SECCIÓN ───────────────────────────────────────────
+/** Muestra la sección solicitada, oculta las demás y dispara su función de carga */
 function cambiarSeccion(seccion, elemento) {
 
     document.querySelectorAll(".seccion-contenido")
@@ -44,6 +46,7 @@ function cambiarSeccion(seccion, elemento) {
         case "productos":   if (typeof cargarProductos   === "function") cargarProductos();   break
         case "pedidos":     if (typeof cargarPedidos     === "function") cargarPedidos();     break
         case "ventas":      if (typeof cargarVentas      === "function") cargarVentas();      break
+        case "alertas":     if (typeof cargarAlertas     === "function") cargarAlertas();     break
     }
 }
 
@@ -52,6 +55,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Carga inicial
     if (typeof cargarDashboard === "function") cargarDashboard()
+
+    // Verificar alertas de vencimiento al cargar la página
+    if (typeof verificarAlertasVencimiento === "function") {
+        verificarAlertasVencimiento()
+    } else if (typeof actualizarBadgeAlertas === "function") {
+        actualizarBadgeAlertas()
+    }
 
     // ── MENÚ AJUSTES ──────────────────────────────────────────
     const btnAjustes  = document.getElementById("btnAjustes")
@@ -92,66 +102,24 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = "../pages/login.html"
     })
 
-    // ── CALENDARIO ───────────────────────────────────────────
-    const meses = [
-        "Enero","Febrero","Marzo","Abril","Mayo","Junio",
-        "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"
-    ]
-
-    let mesActual  = new Date().getMonth()
-    let anioActual = new Date().getFullYear()
-
-    function renderCalendario(mes, anio) {
-
-        document.getElementById("mes-actual").textContent = meses[mes] + " " + anio
-
-        const grilla      = document.getElementById("grillaCalendario")
-        const encabezados = Array.from(grilla.querySelectorAll(".etiqueta-dia-semana"))
-
-        grilla.innerHTML = ""
-        encabezados.forEach(e => grilla.appendChild(e))
-
-        const primerDia = new Date(anio, mes, 1).getDay()
-        const diasMes   = new Date(anio, mes + 1, 0).getDate()
-        const hoy       = new Date()
-
-        for (let i = 0; i < primerDia; i++) {
-            grilla.appendChild(document.createElement("div"))
-        }
-
-        for (let d = 1; d <= diasMes; d++) {
-            const div = document.createElement("div")
-            div.className   = "dia-calendario"
-            div.textContent = d
-            if (d === hoy.getDate() && mes === hoy.getMonth() && anio === hoy.getFullYear()) {
-                div.classList.add("dia-hoy")
-            }
-            grilla.appendChild(div)
-        }
-    }
-
-    renderCalendario(mesActual, anioActual)
-
-    document.getElementById("btnMesAnterior").addEventListener("click", () => {
-        if (--mesActual < 0) { mesActual = 11; anioActual-- }
-        renderCalendario(mesActual, anioActual)
+    // ── CALENDARIO FLATPICKR ──────────────────────────────────
+    flatpickr("#calendarioEmpleado", {
+        inline: true,
+        defaultDate: "today",
+        locale: "es"
     })
 
-    document.getElementById("btnMesSiguiente").addEventListener("click", () => {
-        if (++mesActual > 11) { mesActual = 0; anioActual++ }
-        renderCalendario(mesActual, anioActual)
-    })
+    const diasSemanaTexto = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"]
+    const mesesTexto = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"]
 
     // ── HORA EN TIEMPO REAL ───────────────────────────────────
-    const diasSemana = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"]
-
     function actualizarHora() {
-        const ahora   = new Date()
-        const h       = String(ahora.getHours()).padStart(2, "0")
-        const m       = String(ahora.getMinutes()).padStart(2, "0")
+        const ahora = new Date()
+        const h = String(ahora.getHours()).padStart(2, "0")
+        const m = String(ahora.getMinutes()).padStart(2, "0")
         document.getElementById("horaTiempoReal").textContent = h + ":" + m
         document.getElementById("fechaTiempoReal").textContent =
-            diasSemana[ahora.getDay()] + ", " + ahora.getDate() + " de " + meses[ahora.getMonth()]
+            diasSemanaTexto[ahora.getDay()] + ", " + ahora.getDate() + " de " + mesesTexto[ahora.getMonth()]
     }
 
     actualizarHora()
@@ -164,3 +132,33 @@ document.addEventListener("DOMContentLoaded", () => {
     })
 
 })
+
+// ── DARK MODE ────────────────────────────────────────────────
+/** Alterna entre tema claro y oscuro y persiste la preferencia en localStorage */
+function toggleTema() {
+    const esDark = document.documentElement.getAttribute('data-tema') === 'oscuro'
+    const nuevo = esDark ? 'claro' : 'oscuro'
+    document.documentElement.setAttribute('data-tema', nuevo)
+    localStorage.setItem('tema', nuevo)
+    actualizarBtnTema()
+}
+
+function actualizarBtnTema() {
+    const btn = document.getElementById('btnToggleTema')
+    if (!btn) return
+    const esDark = document.documentElement.getAttribute('data-tema') === 'oscuro'
+    btn.innerHTML = `<i class="${esDark ? 'fas fa-sun' : 'fas fa-moon'}" style="margin-right:8px;font-size:14px;"></i> ${esDark ? 'Modo claro' : 'Modo oscuro'}`
+}
+
+;(function() {
+    const saved = localStorage.getItem('tema') || 'claro'
+    document.documentElement.setAttribute('data-tema', saved)
+})()
+
+/** Abre o cierra el sidebar lateral en vistas móviles */
+function toggleSidebar() {
+    document.querySelector('.barra-lateral').classList.toggle('abierta')
+    document.getElementById('overlaySidebar').classList.toggle('activo')
+}
+
+document.addEventListener('DOMContentLoaded', actualizarBtnTema)

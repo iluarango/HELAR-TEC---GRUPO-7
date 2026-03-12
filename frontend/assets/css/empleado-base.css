@@ -1,0 +1,78 @@
+/* Estilos base del panel de empleado: reset, tipografía, contenedor principal y utilidades globales */
+/* ── RESET & BASE ───────────────────────────────────────────── */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--bg-page);
+    color: var(--color-text);
+    overflow-x: hidden;
+}
+
+/* CONTENEDOR PRINCIPAL */
+.contenedor-principal {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+}
+
+/* OCULTAR SECCIONES */
+.seccion-contenido {
+    display: none;
+}
+
+.seccion-contenido.activa {
+    display: block;
+}
+
+/* ── INPUT CON ERROR ──────────────────────────────────────── */
+.input-invalido {
+    border-color: #d9534f !important;
+    box-shadow: 0 0 0 3px rgba(217, 83, 79, 0.15) !important;
+}
+
+/* ── FLATPICKR TEMA ─────────────────────────────────────────── */
+.flatpickr-calendar { box-shadow: none !important; border: none !important; background: transparent !important; }
+.flatpickr-day.selected, .flatpickr-day.selected:hover { background: var(--color-accent) !important; border-color: var(--color-accent) !important; }
+.flatpickr-day:hover { background: #f5c6c6 !important; }
+.flatpickr-months .flatpickr-month { color: var(--color-accent) !important; fill: var(--color-accent) !important; }
+.flatpickr-current-month .flatpickr-monthDropdown-months { color: var(--color-accent); }
+.flatpickr-weekday { color: #9ca3af !important; }
+
+/* ── FLATPICKR DROPDOWN MESES ───────────────────────────────── */
+.flatpickr-current-month .flatpickr-monthDropdown-months {
+    background: var(--bg-card) !important;
+    border: 1px solid #e5c6c6 !important;
+    border-radius: 8px !important;
+    padding: 4px 8px !important;
+    color: var(--color-accent) !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    appearance: none !important;
+}
+.flatpickr-current-month .flatpickr-monthDropdown-months:hover {
+    background: #fceaea !important;
+}
+.flatpickr-current-month input.cur-year {
+    color: var(--color-accent) !important;
+    font-weight: 600 !important;
+}
+.flatpickr-prev-month svg, .flatpickr-next-month svg {
+    fill: var(--color-accent) !important;
+}
+
+.flatpickr-calendar.inline {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-shadow: none !important;
+}
+
+/* Bloquea el scroll del fondo cuando un modal está abierto */
+body:has(.modal[style*="flex"]) {
+    overflow: hidden;
+}

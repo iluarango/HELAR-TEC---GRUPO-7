@@ -1,6 +1,7 @@
 const pool = require('../config/database.config')
 const asyncHandler = require('../utils/asyncHandler')
 
+/** Devuelve todas las ventas con flag tiene_factura para saber si ya fueron facturadas */
 exports.getVentas = asyncHandler(async (req, res) => {
     const result = await pool.query(`
         SELECT
@@ -20,6 +21,7 @@ exports.getVentas = asyncHandler(async (req, res) => {
     res.json({ success: true, ventas: result.rows })
 })
 
+/** Devuelve una venta por id con sus líneas de detalle del pedido asociado */
 exports.getVentaById = asyncHandler(async (req, res) => {
     const { id } = req.params
 

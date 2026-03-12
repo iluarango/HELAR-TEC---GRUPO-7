@@ -2,7 +2,11 @@
 
 function mostrarMensaje(elementId, texto, tipo) {
     const el = document.getElementById(elementId)
-    el.textContent = texto
+    if (!el) return
+    const icono = tipo === 'success'
+        ? '<i class="fas fa-check-circle" style="margin-right:6px;"></i>'
+        : '<i class="fas fa-exclamation-triangle" style="margin-right:6px;"></i>'
+    el.innerHTML = icono + texto
     el.style.display = 'block'
     el.style.padding = '10px 14px'
     el.style.borderRadius = '10px'
@@ -14,7 +18,8 @@ function mostrarMensaje(elementId, texto, tipo) {
 
 function ocultarMensaje(elementId) {
     const el = document.getElementById(elementId)
-    el.textContent = ''
+    if (!el) return
+    el.innerHTML = ''
     el.style.display = 'none'
 }
 
@@ -27,6 +32,39 @@ function mensajeFila(texto, colspan) {
         </tr>
     `
 }
+
+// ── VALIDACIÓN DE FORMULARIOS ──────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('form[novalidate]').forEach(form => {
+        form.addEventListener('submit', (e) => {
+            let hayErrores = false
+
+            form.querySelectorAll('[required]').forEach(input => {
+                if (!input.value || !input.value.trim()) {
+                    hayErrores = true
+                    input.classList.add('input-invalido')
+                    const quitarError = () => {
+                        input.classList.remove('input-invalido')
+                        input.removeEventListener('input', quitarError)
+                        input.removeEventListener('change', quitarError)
+                    }
+                    input.addEventListener('input', quitarError)
+                    input.addEventListener('change', quitarError)
+                }
+            })
+
+            if (hayErrores) {
+                e.preventDefault()
+                e.stopImmediatePropagation()
+                const msgEl = form.querySelector('[id*="mensaje"]')
+                    || form.closest('.modal-contenido')?.querySelector('[id*="mensaje"]')
+                if (msgEl) {
+                    mostrarMensaje(msgEl.id, 'Completa todos los campos obligatorios', 'error')
+                }
+            }
+        }, true)
+    })
+})
 
 // ── DROPDOWN ESTADO ────────────────────────────────────────
 
@@ -41,8 +79,8 @@ function toggleDropdownEstado(event, id) {
     const badge = event.currentTarget
     const rect = badge.getBoundingClientRect()
 
-    dropdown.style.top = `${rect.bottom + window.scrollY + 6}px`
-    dropdown.style.left = `${rect.left + window.scrollX}px`
+    dropdown.style.top = `${rect.top}px`
+    dropdown.style.left = `${rect.right + 8}px`
 
     dropdown.classList.toggle('abierto')
 }

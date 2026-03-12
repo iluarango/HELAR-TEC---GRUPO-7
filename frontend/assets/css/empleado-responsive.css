@@ -1,0 +1,205 @@
+/* Estilos responsivos del panel de empleado para distintos tamaños de pantalla y menú hamburguesa */
+/* ── HAMBURGER BUTTON ───────────────────────────────────────── */
+.btn-hamburguesa {
+    display: none;
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    z-index: 300;
+    background: var(--color-accent);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    width: 42px;
+    height: 42px;
+    font-size: 18px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: background 0.2s;
+}
+.btn-hamburguesa:hover { background: var(--color-accent2); }
+
+.overlay-sidebar {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 149;
+}
+.overlay-sidebar.activo { display: block; }
+
+/* ─ 1600px: pantalla grande ─────────────────────────────── */
+@media (max-width: 1600px) {
+    .grilla-estadisticas {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .contenido-principal {
+        margin-right: 380px;
+        width: calc(100% - 660px);
+    }
+}
+
+/* ─ 1400px: PC mediano – ocultar calendario ─────────────── */
+@media (max-width: 1400px) {
+    .seccion-calendario {
+        display: none;
+    }
+    .contenido-principal {
+        margin-right: 0;
+        width: calc(100% - 280px);
+    }
+}
+
+/* ─ 1200px: PC pequeño ───────────────────────────────────── */
+@media (max-width: 1200px) {
+    .grilla-estadisticas {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ─ 1024px: tablet landscape ────────────────────────────── */
+@media (max-width: 1024px) {
+    .barra-lateral {
+        width: 240px;
+    }
+    .contenido-principal {
+        margin-left: 240px;
+        width: calc(100% - 240px);
+        padding: 24px;
+    }
+    .grilla-estadisticas {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .seccion-barra {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    .modal-contenido {
+        max-width: 95%;
+        padding: 24px;
+    }
+    .tabla-inventario,
+    .tabla-pedidos,
+    .tabla-ventas {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .seccion-pedidos,
+    .seccion-ventas {
+        overflow-x: auto;
+    }
+}
+
+/* ─ 768px: tablet portrait / mobile ────────────────────── */
+@media (max-width: 768px) {
+    .btn-hamburguesa { display: flex; }
+
+    .barra-lateral {
+        transform: translateX(-110%);
+        transition: transform 0.3s ease;
+        z-index: 150;
+        width: 270px !important;
+        box-shadow: 4px 0 20px rgba(0,0,0,0.2);
+    }
+    .barra-lateral.abierta { transform: translateX(0); }
+
+    .contenido-principal,
+    .contenido-principal-empleado {
+        margin-left: 0 !important;
+        padding: 70px 14px 20px !important;
+        width: 100% !important;
+    }
+
+    .panel-derecho,
+    .seccion-calendario { display: none !important; }
+
+    .tabla-contenedor,
+    #panelInsumos, #panelMovimientos,
+    #panelProductos, #panelCategorias,
+    #panelProveedores, #panelCompras,
+    #panelPedidos, #panelVentas,
+    #panelFacturas {
+        width: 100% !important;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table { min-width: 520px; font-size: 13px; }
+    th, td { padding: 8px 8px !important; white-space: nowrap; }
+
+    .modal { align-items: flex-end !important; }
+    .panel-modal,
+    .contenido-modal {
+        max-width: 100% !important;
+        width: 100% !important;
+        border-radius: 20px 20px 0 0 !important;
+        max-height: 92vh;
+    }
+
+    .barra-busqueda { width: 100% !important; }
+    .encabezado-seccion,
+    .encabezado-panel { flex-direction: column; gap: 10px; align-items: flex-start; }
+    .boton-nuevo,
+    .boton-accion-principal { width: 100%; justify-content: center; }
+
+    .grid-botones-sabor { flex-wrap: wrap; }
+    .btn-sabor { font-size: 12px; padding: 5px 10px; }
+
+    /* Legacy overrides from original */
+    .grilla-estadisticas {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .seccion-barra {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .boton-registrar {
+        width: 100%;
+        justify-content: center;
+    }
+    .pestanas {
+        flex-wrap: wrap;
+    }
+    .modal-contenido {
+        max-width: 98%;
+        border-radius: 12px;
+        padding: 20px;
+    }
+    .encabezado-seccion {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+}
+
+/* ─ 600px: móvil ────────────────────────────────────────── */
+@media (max-width: 600px) {
+    body {
+        overflow-x: hidden;
+    }
+    .grilla-estadisticas {
+        grid-template-columns: 1fr;
+    }
+    .encabezado-seccion {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+    .modal-contenido {
+        max-width: 100%;
+        width: 100%;
+        border-radius: 10px;
+        padding: 16px;
+    }
+}
+
+/* ─ 480px: móvil pequeño ─────────────────────────────────── */
+@media (max-width: 480px) {
+    .contenido-principal,
+    .contenido-principal-empleado { padding: 65px 8px 14px !important; }
+    table { font-size: 12px; }
+}

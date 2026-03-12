@@ -25,7 +25,7 @@ exports.getPedidos = asyncHandler(async (req, res) => {
                 dp.cantidad,
                 dp.precio,
                 dp.subtotal,
-                dp.sabores,
+                dp.sabores, dp.salsas,
                 pr.idproducto,
                 pr.nombreproducto,
                 COALESCE(
@@ -84,7 +84,7 @@ exports.register = asyncHandler(async (req, res) => {
         const idPedido = pedidoResult.rows[0].idpedido
 
         for (const detalle of detalles) {
-            const { idProducto, cantidad, precio, adicionales, sabores } = detalle
+            const { idProducto, cantidad, precio, adicionales, sabores, salsas } = detalle
             // adicionales = [{ idAdicional, cantidad }]
 
             // Calcular costo de adicionales consultando precios reales
@@ -103,12 +103,13 @@ exports.register = asyncHandler(async (req, res) => {
 
             const subtotal = (precio * cantidad) + costoAdicionales
             const saboresTexto = (sabores && sabores.length) ? sabores.join(', ') : null
+            const salsasTexto = (salsas && salsas.length) ? salsas.join(', ') : null
 
             const detalleResult = await client.query(
-                `INSERT INTO detalle_pedido (idpedido, idproducto, cantidad, precio, subtotal, sabores)
-                 VALUES ($1, $2, $3, $4, $5, $6)
+                `INSERT INTO detalle_pedido (idpedido, idproducto, cantidad, precio, subtotal, sabores, salsas)
+                 VALUES ($1, $2, $3, $4, $5, $6, $7)
                  RETURNING iddetallepedido`,
-                [idPedido, idProducto, cantidad, precio, subtotal, saboresTexto]
+                [idPedido, idProducto, cantidad, precio, subtotal, saboresTexto, salsasTexto]
             )
 
             const idDetalle = detalleResult.rows[0].iddetallepedido
@@ -188,4 +189,25 @@ exports.marcarEntregado = asyncHandler(async (req, res) => {
     } finally {
         client.release()
     }
+})
+
+// Cancelar pedido
+exports.cancelarPedido = asyncHandler(async (req, res) => {
+    const { id } = req.params
+
+    const result = await pool.query(
+        'SELECT estadopedido FROM pedidos WHERE idpedido = $1', [id]
+    )
+
+    if (result.rows.length === 0)
+        return res.status(404).json({ success: false, message: 'Pedido no encontrado' })
+
+    if (result.rows[0].estadopedido === 'entregado')
+        return res.status(400).json({ success: false, message: 'No se puede cancelar un pedido ya entregado' })
+
+    await pool.query(
+        `UPDATE pedidos SET estadopedido = 'cancelado' WHERE idpedido = $1`, [id]
+    )
+
+    res.json({ success: true, message: 'Pedido cancelado' })
 })

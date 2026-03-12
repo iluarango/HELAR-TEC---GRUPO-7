@@ -2,14 +2,22 @@
 let listaProductos = []
 
 // ── PESTAÑAS ───────────────────────────────────────────────
+/** Cambia la pestaña activa en la sección de productos y dispara la carga correspondiente */
 function cambiarPestana(pestana) {
-    document.querySelectorAll('.pestana').forEach(p => p.classList.remove('activa'))
-    document.getElementById(`pestana${pestana.charAt(0).toUpperCase() + pestana.slice(1)}`).classList.add('activa')
+    document.getElementById('pestanaProductos').classList.toggle('activa', pestana === 'productos')
+    document.getElementById('pestanaCategorias').classList.toggle('activa', pestana === 'categorias')
+    document.getElementById('pestanaSabores').classList.toggle('activa', pestana === 'sabores')
+    document.getElementById('pestanaAdicionales').classList.toggle('activa', pestana === 'adicionales')
 
     document.getElementById('panelProductos').style.display = pestana === 'productos' ? 'block' : 'none'
     document.getElementById('panelCategorias').style.display = pestana === 'categorias' ? 'block' : 'none'
     document.getElementById('panelSabores').style.display = pestana === 'sabores' ? 'block' : 'none'
     document.getElementById('panelAdicionales').style.display = pestana === 'adicionales' ? 'block' : 'none'
+
+    document.getElementById('btnAbrirModalProducto').style.display = pestana === 'productos' ? '' : 'none'
+    document.getElementById('btnAbrirModalCategoria').style.display = pestana === 'categorias' ? '' : 'none'
+    document.getElementById('btnAbrirModalSabor').style.display = pestana === 'sabores' ? '' : 'none'
+    document.getElementById('btnAbrirModalAdicional').style.display = pestana === 'adicionales' ? '' : 'none'
 
     if (pestana === 'categorias') cargarCategorias()
     if (pestana === 'sabores') cargarSabores()
@@ -55,7 +63,7 @@ function renderTablaProductos(productos) {
                 <div class="estado-dropdown-wrapper">
                     <span class="badge-clickeable ${p.estado === 'activo' ? 'estado-disponible' : 'estado-bajo'}"
                         onclick="toggleDropdownEstadoProducto(${p.idproducto}, event)">
-                        ${p.estado}
+                        ${p.estado} <i class="fas fa-chevron-down" style="font-size:9px;"></i>
                     </span>
                     <div class="estado-dropdown" id="dropdown-producto-${p.idproducto}">
                         <div class="estado-opcion" onclick="cambiarEstadoProducto(${p.idproducto}, 'activo')">activo</div>
@@ -89,9 +97,10 @@ function toggleDropdownEstadoProducto(id, event) {
     event.stopPropagation()
     document.querySelectorAll('.estado-dropdown.abierto').forEach(d => d.classList.remove('abierto'))
     const dropdown = document.getElementById(`dropdown-producto-${id}`)
-    const rect = event.target.getBoundingClientRect()
-    dropdown.style.top = `${rect.bottom + window.scrollY + 4}px`
-    dropdown.style.left = `${rect.left + window.scrollX}px`
+    const badge = event.currentTarget || event.target.closest('.badge-clickeable') || event.target
+    const rect = badge.getBoundingClientRect()
+    dropdown.style.top = `${rect.top}px`
+    dropdown.style.left = `${rect.right + 8}px`
     dropdown.classList.toggle('abierto')
 }
 
@@ -147,6 +156,7 @@ async function abrirModalProducto(id = null) {
     modalProducto.style.display = 'flex'
 }
 
+/** Rellena el select de categorías del modal de producto con las categorías activas */
 async function cargarCategoriasSelector() {
     try {
         const data = await apiFetch('/categorias')

@@ -1,3 +1,4 @@
+/** Obtiene los KPIs del dashboard y los inyecta en las tarjetas del panel general */
 async function cargarDashboard() {
     try {
         const data = await apiFetch('/dashboard')
@@ -6,6 +7,7 @@ async function cargarDashboard() {
         const d = data.dashboard
         document.getElementById('card-pedidos-hoy').textContent      = d.pedidosHoy
         document.getElementById('card-pendientes').textContent        = d.pedidosPendientes
+        document.getElementById('card-ventas-hoy').textContent       = `$${d.ventasHoy.toLocaleString('es-CO')}`
         document.getElementById('card-ventas-mes').textContent        = `$${d.ventasMes.toLocaleString('es-CO')}`
         document.getElementById('card-proveedores').textContent       = d.totalProveedores
         document.getElementById('card-insumos').textContent           = d.totalInsumos

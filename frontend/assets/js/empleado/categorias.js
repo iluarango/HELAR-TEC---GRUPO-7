@@ -38,7 +38,7 @@ function renderTablaCategorias(categorias) {
                 <div class="estado-dropdown-wrapper">
                     <span class="badge-clickeable ${c.estado === 'activo' ? 'estado-disponible' : 'estado-bajo'}"
                         onclick="toggleDropdownEstadoCategoria(${c.idcategoria}, event)">
-                        ${c.estado}
+                        ${c.estado} <i class="fas fa-chevron-down" style="font-size:9px;"></i>
                     </span>
                     <div class="estado-dropdown" id="dropdown-categoria-${c.idcategoria}">
                         <div class="estado-opcion" onclick="cambiarEstadoCategoria(${c.idcategoria}, 'activo')">activo</div>
@@ -62,9 +62,10 @@ function toggleDropdownEstadoCategoria(id, event) {
     event.stopPropagation()
     document.querySelectorAll('.estado-dropdown.abierto').forEach(d => d.classList.remove('abierto'))
     const dropdown = document.getElementById(`dropdown-categoria-${id}`)
-    const rect = event.target.getBoundingClientRect()
-    dropdown.style.top = `${rect.bottom + window.scrollY + 4}px`
-    dropdown.style.left = `${rect.left + window.scrollX}px`
+    const badge = event.currentTarget || event.target.closest('.badge-clickeable') || event.target
+    const rect = badge.getBoundingClientRect()
+    dropdown.style.top = `${rect.top}px`
+    dropdown.style.left = `${rect.right + 8}px`
     dropdown.classList.toggle('abierto')
 }
 
@@ -178,7 +179,7 @@ function renderTablaSabores(sabores) {
                 <div class="estado-dropdown-wrapper">
                     <span class="badge-clickeable ${s.estado === 'activo' ? 'estado-disponible' : 'estado-bajo'}"
                         onclick="toggleDropdownEstadoSabor(${s.idsabor}, event)">
-                        ${s.estado}
+                        ${s.estado} <i class="fas fa-chevron-down" style="font-size:9px;"></i>
                     </span>
                     <div class="estado-dropdown" id="dropdown-sabor-${s.idsabor}">
                         <div class="estado-opcion" onclick="cambiarEstadoSabor(${s.idsabor}, 'activo')">activo</div>
@@ -202,9 +203,10 @@ function toggleDropdownEstadoSabor(id, event) {
     event.stopPropagation()
     document.querySelectorAll('.estado-dropdown.abierto').forEach(d => d.classList.remove('abierto'))
     const dropdown = document.getElementById(`dropdown-sabor-${id}`)
-    const rect = event.target.getBoundingClientRect()
-    dropdown.style.top = `${rect.bottom + window.scrollY + 4}px`
-    dropdown.style.left = `${rect.left + window.scrollX}px`
+    const badge = event.currentTarget || event.target.closest('.badge-clickeable') || event.target
+    const rect = badge.getBoundingClientRect()
+    dropdown.style.top = `${rect.top}px`
+    dropdown.style.left = `${rect.right + 8}px`
     dropdown.classList.toggle('abierto')
 }
 
@@ -317,7 +319,7 @@ function renderTablaAdicionales(adicionales) {
                 <div class="estado-dropdown-wrapper">
                     <span class="badge-clickeable ${a.estado === 'activo' ? 'estado-disponible' : 'estado-bajo'}"
                         onclick="toggleDropdownEstadoAdicional(${a.idadicional}, event)">
-                        ${a.estado}
+                        ${a.estado} <i class="fas fa-chevron-down" style="font-size:9px;"></i>
                     </span>
                     <div class="estado-dropdown" id="dropdown-adicional-${a.idadicional}">
                         <div class="estado-opcion" onclick="cambiarEstadoAdicional(${a.idadicional}, 'activo')">activo</div>
@@ -340,9 +342,10 @@ function toggleDropdownEstadoAdicional(id, event) {
     event.stopPropagation()
     document.querySelectorAll('.estado-dropdown.abierto').forEach(d => d.classList.remove('abierto'))
     const dropdown = document.getElementById(`dropdown-adicional-${id}`)
-    const rect = event.target.getBoundingClientRect()
-    dropdown.style.top = `${rect.bottom + window.scrollY + 4}px`
-    dropdown.style.left = `${rect.left + window.scrollX}px`
+    const badge = event.currentTarget || event.target.closest('.badge-clickeable') || event.target
+    const rect = badge.getBoundingClientRect()
+    dropdown.style.top = `${rect.top}px`
+    dropdown.style.left = `${rect.right + 8}px`
     dropdown.classList.toggle('abierto')
 }
 
@@ -423,6 +426,7 @@ document.getElementById('formAdicional').addEventListener('submit', async (e) =>
 })
 
 // ── HELPER LOCAL ────────────────────────────────────────────
+/** Cierra el modal dado, resetea su formulario y oculta el mensaje de feedback */
 function cerrarModal(modal, formId, mensajeId) {
     modal.style.display = 'none'
     document.getElementById(formId).reset()

@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(\"C:/Users/julia/OneDrive/Documentos/helar_tec2/frontend/assets/css/admin.css\":*)"
+    ]
+  }
+}

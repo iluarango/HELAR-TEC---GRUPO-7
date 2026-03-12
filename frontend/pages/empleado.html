@@ -4,19 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Empleado | HELAR-TEC</title>
-    <link rel="stylesheet" href="../assets/css/empleado.css">
+    <link rel="stylesheet" href="../assets/css/empleado.css?v=13">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+<button class="btn-hamburguesa" id="btnHamburguesa" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+</button>
+<div class="overlay-sidebar" id="overlaySidebar" onclick="toggleSidebar()"></div>
     <div class="contenedor-principal">
 
         <!-- BARRA LATERAL -->
         <aside class="barra-lateral">
-            <div class="logo-empresa">
-                <img src="../assets/img/logo-helar.jpeg" style="width: 120px;">
-            </div>
-
-            <h2 class="titulo-panel">Panel de Empleado</h2>
 
             <ul class="lista-menu">
                 <li class="opcion-menu activa" onclick="cambiarSeccion('general', this)">
@@ -61,6 +63,13 @@
                     </svg>
                     Ventas
                 </li>
+                <li class="opcion-menu" onclick="cambiarSeccion('alertas', this)" style="position:relative;">
+                    <svg class="icono-menu" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                    </svg>
+                    Alertas
+                    <span id="badge-alertas" style="display:none; position:absolute; top:6px; right:10px; background:#dc2626; color:white; font-size:11px; font-weight:700; min-width:18px; height:18px; border-radius:9px; align-items:center; justify-content:center; padding:0 4px;"></span>
+                </li>
             </ul>
 
             <!-- AJUSTES -->
@@ -75,6 +84,15 @@
                     </li>
                 </ul>
                 <ul class="menu-ajustes" id="menuAjustes">
+                    <li class="opcion-submenu" onclick="alert('Manual de usuario próximamente')">
+                        <svg class="icono-submenu" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        </svg>
+                        Manual de usuario
+                    </li>
+                    <li id="btnToggleTema" onclick="toggleTema()" style="display:flex;align-items:center;padding:12px 15px;cursor:pointer;border-radius:10px;color:var(--color-accent);font-size:14px;list-style:none;" onmouseover="this.style.background='var(--bg-header)'" onmouseout="this.style.background='transparent'">
+                        <i class="fas fa-moon" style="margin-right:8px;font-size:14px;"></i> Modo oscuro
+                    </li>
                     <li class="opcion-submenu cerrar-sesion" id="abrirModalLogout">
                         <svg class="icono-submenu" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
@@ -100,48 +118,57 @@
             <!-- SECCIÓN GENERAL -->
             <div id="contenido-general" class="seccion-contenido activa">
                 <div class="encabezado-seccion">
-                    <h2>Resumen General</h2>
+                    <div>
+                        <p style="color:#b89a8a; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:1.2px; margin-bottom:4px;">Panel de Empleado</p>
+                        <h2>Resumen General</h2>
+                    </div>
                 </div>
 
-                <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:20px; margin-top:10px;">
+                <div class="grid-resumen" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:20px; margin-top:10px;">
 
-                    <div style="background:#fff; border-radius:14px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,.07); text-align:center;">
+                    <div style="background:#fff; border-radius:14px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,.07); text-align:center; border:1px solid #e8d5c4;">
                         <i class="fas fa-shopping-cart" style="font-size:28px; color:#a47c7c; margin-bottom:10px;"></i>
                         <div id="card-pedidos-hoy" style="font-size:36px; font-weight:700; color:#1f2937;">-</div>
                         <div style="color:#6b7280; font-size:13px; margin-top:4px;">Pedidos hoy</div>
                     </div>
 
-                    <div style="background:#fff; border-radius:14px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,.07); text-align:center;">
+                    <div style="background:#fff; border-radius:14px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,.07); text-align:center; border:1px solid #e8d5c4;">
                         <i class="fas fa-clock" style="font-size:28px; color:#f59e0b; margin-bottom:10px;"></i>
                         <div id="card-pendientes" style="font-size:36px; font-weight:700; color:#1f2937;">-</div>
                         <div style="color:#6b7280; font-size:13px; margin-top:4px;">Pedidos pendientes</div>
                     </div>
 
-                    <div style="background:#fff; border-radius:14px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,.07); text-align:center;">
+                    <div style="background:#fff; border-radius:14px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,.07); text-align:center; border:1px solid #e8d5c4;">
                         <i class="fas fa-dollar-sign" style="font-size:28px; color:#10b981; margin-bottom:10px;"></i>
+                        <div id="card-ventas-hoy" style="font-size:28px; font-weight:700; color:#1f2937;">-</div>
+                        <div style="color:#6b7280; font-size:13px; margin-top:4px;">Ventas del día</div>
+                    </div>
+
+                    <div style="background:#fff; border-radius:14px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,.07); text-align:center; border:1px solid #e8d5c4;">
+                        <i class="fas fa-calendar-alt" style="font-size:28px; color:#059669; margin-bottom:10px;"></i>
                         <div id="card-ventas-mes" style="font-size:28px; font-weight:700; color:#1f2937;">-</div>
                         <div style="color:#6b7280; font-size:13px; margin-top:4px;">Ventas del mes</div>
                     </div>
 
-                    <div style="background:#fff; border-radius:14px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,.07); text-align:center;">
+                    <div style="background:#fff; border-radius:14px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,.07); text-align:center; border:1px solid #e8d5c4;">
                         <i class="fas fa-boxes" style="font-size:28px; color:#6366f1; margin-bottom:10px;"></i>
                         <div id="card-insumos" style="font-size:36px; font-weight:700; color:#1f2937;">-</div>
                         <div style="color:#6b7280; font-size:13px; margin-top:4px;">Insumos en inventario</div>
                     </div>
 
-                    <div style="background:#fff; border-radius:14px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,.07); text-align:center;">
+                    <div style="background:#fff; border-radius:14px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,.07); text-align:center; border:1px solid #e8d5c4;">
                         <i class="fas fa-exclamation-triangle" style="font-size:28px; color:#ef4444; margin-bottom:10px;"></i>
                         <div id="card-stock-bajo" style="font-size:36px; font-weight:700; color:#1f2937;">-</div>
                         <div style="color:#6b7280; font-size:13px; margin-top:4px;">Insumos stock bajo</div>
                     </div>
 
-                    <div style="background:#fff; border-radius:14px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,.07); text-align:center;">
+                    <div style="background:#fff; border-radius:14px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,.07); text-align:center; border:1px solid #e8d5c4;">
                         <i class="fas fa-ice-cream" style="font-size:28px; color:#ec4899; margin-bottom:10px;"></i>
                         <div id="card-productos" style="font-size:36px; font-weight:700; color:#1f2937;">-</div>
                         <div style="color:#6b7280; font-size:13px; margin-top:4px;">Productos activos</div>
                     </div>
 
-                    <div style="background:#fff; border-radius:14px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,.07); text-align:center;">
+                    <div style="background:#fff; border-radius:14px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,.07); text-align:center; border:1px solid #e8d5c4;">
                         <i class="fas fa-truck" style="font-size:28px; color:#a47c7c; margin-bottom:10px;"></i>
                         <div id="card-proveedores" style="font-size:36px; font-weight:700; color:#1f2937;">-</div>
                         <div style="color:#6b7280; font-size:13px; margin-top:4px;">Proveedores activos</div>
@@ -152,40 +179,76 @@
 
             <!-- SECCIÓN INVENTARIO -->
             <div id="contenido-inventario" class="seccion-contenido">
-                <div class="encabezado-seccion">
-                    <h2>Inventario de Insumos</h2>
-                    <button class="boton-registrar" id="btnAbrirModalInsumo">
-                        <span>+</span> Registrar insumo
-                    </button>
+                <div class="seccion-cabecera">
+                    <h2>Inventario</h2>
+                    <div class="seccion-barra">
+                        <div class="pestanas">
+                            <button type="button" class="pestana activa" id="pestanaInsumos" onclick="cambiarPestanaInventario('insumos')"><i class="fas fa-boxes pestana-icono"></i>Insumos</button>
+                            <button type="button" class="pestana" id="pestanaMovimientos" onclick="cambiarPestanaInventario('movimientos')"><i class="fas fa-exchange-alt pestana-icono"></i>Movimientos</button>
+                        </div>
+                        <button class="boton-registrar" id="btnAbrirModalInsumo">
+                            <span>+</span> Registrar insumo
+                        </button>
+                        <button class="boton-registrar" id="btnAbrirModalMovimiento" style="display:none;">
+                            <span>+</span> Registrar salida
+                        </button>
+                    </div>
                 </div>
-                <div class="barra-busqueda">
-                    <svg width="20" height="20" fill="#999" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
-                    </svg>
-                    <input type="text" id="inputBusquedaInsumo" placeholder="Buscar por nombre o categoría...">
+
+                <!-- PANEL INSUMOS -->
+                <div id="panelInsumos">
+                    <div class="barra-busqueda">
+                        <svg width="20" height="20" fill="#999" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
+                        </svg>
+                        <input type="text" id="inputBusquedaInsumo" placeholder="Buscar por nombre o categoría...">
+                    </div>
+                    <div class="seccion-inventario">
+                        <table class="tabla-inventario">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Categoría</th>
+                                    <th>Stock</th>
+                                    <th>Stock mínimo</th>
+                                    <th>Unidad</th>
+                                    <th>Caducidad</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cuerpoTablaInsumos">
+                                <tr>
+                                    <td colspan="8" style="text-align: center; padding: 40px; color: #999;">
+                                        <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: #a47c7c;"></i>
+                                        <p style="margin-top: 10px;">Cargando insumos...</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="seccion-inventario">
+
+                <!-- PANEL MOVIMIENTOS -->
+                <div id="panelMovimientos" style="display:none;">
+                    <div class="barra-busqueda">
+                        <svg width="20" height="20" fill="#999" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
+                        </svg>
+                        <input type="text" id="inputBusquedaMovimiento" placeholder="Buscar por insumo o motivo...">
+                    </div>
                     <table class="tabla-inventario">
                         <thead>
                             <tr>
-                                <th>Nombre</th>
-                                <th>Categoría</th>
-                                <th>Stock</th>
-                                <th>Stock mínimo</th>
-                                <th>Unidad</th>
-                                <th>Caducidad</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
+                                <th>#</th>
+                                <th>Insumo</th>
+                                <th>Cantidad descontada</th>
+                                <th>Fecha</th>
+                                <th>Motivo</th>
+                                <th>Empleado</th>
                             </tr>
                         </thead>
-                        <tbody id="cuerpoTablaInsumos">
-                            <tr>
-                                <td colspan="8" style="text-align: center; padding: 40px; color: #999;">
-                                    <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: #a47c7c;"></i>
-                                    <p style="margin-top: 10px;">Cargando insumos...</p>
-                                </td>
-                            </tr>
-                        </tbody>
+                        <tbody id="cuerpoTablaMovimientos"></tbody>
                     </table>
                 </div>
             </div>
@@ -249,21 +312,32 @@
 
             <!-- SECCIÓN PRODUCTOS -->
             <div id="contenido-productos" class="seccion-contenido">
-                <div class="pestanas">
-                    <button class="pestana activa" id="pestanaProductos" onclick="cambiarPestana('productos')">Productos</button>
-                    <button class="pestana" id="pestanaCategorias" onclick="cambiarPestana('categorias')">Categorías</button>
-                    <button class="pestana" id="pestanaSabores" onclick="cambiarPestana('sabores')">Sabores</button>
-                    <button class="pestana" id="pestanaAdicionales" onclick="cambiarPestana('adicionales')">Adicionales</button>
+                <div class="seccion-cabecera">
+                    <h2>Productos</h2>
+                    <div class="seccion-barra">
+                        <div class="pestanas">
+                            <button type="button" class="pestana activa" id="pestanaProductos" onclick="cambiarPestana('productos')"><i class="fas fa-ice-cream pestana-icono"></i>Productos</button>
+                            <button type="button" class="pestana" id="pestanaCategorias" onclick="cambiarPestana('categorias')"><i class="fas fa-tags pestana-icono"></i>Categorías</button>
+                            <button type="button" class="pestana" id="pestanaSabores" onclick="cambiarPestana('sabores')"><i class="fas fa-palette pestana-icono"></i>Sabores</button>
+                            <button type="button" class="pestana" id="pestanaAdicionales" onclick="cambiarPestana('adicionales')"><i class="fas fa-plus pestana-icono"></i>Adicionales</button>
+                        </div>
+                        <button class="boton-registrar" id="btnAbrirModalProducto">
+                            <span>+</span> Registrar producto
+                        </button>
+                        <button class="boton-registrar" id="btnAbrirModalCategoria" style="display:none;">
+                            <span>+</span> Registrar categoría
+                        </button>
+                        <button class="boton-registrar" id="btnAbrirModalSabor" style="display:none;">
+                            <span>+</span> Registrar sabor
+                        </button>
+                        <button class="boton-registrar" id="btnAbrirModalAdicional" style="display:none;">
+                            <span>+</span> Registrar adicional
+                        </button>
+                    </div>
                 </div>
 
                 <!-- PANEL PRODUCTOS -->
                 <div id="panelProductos">
-                    <div class="encabezado-seccion">
-                        <h2>Productos</h2>
-                        <button class="boton-registrar" id="btnAbrirModalProducto">
-                            <span>+</span> Registrar producto
-                        </button>
-                    </div>
                     <div class="barra-busqueda">
                         <svg width="20" height="20" fill="#999" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
@@ -287,12 +361,6 @@
 
                 <!-- PANEL CATEGORÍAS -->
                 <div id="panelCategorias" style="display:none;">
-                    <div class="encabezado-seccion">
-                        <h2>Categorías</h2>
-                        <button class="boton-registrar" id="btnAbrirModalCategoria">
-                            <span>+</span> Registrar categoría
-                        </button>
-                    </div>
                     <table class="tabla-inventario">
                         <thead>
                             <tr>
@@ -307,12 +375,6 @@
 
                 <!-- PANEL SABORES -->
                 <div id="panelSabores" style="display:none;">
-                    <div class="encabezado-seccion">
-                        <h2>Sabores</h2>
-                        <button class="boton-registrar" id="btnAbrirModalSabor">
-                            <span>+</span> Registrar sabor
-                        </button>
-                    </div>
                     <table class="tabla-inventario">
                         <thead>
                             <tr>
@@ -327,12 +389,6 @@
 
                 <!-- PANEL ADICIONALES -->
                 <div id="panelAdicionales" style="display:none;">
-                    <div class="encabezado-seccion">
-                        <h2>Adicionales</h2>
-                        <button class="boton-registrar" id="btnAbrirModalAdicional">
-                            <span>+</span> Registrar adicional
-                        </button>
-                    </div>
                     <table class="tabla-inventario">
                         <thead>
                             <tr>
@@ -378,51 +434,79 @@
 
             <!-- SECCIÓN VENTAS -->
             <div id="contenido-ventas" class="seccion-contenido">
+                <div class="seccion-cabecera">
+                    <h2>Ventas</h2>
+                    <div class="pestanas">
+                        <button type="button" class="pestana activa" id="pestanaVentas" onclick="cambiarPestanaVentas('ventas')"><i class="fas fa-chart-line pestana-icono"></i>Ventas</button>
+                        <button type="button" class="pestana" id="pestanaFacturas" onclick="cambiarPestanaVentas('facturas')"><i class="fas fa-file-invoice pestana-icono"></i>Facturas</button>
+                    </div>
+                </div>
+
+                <!-- PANEL VENTAS -->
+                <div id="panelVentas">
+                    <div class="barra-busqueda">
+                        <input type="text" id="inputBusquedaVenta" placeholder="Buscar por # venta o # pedido...">
+                    </div>
+                    <table class="tabla-inventario">
+                        <thead>
+                            <tr>
+                                <th># Venta</th>
+                                <th>Fecha</th>
+                                <th># Pedido</th>
+                                <th>Total</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoTablaVentas"></tbody>
+                    </table>
+                </div>
+
+                <!-- PANEL FACTURAS -->
+                <div id="panelFacturas" style="display:none;">
+                    <div class="barra-busqueda">
+                        <svg width="20" height="20" fill="#999" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
+                        </svg>
+                        <input type="text" id="inputBusquedaFactura" placeholder="Buscar por # factura o fecha...">
+                    </div>
+                    <table class="tabla-inventario">
+                        <thead>
+                            <tr>
+                                <th># Factura</th>
+                                <th>Fecha</th>
+                                <th>Venta</th>
+                                <th>Total</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoTablaFacturas"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SECCIÓN ALERTAS -->
+            <div id="contenido-alertas" class="seccion-contenido">
                 <div class="encabezado-seccion">
-                    <h2>Historial de Ventas</h2>
+                    <h2>Alertas</h2>
+                    <button type="button" class="btn-accion" onclick="marcarTodasLeidas()" style="display:flex; align-items:center; gap:8px;">
+                        <i class="fas fa-check-double"></i> Marcar todas como leídas
+                    </button>
                 </div>
-                <div class="barra-busqueda">
-                    <input type="text" id="inputBusquedaVenta" placeholder="Buscar por # venta o # pedido...">
-                </div>
-                <table class="tabla-inventario">
-                    <thead>
-                        <tr>
-                            <th># Venta</th>
-                            <th>Fecha</th>
-                            <th># Pedido</th>
-                            <th>Total</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="cuerpoTablaVentas"></tbody>
-                </table>
+                <div id="lista-alertas" style="display:flex; flex-direction:column; gap:12px; margin-top:16px;"></div>
             </div>
 
         </main>
 
         <!-- CALENDARIO -->
         <aside class="seccion-calendario">
-            <h3 style="margin-bottom: 20px; color: #a47c7c;">Calendario</h3>
-            <div class="encabezado-calendario">
-                <span id="mes-actual"></span>
-                <div class="navegacion-calendario">
-                    <button class="boton-navegacion" id="btnMesAnterior">‹</button>
-                    <button class="boton-navegacion" id="btnMesSiguiente">›</button>
-                </div>
-            </div>
-            <div class="grilla-calendario" id="grillaCalendario">
-                <div class="etiqueta-dia-semana">Do</div>
-                <div class="etiqueta-dia-semana">Lu</div>
-                <div class="etiqueta-dia-semana">Ma</div>
-                <div class="etiqueta-dia-semana">Mi</div>
-                <div class="etiqueta-dia-semana">Ju</div>
-                <div class="etiqueta-dia-semana">Vi</div>
-                <div class="etiqueta-dia-semana">Sa</div>
-            </div>
-            <h4 class="titulo-seccion-calendario">Hora actual</h4>
+            <h3 style="margin-bottom: 16px; color: #a47c7c;">Calendario</h3>
+            <input id="calendarioEmpleado" style="display:none;">
             <div class="hora-actual">
                 <div class="mostrar-hora" id="horaTiempoReal">00:00</div>
                 <div class="mostrar-fecha" id="fechaTiempoReal"></div>
+            </div>
+            <div style="text-align:center; margin-top:20px; padding-top:20px; border-top:1px solid #f0e0e0;">
+                <img src="../assets/img/logo-helar.jpeg" style="width:100%; max-width:220px; height:auto; display:block; margin:0 auto; border-radius:12px;">
             </div>
         </aside>
     </div>
@@ -433,51 +517,62 @@
 
     <!-- MODAL INSUMO (registro y edición) -->
     <div id="modalInsumo" class="modal">
-        <div class="modal-contenido">
+        <div class="modal-contenido" style="max-width:780px;">
             <button class="modal-cerrar" id="btnCerrarModalInsumo">×</button>
             <h2 id="tituloModalInsumo">Registrar Insumo</h2>
-            <p id="subtituloModalInsumo">Agrega un nuevo insumo al inventario</p>
-            <form id="formInsumo">
+            <p id="subtituloModalInsumo" style="color:#999; font-size:14px; margin-bottom:20px;">Agrega un nuevo insumo al inventario</p>
+            <form id="formInsumo" novalidate>
                 <input type="hidden" id="idInsumoEditar">
+
+                <!-- Fila 1: nombre ocupa todo el ancho -->
                 <div class="form-group">
                     <label>Nombre del insumo</label>
-                    <input type="text" id="nombreInsumo" placeholder="Ej: Leche entera" required>
+                    <input type="text" id="nombreInsumo" placeholder="Ej: Leche entera" required minlength="2" maxlength="100">
                 </div>
-                <div class="form-group">
-                    <label>Categoría</label>
-                    <select id="tipoInsumo" required>
-                        <option value="" disabled selected>Selecciona categoría</option>
-                        <option value="Saborizantes">Saborizantes</option>
-                        <option value="Lácteos">Lácteos</option>
-                        <option value="Frutas">Frutas</option>
-                        <option value="Granos/cereales">Granos/cereales</option>
-                        <option value="Endulzantes">Endulzantes</option>
-                    </select>
+
+                <!-- Fila 2: categoría + unidad -->
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                    <div class="form-group">
+                        <label>Categoría</label>
+                        <select id="tipoInsumo" required>
+                            <option value="" disabled selected>Selecciona categoría</option>
+                            <option value="Saborizantes">Saborizantes</option>
+                            <option value="Lácteos">Lácteos</option>
+                            <option value="Frutas">Frutas</option>
+                            <option value="Granos/cereales">Granos/cereales</option>
+                            <option value="Endulzantes">Endulzantes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Unidad de medida</label>
+                        <select id="unidadMedida" required>
+                            <option value="" disabled selected>Selecciona</option>
+                            <option value="L">Litros (L)</option>
+                            <option value="kg">Kilogramos (kg)</option>
+                            <option value="g">Gramos (g)</option>
+                            <option value="ml">Mililitros (ml)</option>
+                            <option value="Unidades">Unidades</option>
+                            <option value="Cajas">Cajas</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Stock</label>
-                    <input type="number" id="stock" min="0" step="0.01" placeholder="Ej: 50" required>
+
+                <!-- Fila 3: stock + stock mínimo + fecha -->
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;">
+                    <div class="form-group">
+                        <label>Stock actual</label>
+                        <input type="number" id="stock" min="0" max="99999" step="0.01" placeholder="Ej: 50" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Stock mínimo</label>
+                        <input type="number" id="stockMinimo" min="0" max="99999" step="0.01" placeholder="Ej: 10" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Caducidad <span style="color:#bbb; font-weight:normal;">(opcional)</span></label>
+                        <input type="date" id="fechaCaducidad">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Stock mínimo</label>
-                    <input type="number" id="stockMinimo" min="0" step="0.01" placeholder="Ej: 10" required>
-                </div>
-                <div class="form-group">
-                    <label>Unidad de medida</label>
-                    <select id="unidadMedida" required>
-                        <option value="" disabled selected>Selecciona</option>
-                        <option value="L">Litros (L)</option>
-                        <option value="kg">Kilogramos (kg)</option>
-                        <option value="g">Gramos (g)</option>
-                        <option value="ml">Mililitros (ml)</option>
-                        <option value="Unidades">Unidades</option>
-                        <option value="Cajas">Cajas</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Fecha de caducidad <span style="color: #999; font-weight: normal;">(opcional)</span></label>
-                    <input type="date" id="fechaCaducidad">
-                </div>
+
                 <div id="mensajeInsumo"></div>
                 <div class="botones">
                     <button type="button" class="btn-cancelar" id="btnCancelarModalInsumo">Cancelar</button>
@@ -492,23 +587,23 @@
         <div class="modal-contenido">
             <button class="modal-cerrar" id="btnCerrarModalProveedor">×</button>
             <h2 id="tituloModalProveedor">Registrar Proveedor</h2>
-            <form id="formProveedor">
+            <form id="formProveedor" novalidate>
                 <input type="hidden" id="idProveedorEditar">
                 <div class="form-group">
                     <label>Nombre <span style="color:#d9534f">*</span></label>
-                    <input type="text" id="nombreProveedor" placeholder="Ej: Lácteos del Valle" required>
+                    <input type="text" id="nombreProveedor" placeholder="Ej: Lácteos del Valle" required minlength="2" maxlength="100">
                 </div>
                 <div class="form-group">
-                    <label>Contacto</label>
-                    <input type="text" id="contactoProveedor" placeholder="Ej: Juan Pérez">
+                    <label>Contacto <span style="color:#d9534f">*</span></label>
+                    <input type="text" id="contactoProveedor" placeholder="Ej: Juan Pérez" maxlength="100" required>
                 </div>
                 <div class="form-group">
-                    <label>Teléfono</label>
-                    <input type="text" id="telefonoProveedor" placeholder="Ej: 3001234567">
+                    <label>Teléfono <span style="color:#d9534f">*</span></label>
+                    <input type="tel" id="telefonoProveedor" placeholder="Ej: 3001234567" pattern="[0-9+\-\s]{7,20}" maxlength="20" title="Solo números (7 a 20 dígitos)" required>
                 </div>
                 <div class="form-group">
-                    <label>Correo</label>
-                    <input type="email" id="correoProveedor" placeholder="Ej: proveedor@correo.com">
+                    <label>Correo <span style="color:#d9534f">*</span></label>
+                    <input type="email" id="correoProveedor" placeholder="Ej: proveedor@correo.com" required>
                 </div>
                 <div id="mensajeProveedor"></div>
                 <div class="botones">
@@ -521,75 +616,74 @@
 
     <!-- MODAL COMPRA -->
     <div id="modalCompra" class="modal">
-        <div class="modal-contenido" style="max-width: 800px;">
+        <div class="modal-contenido" style="max-width: 1000px;">
             <button class="modal-cerrar" id="btnCerrarModalCompra">×</button>
             <h2>Registrar Compra</h2>
-            <p>Selecciona el proveedor y agrega los insumos</p>
-            <form id="formNuevaCompra">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div class="form-group">
+            <form id="formNuevaCompra" novalidate style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:16px;">
+                <!-- PANEL IZQUIERDO: formulario -->
+                <div style="background:#fdf5f5; border-radius:12px; padding:20px; display:flex; flex-direction:column; gap:14px;">
+                    <div class="form-group" style="margin:0;">
                         <label>Proveedor <span style="color:#d9534f">*</span></label>
                         <select id="idProveedorCompra" required>
                             <option value="" disabled selected>Selecciona un proveedor</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label>Fecha</label>
-                        <input type="date" id="fechaCompra">
+                    <div class="form-group" style="margin:0;">
+                        <label>Fecha <span style="color:#d9534f">*</span></label>
+                        <input type="date" id="fechaCompra" required>
                     </div>
-                </div>
-                <h4 style="margin: 20px 0 10px; color: #a47c7c;">Detalles de la compra</h4>
-                <div style="max-height: 200px; overflow-y: auto; margin-bottom: 15px;">
-                    <table style="width: 100%; border-collapse: collapse;">
-                        <thead style="background: #f5e6e6; position: sticky; top: 0;">
-                            <tr>
-                                <th style="padding: 10px; text-align: left; font-size: 13px;">Insumo</th>
-                                <th style="padding: 10px; text-align: left; font-size: 13px;">Cantidad</th>
-                                <th style="padding: 10px; text-align: left; font-size: 13px;">Precio unitario</th>
-                                <th style="padding: 10px; text-align: left; font-size: 13px;">Subtotal</th>
-                                <th style="padding: 10px;"></th>
-                            </tr>
-                        </thead>
-                        <tbody id="tablaDetallesCompra"></tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="3" style="padding: 10px; text-align: right; font-weight: 600;">Total:</td>
-                                <td style="padding: 10px; font-weight: 600; color: #a47c7c;" id="totalCompra">$0.00</td>
-                                <td></td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-                <div style="background: #f9f9f9; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
-                    <h5 style="margin: 0 0 10px; color: #666; font-size: 13px;">Agregar insumo</h5>
-                    <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 10px; align-items: end;">
-                        <div class="form-group" style="margin: 0;">
-                            <label style="font-size: 12px;">Insumo</label>
-                            <select id="detalleInsumo">
-                                <option value="" disabled selected>Selecciona</option>
-                            </select>
-                        </div>
-                        <div class="form-group" style="margin: 0;">
-                            <label style="font-size: 12px;">Cantidad</label>
+                    <hr style="border:none; border-top:1px solid #f0ddd5; margin:0;">
+                    <h5 style="margin:0; color:#a47c7c; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Agregar insumo</h5>
+                    <div class="form-group" style="margin:0;">
+                        <label style="font-size:12px;">Insumo</label>
+                        <select id="detalleInsumo">
+                            <option value="" disabled selected>Selecciona</option>
+                        </select>
+                    </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                        <div class="form-group" style="margin:0;">
+                            <label style="font-size:12px;">Cantidad</label>
                             <input type="number" id="detalleCantidad" min="1" value="1">
                         </div>
-                        <div class="form-group" style="margin: 0;">
-                            <label style="font-size: 12px;">Precio unitario</label>
+                        <div class="form-group" style="margin:0;">
+                            <label style="font-size:12px;">Precio unitario</label>
                             <input type="number" id="detallePrecio" min="0" step="0.01" placeholder="0.00">
                         </div>
-                        <div class="form-group" style="margin: 0;">
-                            <label style="font-size: 12px;">Fecha de caducidad</label>
-                            <input type="date" id="fechaCaducidadDetalle">
-                        </div>
-                        <button type="button" class="btn-registrar" style="padding: 10px 16px;" onclick="agregarDetalleCompra()">
-                            + Agregar
-                        </button>
                     </div>
+                    <div class="form-group" style="margin:0;">
+                        <label style="font-size:12px;">Fecha de caducidad <span style="color:#bbb; font-weight:normal;">(opcional)</span></label>
+                        <input type="date" id="fechaCaducidadDetalle">
+                    </div>
+                    <button type="button" class="btn-registrar" onclick="agregarDetalleCompra()">
+                        + Agregar a la compra
+                    </button>
                 </div>
-                <div id="mensajeCompra"></div>
-                <div class="botones">
-                    <button type="button" class="btn-cancelar" id="btnCancelarModalCompra">Cancelar</button>
-                    <button type="submit" class="btn-registrar" id="btnRegistrarCompra" disabled>Registrar compra</button>
+                <!-- PANEL DERECHO: tabla + total + botones -->
+                <div style="display:flex; flex-direction:column; gap:12px;">
+                    <h5 style="margin:0; color:#a47c7c; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Detalles de la compra</h5>
+                    <div style="flex:1; overflow-y:auto; max-height:360px; border:1px solid #f0e0e0; border-radius:10px;">
+                        <table style="width:100%; border-collapse:collapse;">
+                            <thead style="background:#f5e6e6; position:sticky; top:0;">
+                                <tr>
+                                    <th style="padding:10px; text-align:left; font-size:12px;">Insumo</th>
+                                    <th style="padding:8px; text-align:left; font-size:12px;">Cant.</th>
+                                    <th style="padding:8px; text-align:left; font-size:12px;">Precio</th>
+                                    <th style="padding:8px; text-align:left; font-size:12px;">Subtotal</th>
+                                    <th style="padding:8px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaDetallesCompra"></tbody>
+                        </table>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 4px; border-top:2px solid #f0f0f0; font-weight:600; color:#333;">
+                        <span>Total:</span>
+                        <span id="totalCompra" style="color:#a47c7c; font-size:16px;">$0.00</span>
+                    </div>
+                    <div id="mensajeCompra"></div>
+                    <div class="botones" style="margin:0;">
+                        <button type="button" class="btn-cancelar" id="btnCancelarModalCompra">Cancelar</button>
+                        <button type="submit" class="btn-registrar" id="btnRegistrarCompra" disabled>Registrar compra</button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -600,15 +694,15 @@
         <div class="modal-contenido">
             <button class="modal-cerrar" id="btnCerrarModalProducto">×</button>
             <h2 id="tituloModalProducto">Registrar Producto</h2>
-            <form id="formProducto">
+            <form id="formProducto" novalidate>
                 <input type="hidden" id="idProductoEditar">
                 <div class="form-group">
                     <label>Nombre <span style="color:#d9534f">*</span></label>
-                    <input type="text" id="nombreProducto" placeholder="Ej: Copa Queso" required>
+                    <input type="text" id="nombreProducto" placeholder="Ej: Copa Queso" required minlength="2" maxlength="100">
                 </div>
                 <div class="form-group">
                     <label>Descripción <span style="color: #999; font-weight: normal;">(opcional)</span></label>
-                    <textarea id="descripcionProducto" placeholder="Ej: Dos bolas de helado con queso, chantilly..." rows="3" style="resize: vertical;"></textarea>
+                    <textarea id="descripcionProducto" placeholder="Ej: Dos bolas de helado con queso, chantilly..." rows="3" style="resize: vertical;" maxlength="500"></textarea>
                 </div>
                 <div class="form-group">
                     <label>Categoría <span style="color:#d9534f">*</span></label>
@@ -618,7 +712,7 @@
                 </div>
                 <div class="form-group">
                     <label>Precio base <span style="color:#d9534f">*</span></label>
-                    <input type="number" id="precioProducto" min="0" step="100" placeholder="Ej: 15000" required>
+                    <input type="number" id="precioProducto" min="0" max="9999999" step="100" placeholder="Ej: 15000" required>
                 </div>
                 <div id="mensajeProducto"></div>
                 <div class="botones">
@@ -634,11 +728,11 @@
         <div class="modal-contenido">
             <button class="modal-cerrar" id="btnCerrarModalCategoria">×</button>
             <h2 id="tituloModalCategoria">Registrar Categoría</h2>
-            <form id="formCategoria">
+            <form id="formCategoria" novalidate>
                 <input type="hidden" id="idCategoriaEditar">
                 <div class="form-group">
                     <label>Nombre <span style="color:#d9534f">*</span></label>
-                    <input type="text" id="nombreCategoria" placeholder="Ej: Copas" required>
+                    <input type="text" id="nombreCategoria" placeholder="Ej: Copas" required minlength="2" maxlength="100">
                 </div>
                 <div id="mensajeCategoria"></div>
                 <div class="botones">
@@ -654,11 +748,11 @@
         <div class="modal-contenido">
             <button class="modal-cerrar" id="btnCerrarModalSabor">×</button>
             <h2 id="tituloModalSabor">Registrar Sabor</h2>
-            <form id="formSabor">
+            <form id="formSabor" novalidate>
                 <input type="hidden" id="idSaborEditar">
                 <div class="form-group">
                     <label>Nombre <span style="color:#d9534f">*</span></label>
-                    <input type="text" id="nombreSabor" placeholder="Ej: Chocolate" required>
+                    <input type="text" id="nombreSabor" placeholder="Ej: Chocolate" required minlength="2" maxlength="100">
                 </div>
                 <div id="mensajeSabor"></div>
                 <div class="botones">
@@ -673,15 +767,15 @@
         <div class="modal-contenido">
             <button class="modal-cerrar" id="btnCerrarModalAdicional">×</button>
             <h2 id="tituloModalAdicional">Registrar Adicional</h2>
-            <form id="formAdicional">
+            <form id="formAdicional" novalidate>
                 <input type="hidden" id="idAdicionalEditar">
                 <div class="form-group">
                     <label>Nombre <span style="color:#d9534f">*</span></label>
-                    <input type="text" id="nombreAdicional" placeholder="Ej: Salsa de chocolate" required>
+                    <input type="text" id="nombreAdicional" placeholder="Ej: Salsa de chocolate" required minlength="2" maxlength="100">
                 </div>
                 <div class="form-group">
                     <label>Precio <span style="color:#d9534f">*</span></label>
-                    <input type="number" id="precioAdicional" min="0" step="100" placeholder="0" required>
+                    <input type="number" id="precioAdicional" min="0" max="999999" step="100" placeholder="0" required>
                 </div>
                 <div id="mensajeAdicional"></div>
                 <div class="botones">
@@ -704,6 +798,7 @@
                         <th>Producto</th>
                         <th>Cant.</th>
                         <th>Sabores</th>
+                        <th>Salsas</th>
                         <th>Adicionales</th>
                         <th>Subtotal</th>
                     </tr>
@@ -740,207 +835,285 @@
         </div>
     </div>
 
-    <!-- MODAL PEDIDO -->
-<div id="modalPedido" class="modal">
-    <div class="modal-contenido" style="max-width: 800px;">
+    <!-- MODAL REGISTRAR MOVIMIENTO -->
+    <div id="modalMovimiento" class="modal" style="display:none;">
+        <div class="modal-contenido" style="max-width:480px;">
+            <button class="modal-cerrar" id="btnCerrarModalMovimiento">×</button>
+            <h2>Registrar Salida</h2>
+            <p>Selecciona el insumo que estás usando para descontar del stock.</p>
+            <div id="mensajeMovimiento" style="display:none;"></div>
+            <form id="formMovimiento" novalidate>
+                <div class="form-group">
+                    <label>Insumo *</label>
+                    <select id="selectInsumoMovimiento" required>
+                        <option value="" disabled selected>Selecciona un insumo</option>
+                    </select>
+                </div>
+                <div id="stockActualMovimiento" style="font-size:13px; color:#6b7280; margin-top:-8px; margin-bottom:12px; display:none;">
+                    Stock actual: <strong id="valorStockActual"></strong>
+                </div>
+                <div class="form-group">
+                    <label>Cantidad a descontar *</label>
+                    <input type="number" id="cantidadMovimiento" min="1" max="99999" step="0.01" placeholder="Ej: 1" required>
+                </div>
+                <div class="form-group">
+                    <label>Motivo *</label>
+                    <input type="text" id="motivoMovimiento" placeholder="Ej: Caja abierta para uso del día" required minlength="3" maxlength="200">
+                </div>
+                <div style="display:flex; gap:12px; justify-content:flex-end; margin-top:24px;">
+                    <button type="button" id="btnCancelarModalMovimiento" style="
+                        padding:10px 20px; border:1px solid #d1d5db; background:white;
+                        border-radius:10px; cursor:pointer; font-size:14px; color:#6b7280;">
+                        Cancelar
+                    </button>
+                    <button type="submit" id="btnSubmitMovimiento" style="
+                        padding:10px 24px; background:#a47c7c; color:white; border:none;
+                        border-radius:10px; cursor:pointer; font-size:14px; font-weight:600;
+                        display:flex; align-items:center; gap:8px;">
+                        <i class="fas fa-minus-circle"></i> Registrar salida
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-        <button class="modal-cerrar" id="btnCerrarModalPedido">×</button>
+    <!-- MODAL RECIBO FACTURA -->
+    <div id="modalReciboFactura" class="modal" style="display:none;">
+        <div class="modal-contenido" style="max-width:440px; padding:0; overflow:hidden; background:#fdf5f0;">
+            <div id="contenidoRecibo" style="padding:36px 40px; background:#fdf5f0;">
+                <div style="text-align:center; margin-bottom:20px;">
+                    <div style="font-size:22px; font-weight:700; letter-spacing:2px; color:#7a4f3a;">HELAR-TEC</div>
+                    <div style="font-size:13px; color:#a47c7c; margin-top:4px;" id="reciboDir"></div>
+                    <div style="border-top:1px dashed #e8c4a8; margin:14px 0;"></div>
+                    <div style="font-size:15px; font-weight:600; color:#a47c7c;">FACTURA</div>
+                    <div style="font-size:13px; color:#c09070;" id="reciboId"></div>
+                </div>
 
-        <h2>Registrar Pedido</h2>
-        <p>Agrega los productos del pedido</p>
+                <div style="font-size:14px; margin-bottom:14px; display:flex; flex-direction:column; gap:6px; color:#5a3e2b;">
+                    <div style="display:flex; justify-content:space-between;"><span style="color:#a47c7c;">Fecha:</span><span id="reciboFecha"></span></div>
+                    <div style="display:flex; justify-content:space-between;"><span style="color:#a47c7c;">Empleado:</span><span id="reciboEmpleado"></span></div>
+                    <div style="display:flex; justify-content:space-between;"><span style="color:#a47c7c;">Método de pago:</span><span id="reciboMetodo"></span></div>
+                    <div style="display:flex; justify-content:space-between;"><span style="color:#a47c7c;">Dirección:</span><span id="reciboDireccion"></span></div>
+                </div>
 
-        <form id="formNuevoPedido">
+                <div style="border-top:1px dashed #e8c4a8; margin:14px 0;"></div>
 
-            <h4 style="margin: 0 0 10px; color: #a47c7c;">
-                Productos del pedido
-            </h4>
-
-            <div style="max-height: 200px; overflow-y: auto; margin-bottom: 15px;">
-
-                <table style="width: 100%; border-collapse: collapse;">
-
-                    <thead style="background: #f5e6e6; position: sticky; top: 0;">
-                        <tr>
-                            <th style="padding: 10px; text-align: left; font-size: 13px;">Producto</th>
-                            <th style="padding: 10px; text-align: left; font-size: 13px;">Cant.</th>
-                            <th style="padding: 10px; text-align: left; font-size: 13px;">Sabores</th>
-                            <th style="padding: 10px; text-align: left; font-size: 13px;">Adicionales</th>
-                            <th style="padding: 10px; text-align: left; font-size: 13px;">Subtotal</th>
-                            <th style="padding: 10px;"></th>
+                <table style="width:100%; font-size:14px; border-collapse:collapse;">
+                    <thead>
+                        <tr style="color:#a47c7c;">
+                            <th style="text-align:left; padding-bottom:8px;">Producto</th>
+                            <th style="text-align:center;">Cant.</th>
+                            <th style="text-align:right;">Subtotal</th>
                         </tr>
                     </thead>
-
-                    <tbody id="tablaDetallesPedido"></tbody>
-
-                    <tfoot>
-                        <tr>
-                            <td colspan="4" style="padding: 10px; text-align: right; font-weight: 600;">
-                                Total:
-                            </td>
-
-                            <td style="padding: 10px; font-weight: 600; color: #a47c7c;" id="totalPedido">
-                                $0.00
-                            </td>
-
-                            <td></td>
-                        </tr>
-                    </tfoot>
-
+                    <tbody id="reciboProductos" style="color:#5a3e2b;"></tbody>
                 </table>
 
+                <div style="border-top:1px dashed #e8c4a8; margin:14px 0;"></div>
+
+                <div style="display:flex; justify-content:space-between; font-size:17px; font-weight:700; color:#7a4f3a;">
+                    <span>TOTAL</span>
+                    <span id="reciboTotal"></span>
+                </div>
+
+                <div id="reciboObservaciones" style="display:none; margin-top:14px; font-size:13px; color:#a47c7c; border-top:1px dashed #e8c4a8; padding-top:10px;"></div>
+
+                <div style="text-align:center; margin-top:20px; font-size:13px; color:#c09070;">
+                    ¡Gracias por tu compra!
+                </div>
             </div>
+            <div style="display:flex; justify-content:center; gap:12px; padding:16px 40px; border-top:1px solid #e8d5c4; background:#fdf5f0;">
+                <button onclick="document.getElementById('modalReciboFactura').style.display='none'" style="
+                    padding:10px 28px; border:1px solid #e8c4a8; background:white;
+                    border-radius:10px; cursor:pointer; font-size:14px; color:#a47c7c;">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
 
+    <!-- MODAL DETALLES VENTA -->
+    <div id="modalDetallesVenta" class="modal">
+        <div class="modal-contenido" style="max-width: 700px;">
+            <button class="modal-cerrar" id="btnCerrarDetallesVenta">×</button>
+            <h2 id="tituloDetallesVenta">Venta #</h2>
+            <div id="infoDetallesVenta" style="margin-bottom: 16px; color: #666; font-size: 14px;"></div>
+            <table class="tabla-inventario">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cant.</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpoDetallesVenta"></tbody>
+            </table>
+            <div style="text-align:right; font-weight:600; margin-top:12px; color:#a47c7c;">
+                Total: <span id="totalDetallesVenta">$0</span>
+            </div>
+        </div>
+    </div>
 
-            <!-- AGREGAR PRODUCTO -->
-            <div style="background: #f9f9f9; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+    <!-- MODAL PEDIDO -->
+<div id="modalPedido" class="modal">
+    <div class="modal-contenido" style="max-width:1000px; padding:30px;">
 
-                <h5 style="margin: 0 0 10px; color: #666; font-size: 13px;">
-                    Agregar producto
-                </h5>
+        <button class="modal-cerrar" id="btnCerrarModalPedido">×</button>
+        <h2 style="margin-bottom:4px;">Registrar Pedido</h2>
+        <p style="color:#999; font-size:14px; margin-bottom:20px;">Selecciona productos y agrégalos al pedido</p>
 
-                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px;">
+        <form id="formNuevoPedido" novalidate>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start;">
 
-                    <div class="form-group" style="margin: 0;">
-                        <label style="font-size: 12px;">Producto</label>
+                <!-- COLUMNA IZQUIERDA: Agregar producto -->
+                <div style="background:#fdf5f5; border-radius:14px; padding:20px;">
+                    <h4 style="color:#a47c7c; margin:0 0 16px; font-size:15px;">
+                        <i class="fas fa-plus-circle" style="margin-right:6px;"></i>Agregar producto
+                    </h4>
 
+                    <div class="form-group">
+                        <label style="font-size:13px;">Producto</label>
                         <select id="detalleProducto">
-                            <option value="" disabled selected>
-                                Selecciona un producto
-                            </option>
+                            <option value="" disabled selected>Selecciona un producto</option>
                         </select>
-
+                        <div id="descripcionProductoSeleccionado" style="display:none; font-size:12px; color:#a47c7c; background:#fdf5f0; border-radius:8px; padding:6px 10px; margin-top:6px; border-left:3px solid #e8c4a8;"></div>
                     </div>
 
-                    <div class="form-group" style="margin: 0;">
-                        <label style="font-size: 12px;">Cantidad</label>
-
-                        <input type="number"
-                               id="detalleCantidadPedido"
-                               min="1"
-                               value="1">
-
+                    <div class="form-group">
+                        <label style="font-size:13px;">Cantidad</label>
+                        <input type="number" id="detalleCantidadPedido" min="1" value="1">
                     </div>
 
-                </div>
-
-
-                <!-- SABORES -->
-                <div style="margin-top: 10px;">
-
-                    <div class="form-group" style="margin: 0;">
-
-                        <label style="font-size: 12px;">
-                            Sabores
-                            <span style="color:#999; font-weight:normal;">
-                                (selecciona uno o más)
-                            </span>
-                        </label>
-
-                        <div id="listaSabores"
-                             style="display: flex;
-                             flex-wrap: wrap;
-                             gap: 8px;
-                             padding: 10px;
-                             background: white;
-                             border: 1px solid #eee;
-                             border-radius: 8px;
-                             min-height: 40px;">
-                        </div>
-
+                    <div class="form-group">
+                        <label style="font-size:13px;">Sabores <span style="color:#bbb; font-weight:normal;">(uno o más)</span></label>
+                        <div id="listaSabores" style="display:flex; flex-wrap:wrap; gap:6px; padding:10px; background:white; border:2px solid #e8c4b8; border-radius:10px; min-height:42px;"></div>
                     </div>
 
-                </div>
-
-
-                <!-- ADICIONALES -->
-                <div style="margin-top: 10px;">
-                    <div class="form-group" style="margin: 0;">
-                        <label style="font-size: 12px;">
-                            Adicionales
-                            <span style="color:#999; font-weight:normal;">(opcional)</span>
-                        </label>
-                        <div id="listaAdicionales"
-                             style="display: flex; flex-wrap: wrap; gap: 8px; padding: 10px;
-                                    background: white; border: 1px solid #eee; border-radius: 8px;
-                                    min-height: 40px;">
-                        </div>
+                    <div class="form-group">
+                        <label style="font-size:13px;"><i class="fas fa-pepper-hot" style="margin-right:6px;"></i> Salsas <span style="color:#bbb; font-weight:normal;">(opcional)</span></label>
+                        <div id="listaSalsas" class="contenedor-botones-sabor"></div>
                     </div>
-                </div>
 
-                <!-- BOTON AGREGAR -->
-                <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
-                    <button type="button"
-                            id="btnAgregarDetalle"
-                            class="btn-registrar"
-                            style="padding: 10px 16px;">
-                        + Agregar
+                    <div class="form-group">
+                        <label style="font-size:13px;">Adicionales <span style="color:#bbb; font-weight:normal;">(opcional)</span></label>
+                        <div id="listaAdicionales" style="display:flex; flex-wrap:wrap; gap:6px; padding:10px; background:white; border:2px solid #e8c4b8; border-radius:10px; min-height:42px;"></div>
+                    </div>
+
+                    <button type="button" id="btnAgregarDetalle" class="btn-registrar" style="width:100%; margin-top:4px;">
+                        <i class="fas fa-plus"></i> Agregar al pedido
                     </button>
                 </div>
 
+                <!-- COLUMNA DERECHA: Tabla de productos + total + botones -->
+                <div style="display:flex; flex-direction:column; gap:16px;">
+                    <h4 style="color:#a47c7c; margin:0; font-size:15px;">
+                        <i class="fas fa-list" style="margin-right:6px;"></i>Productos del pedido
+                    </h4>
+
+                    <table style="width:100%; border-collapse:collapse; font-size:13px;">
+                        <thead>
+                            <tr style="background:#f5e6e6;">
+                                <th style="padding:10px 8px; text-align:left; border-radius:8px 0 0 0;">Producto</th>
+                                <th style="padding:10px 8px; text-align:center;">Cant.</th>
+                                <th style="padding:10px 8px; text-align:left;">Sabores</th>
+                                <th style="padding:10px 8px; text-align:left;">Salsas</th>
+                                <th style="padding:10px 8px; text-align:right;">Subtotal</th>
+                                <th style="padding:10px 8px; border-radius:0 8px 0 0;"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaDetallesPedido"></tbody>
+                    </table>
+
+                    <div style="text-align:right; padding:12px 8px; background:#f5e6e6; border-radius:10px; font-size:16px; font-weight:700; color:#a47c7c;">
+                        Total: <span id="totalPedido">$0.00</span>
+                    </div>
+
+                    <div id="mensajePedido"></div>
+
+                    <div class="botones" style="margin-top:auto;">
+                        <button type="button" class="btn-cancelar" id="btnCancelarModalPedido">Cancelar</button>
+                        <button type="submit" class="btn-registrar" id="btnRegistrarPedido" disabled>
+                            <i class="fas fa-save"></i> Registrar pedido
+                        </button>
+                    </div>
+                </div>
+
             </div>
-
-
-            <div id="mensajePedido"></div>
-
-
-            <!-- BOTONES -->
-            <div class="botones">
-
-                <button type="button"
-                        class="btn-cancelar"
-                        id="btnCancelarModalPedido">
-                    Cancelar
-                </button>
-
-                <button type="submit"
-                        class="btn-registrar"
-                        id="btnRegistrarPedido"
-                        disabled>
-                    Registrar pedido
-                </button>
-
-            </div>
-
         </form>
-
     </div>
 </div>
     <!-- MODAL GENERAR FACTURA -->
-    <div id="modalFactura" class="modal-overlay">
-        <div class="modal-contenido">
-            <div class="modal-header">
-                <h3 id="tituloModalFactura">Generar Factura</h3>
-                <button class="modal-cerrar" id="btnCerrarModalFactura">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div id="mensajeFactura" style="display:none;"></div>
-                <form id="formFactura">
-                    <input type="hidden" id="idVentaFactura">
-                    <div class="form-group">
-                        <label>Dirección (opcional)</label>
-                        <input type="text" id="direccionFactura" maxlength="150" placeholder="Dirección del cliente">
+    <div id="modalFactura" class="modal" style="display:none;">
+        <div class="modal-contenido" style="max-width:500px;">
+            <button class="modal-cerrar" id="btnCerrarModalFactura">&times;</button>
+            <h2 id="tituloModalFactura">Generar Factura</h2>
+            <div id="mensajeFactura" style="display:none;"></div>
+            <form id="formFactura" novalidate>
+                <input type="hidden" id="idVentaFactura">
+                <div class="form-group">
+                    <label>Dirección del local <span style="color:#d9534f">*</span></label>
+                    <input type="text" id="direccionFactura" maxlength="150" placeholder="Cargando dirección..." required>
+                </div>
+                <div class="form-group">
+                    <label>Método de pago *</label>
+                    <select id="metodoPago" required>
+                        <option value="" disabled selected>Selecciona</option>
+                        <option value="efectivo">Efectivo</option>
+                        <option value="tarjeta">Tarjeta</option>
+                        <option value="transferencia">Transferencia</option>
+                        <option value="nequi">Nequi</option>
+                        <option value="daviplata">Daviplata</option>
+                    </select>
+                </div>
+                <!-- CALCULADOR DE CAMBIO (solo efectivo) -->
+                <div id="calculadorCambio" style="display:none; background:#f9fafb; border-radius:12px; padding:16px; margin-bottom:12px;">
+                    <div style="font-size:13px; color:#6b7280; margin-bottom:10px; font-weight:600;">Calculador de cambio</div>
+                    <div style="display:flex; justify-content:space-between; font-size:14px; margin-bottom:10px;">
+                        <span>Total a pagar:</span>
+                        <strong id="totalAPagar" style="color:#a47c7c;">$0</strong>
                     </div>
-                    <div class="form-group">
-                        <label>Método de pago *</label>
-                        <select id="metodoPago" required>
-                            <option value="" disabled selected>Selecciona</option>
-                            <option value="efectivo">Efectivo</option>
-                            <option value="tarjeta">Tarjeta</option>
-                            <option value="transferencia">Transferencia</option>
-                            <option value="nequi">Nequi</option>
-                            <option value="daviplata">Daviplata</option>
-                        </select>
+                    <div class="form-group" style="margin-bottom:10px;">
+                        <label>Monto recibido</label>
+                        <input type="number" id="montoRecibido" min="0" placeholder="Ej: 50000" oninput="calcularCambio()">
                     </div>
-                    <div class="form-group">
-                        <label>Adicionales (opcional)</label>
-                        <textarea id="adicionalesFactura" rows="3" placeholder="Observaciones o notas adicionales"></textarea>
+                    <div style="display:flex; justify-content:space-between; font-size:15px; font-weight:700; color:#10b981;">
+                        <span>Cambio a devolver:</span>
+                        <span id="valorCambio">$0</span>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" id="btnCancelarModalFactura" class="btn-cancelar">Cancelar</button>
-                        <button type="submit" id="btnSubmitFactura" class="btn-primario">Generar factura</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Observaciones (opcional)</label>
+                    <textarea id="adicionalesFactura" rows="3" placeholder="Notas adicionales"></textarea>
+                </div>
+                <div style="display:flex; gap:12px; justify-content:flex-end; margin-top:24px;">
+                    <button type="button" id="btnCancelarModalFactura" style="
+                        padding: 10px 20px;
+                        border: 1px solid #d1d5db;
+                        background: white;
+                        border-radius: 10px;
+                        cursor: pointer;
+                        font-size: 14px;
+                        color: #6b7280;
+                    ">Cancelar</button>
+                    <button type="submit" id="btnSubmitFactura" style="
+                        padding: 10px 24px;
+                        background: #a47c7c;
+                        color: white;
+                        border: none;
+                        border-radius: 10px;
+                        cursor: pointer;
+                        font-size: 14px;
+                        font-weight: 600;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                    ">
+                        <i class="fas fa-file-invoice"></i>
+                        Generar factura
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -960,6 +1133,30 @@
         </div>
     </div>
 
+    <!-- MODAL CONFIRMAR ENTREGA -->
+    <div id="modalConfirmarEntrega" class="modal" style="display:none;">
+        <div class="modal-contenido" style="max-width:420px; text-align:center;">
+            <h2 style="color:#a47c7c; margin-bottom:8px;">Confirmar entrega</h2>
+            <p style="color:#666; font-size:15px; margin-bottom:24px;">¿Estás seguro de marcar este pedido como <strong>entregado</strong>? Se registrará una venta automáticamente.</p>
+            <div style="display:flex; gap:12px; justify-content:center;">
+                <button onclick="cerrarConfirmarEntrega()" class="btn-cancelar" style="flex:1;">Cancelar</button>
+                <button id="btnConfirmarEntrega" class="btn-registrar" style="flex:1;">Confirmar entrega</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CONFIRMAR CANCELAR PEDIDO -->
+    <div id="modalCancelarPedido" class="modal" style="display:none;">
+        <div class="modal-contenido" style="max-width:420px; text-align:center;">
+            <h2 style="color:#d9534f; margin-bottom:8px;">Cancelar pedido</h2>
+            <p style="color:#666; font-size:15px; margin-bottom:24px;">¿Estás seguro de <strong>cancelar</strong> este pedido? Esta acción no se puede deshacer.</p>
+            <div style="display:flex; gap:12px; justify-content:center;">
+                <button onclick="cerrarCancelarPedido()" class="btn-cancelar" style="flex:1;">Volver</button>
+                <button id="btnConfirmarCancelar" class="btn-registrar" style="flex:1; background:#d9534f;">Cancelar pedido</button>
+            </div>
+        </div>
+    </div>
+
     <script src="../assets/js/empleado/api.js"></script>
     <script src="../assets/js/empleado/utils.js"></script>
     <script src="../assets/js/empleado/general.js"></script>
@@ -971,5 +1168,42 @@
     <script src="../assets/js/empleado/pedidos.js"></script>
     <script src="../assets/js/empleado/categorias.js"></script>
     <script src="../assets/js/empleado/ventas.js"></script>
+    <script src="../assets/js/empleado/facturas.js"></script>
+    <script src="../assets/js/empleado/movimientos.js"></script>
+    <script src="../assets/js/empleado/alertas.js"></script>
+
+    <!-- TOAST NOTIFICACIÓN -->
+    <div id="toastLogin" style="
+        display: none;
+        position: fixed;
+        top: 24px;
+        right: 24px;
+        background: #10b981;
+        color: white;
+        padding: 14px 20px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        z-index: 9999;
+        align-items: center;
+        gap: 10px;
+    ">
+        <i class="fas fa-check-circle"></i>
+        Inicio de sesión exitoso
+    </div>
+
+    <script>
+        if (sessionStorage.getItem('loginExitoso')) {
+            sessionStorage.removeItem('loginExitoso')
+            const toast = document.getElementById('toastLogin')
+            toast.style.display = 'flex'
+            setTimeout(() => {
+                toast.style.transition = 'opacity 0.5s'
+                toast.style.opacity = '0'
+                setTimeout(() => toast.style.display = 'none', 500)
+            }, 3000)
+        }
+    </script>
 </body>
 </html>

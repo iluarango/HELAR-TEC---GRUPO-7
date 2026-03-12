@@ -86,7 +86,7 @@ function cerrarModalCompra() {
     document.getElementById('btnRegistrarCompra').disabled = true
 }
 
-// Cargar proveedores e insumos en los selectores del modal
+/** Carga proveedores e insumos activos en los selectores del modal de nueva compra */
 async function cargarSelectores() {
     try {
         const [provData, insData] = await Promise.all([
@@ -117,6 +117,7 @@ async function cargarSelectores() {
 }
 
 // ── AGREGAR DETALLE ────────────────────────────────────────
+/** Agrega o acumula un insumo al array de detalles pendientes de la compra */
 function agregarDetalleCompra() {
     const selectInsumo = document.getElementById('detalleInsumo')
     const cantidad = parseFloat(document.getElementById('detalleCantidad').value)
@@ -149,7 +150,7 @@ function agregarDetalleCompra() {
     renderDetalles()
 }
 
-// Renderiza la tabla de detalles dentro del modal
+/** Renderiza la tabla de detalles del modal y calcula el total acumulado */
 function renderDetalles() {
     const tbody = document.getElementById('tablaDetallesCompra')
     const btnRegistrar = document.getElementById('btnRegistrarCompra')
@@ -235,6 +236,7 @@ document.getElementById('formNuevaCompra').addEventListener('submit', async (e) 
 })
 
 // ── VER DETALLES ───────────────────────────────────────────
+/** Busca la compra en memoria y muestra sus detalles en el modal de solo lectura */
 function verDetallesCompra(id) {
     const compra = listaCompras.find(c => c.idcompra === id)
     if (!compra) return

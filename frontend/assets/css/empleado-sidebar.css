@@ -1,0 +1,159 @@
+/* Estilos del sidebar del panel de empleado: menú de navegación, perfil de usuario y submenú de ajustes */
+/* ── BARRA LATERAL ──────────────────────────────────────────── */
+.barra-lateral {
+    width: 280px;
+    background-color: var(--bg-sidebar);
+    padding: 20px;
+    border-right: 2px solid var(--color-border);
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+    left: 0;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Logo de la empresa */
+.logo-empresa {
+    margin-bottom: 30px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.logo-empresa img {
+    width: 180px;
+    height: auto;
+}
+
+/* Lista del menú */
+.lista-menu {
+    list-style: none;
+    flex: 1;
+}
+
+/* Cada opción del menú */
+.opcion-menu {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    margin-bottom: 5px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    color: var(--color-accent);
+}
+
+.opcion-menu:hover {
+    background-color: var(--bg-header);
+    color: #7a5555;
+}
+
+/* Opción del menú activa */
+.opcion-menu.activa {
+    background-color: var(--color-accent);
+    color: white;
+}
+
+/* Icono del menú */
+.icono-menu {
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+}
+
+/* Menú de ajustes desplegable */
+.menu-ajustes-wrapper {
+    margin-top: auto;
+    position: relative;
+}
+
+.menu-ajustes {
+    list-style: none;
+    background: var(--bg-submenu);
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    width: 100%;
+    display: none;
+    z-index: 101;
+}
+
+.menu-ajustes.activo {
+    display: block;
+}
+
+.opcion-submenu {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.opcion-submenu:last-child {
+    border-bottom: none;
+}
+
+.opcion-submenu:hover {
+    background-color: var(--bg-header);
+}
+
+.opcion-submenu.cerrar-sesion:hover {
+    color: #d9534f;
+}
+
+.icono-submenu {
+    width: 18px;
+    height: 18px;
+    margin-right: 12px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+}
+
+/* Perfil del usuario */
+.perfil-usuario {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: #c9a48a;
+    border-radius: 12px;
+    margin-top: 12px;
+}
+
+/* Avatar circular del usuario */
+.avatar-usuario {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: #e8b4b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    margin-right: 12px;
+}
+
+/* Información del usuario */
+.info-usuario h4 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: white;
+}
+
+.info-usuario p {
+    font-size: 12px;
+    color: rgba(255,255,255,0.75);
+}

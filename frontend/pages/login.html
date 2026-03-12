@@ -1,41 +1,84 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-tema="claro">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | HELAR-TEC</title>
-    <link rel="stylesheet" href="../assets/css/auth.css">
+    <title>Iniciar Sesión | HELAR-TEC</title>
+    <link rel="stylesheet" href="../assets/css/login.css?v=2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<body style="background-color: black; color: white;">
-    <div class="container">
-        <div class="card">
-            <div class="logo-container">
-                <img src="../assets/img/logo-helar.jpeg" width="120" height="40" alt="HELAR-TEC">
-            </div>
+<body>
+    <div class="login-wrapper">
 
-            <div class="logo">
-                <p class="subtitle">Ingresa tus credenciales</p>
-            </div>
+        <!-- LEFT PANEL: logo / branding -->
+        <div class="login-izquierda">
+            <img src="../assets/img/logo-helar.jpeg" alt="HELAR-TEC" class="login-logo-img">
+            <h1 class="login-brand">HELAR-TEC</h1>
+            <p class="login-tagline">Sistema de Gestión Interno</p>
+        </div>
 
-            <form id="loginForm">
-                <div class="input-group">
-                    <label>Usuario</label>
-                    <input type="text" id="usuario" placeholder="Ingresa tu usuario" required>
-                </div>
+        <!-- RIGHT PANEL: form -->
+        <div class="login-derecha">
 
-                <div class="input-group">
-                    <label>Contraseña</label>
-                    <div class="password-wrapper">
-                        <input type="password" id="contrasena" placeholder="Ingresa tu contraseña" required>
-                        
-                    </div>
-                </div>
-                <button type="submit" class="btn-primary">
-                    Iniciar sesión
+            <div class="login-top-bar">
+                <a href="../index.html" class="btn-volver">
+                    <i class="fas fa-arrow-left"></i> Volver al inicio
+                </a>
+                <button type="button" class="btn-tema-login" onclick="toggleTemaLogin()" title="Cambiar tema">
+                    <i class="fas fa-moon" id="iconoTemaLogin"></i>
                 </button>
-            </form>
+            </div>
+
+            <div class="login-form-container">
+                <h2 class="login-titulo">Bienvenido</h2>
+                <p class="login-subtitulo">Ingresa tus credenciales para acceder al sistema</p>
+
+                <form id="loginForm">
+                    <div class="input-group">
+                        <label><i class="fas fa-user"></i> Usuario</label>
+                        <input type="text" id="usuario" placeholder="Ingresa tu usuario" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label><i class="fas fa-lock"></i> Contraseña</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="contrasena" placeholder="Ingresa tu contraseña" required>
+                            <button type="button" class="eye-btn" onclick="
+                                const inp = document.getElementById('contrasena');
+                                const ico = document.getElementById('eyeIcon');
+                                if (inp.type === 'password') { inp.type = 'text'; ico.className = 'fas fa-eye-slash'; }
+                                else { inp.type = 'password'; ico.className = 'fas fa-eye'; }
+                            ">
+                                <i class="fas fa-eye" id="eyeIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Iniciar sesión
+                    </button>
+                    <div id="mensajeLogin" style="display:none; margin-top:12px;"></div>
+                </form>
+            </div>
         </div>
     </div>
+
+    <script src="../assets/js/auth.js"></script>
+    <script>
+        function toggleTemaLogin() {
+            const esDark = document.documentElement.getAttribute('data-tema') === 'oscuro'
+            const nuevo = esDark ? 'claro' : 'oscuro'
+            document.documentElement.setAttribute('data-tema', nuevo)
+            localStorage.setItem('tema', nuevo)
+            document.getElementById('iconoTemaLogin').className = nuevo === 'oscuro' ? 'fas fa-sun' : 'fas fa-moon'
+        }
+        ;(function() {
+            const saved = localStorage.getItem('tema') || 'claro'
+            document.documentElement.setAttribute('data-tema', saved)
+            document.addEventListener('DOMContentLoaded', () => {
+                document.getElementById('iconoTemaLogin').className = saved === 'oscuro' ? 'fas fa-sun' : 'fas fa-moon'
+            })
+        })()
+    </script>
 </body>
-<script src="../assets/js/auth.js"></script>
 </html>

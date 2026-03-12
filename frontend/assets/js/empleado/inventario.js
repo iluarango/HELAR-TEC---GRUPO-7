@@ -38,8 +38,8 @@ function renderTablaInsumos(insumos) {
             <tr>
                 <td>${i.nombreinsumo}</td>
                 <td>${i.tipoinsumo}</td>
-                <td style="color: ${stockBajo ? '#991b1b' : 'inherit'}; font-weight: ${stockBajo ? '600' : 'normal'};">
-                    ${i.stock} ${stockBajo ? '<i class="fas fa-exclamation-triangle" style="color:#991b1b; font-size:12px;"></i>' : ''}
+                <td style="color: ${stockBajo ? '#dc2626' : 'inherit'}; font-weight: ${stockBajo ? '600' : 'normal'};">
+                    ${i.stock} ${stockBajo ? '<i class="fas fa-exclamation-triangle" style="color:#dc2626; font-size:12px;"></i>' : ''}
                 </td>
                 <td>${i.stockminimo}</td>
                 <td>${i.unidadmedida}</td>
@@ -48,7 +48,7 @@ function renderTablaInsumos(insumos) {
                     <div class="estado-dropdown-wrapper">
                         <span class="badge-clickeable ${i.estado === 'activo' ? 'estado-disponible' : 'estado-bajo'}"
                             onclick="toggleDropdownEstadoInsumo(${i.idinsumo}, event)">
-                            ${i.estado}
+                            ${i.estado} <i class="fas fa-chevron-down" style="font-size:9px;"></i>
                         </span>
                         <div class="estado-dropdown" id="dropdown-insumo-${i.idinsumo}">
                             <div class="estado-opcion" onclick="cambiarEstadoInsumo(${i.idinsumo}, 'activo')">activo</div>
@@ -84,9 +84,10 @@ function toggleDropdownEstadoInsumo(id, event) {
     event.stopPropagation()
     document.querySelectorAll('.estado-dropdown.abierto').forEach(d => d.classList.remove('abierto'))
     const dropdown = document.getElementById(`dropdown-insumo-${id}`)
-    const rect = event.target.getBoundingClientRect()
-    dropdown.style.top = `${rect.bottom + window.scrollY + 4}px`
-    dropdown.style.left = `${rect.left + window.scrollX}px`
+    const badge = event.currentTarget || event.target.closest('.badge-clickeable') || event.target
+    const rect = badge.getBoundingClientRect()
+    dropdown.style.top = `${rect.top}px`
+    dropdown.style.left = `${rect.right + 8}px`
     dropdown.classList.toggle('abierto')
 }
 
@@ -112,6 +113,7 @@ async function cambiarEstadoInsumo(id, nuevoEstado) {
 // ── MODAL UNIFICADO ────────────────────────────────────────
 const modalInsumo = document.getElementById('modalInsumo')
 
+/** Abre el modal en modo edición (si se pasa id) o en modo registro (sin id) */
 function abrirModalInsumo(id = null) {
     const titulo = document.getElementById('tituloModalInsumo')
     const subtitulo = document.getElementById('subtituloModalInsumo')

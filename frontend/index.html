@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es" data-tema="claro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+    <link rel="stylesheet" href="assets/css/pagina-principal.css?v=2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+     <nav>
+    <a href="#inicio" class="nav-logo">
+      <div class="nav-logo-icono"><img class="image" src="assets/img/LOGONOFON.png" alt=""></div>
+      HELARTEC
+    </a>
+    <button class="nav-hamburguesa" id="navHamburguesa" onclick="toggleNavMobile()">
+        <i class="fas fa-bars"></i>
+    </button>
+    <ul class="nav-links">
+      <li><a href="#inicio">Inicio</a></li>
+      <li><a href="#roles">Roles</a></li>
+      <li><a href="#pasos">¿Cómo ingresar?</a></li>
+      <li>
+        <button class="btn-tema-index" onclick="toggleTemaIndex()" title="Cambiar tema">
+            <i class="fas fa-moon" id="iconoTemaIndex"></i>
+        </button>
+        <a href="pages/login.html" class="nav-boton-registro">Ingresar</a>
+      </li>
+    </ul>
+  </nav>
+  <!-- HERO — BIENVENIDA -->
+  <section class="hero" id="inicio">
+    <div class="hero-circulo-1"></div>
+    <div class="hero-circulo-2"></div>
+
+    <div class="hero-contenido">
+
+      <!-- Texto izquierdo -->
+      <div class="hero-texto">
+        <div class="etiqueta">
+          <span class="etiqueta-punto"></span>
+          Portal de acceso interno Para ti y tus empleados.
+        </div>
+
+        <h1 class="hero-titulo">
+          Bienvenido a tu <br />
+          <span class="texto-rosa">PORTAL DE ACCESO</span><br />
+          <strong>para tu sistema de Gestión HELARTEC</strong>
+        </h1>
+        </div>
+  </section>
+
+  <div class="separador"></div>
+
+  <!-- SECCIÓN DE ROLES -->
+  <section class="seccion-roles" id="roles">
+    <div class="seccion-encabezado centrado">
+      <div class="seccion-tag">Acceso por rol</div>
+      <h2 class="seccion-titulo">Un sistema para <strong>todo el equipo</strong></h2>
+      <p class="seccion-descripcion">
+        El portal cuenta con dos tipos de cuenta. Cada rol tiene acceso a las
+        herramientas que necesita para su trabajo diario.
+      </p>
+    </div>
+
+    <div class="roles-cuadricula">
+
+      <div class="tarjeta-rol">
+        <div class="tarjeta-rol-titulo">Empleado</div>
+        <div class="tarjeta-rol-descripcion">
+          Registra insumos, registra pedidos, revisa inventario asignado,  ventas, facturación, proveedores, pedidos.
+        </div>
+      </div>
+      <div class="tarjeta-rol">
+        <div class="tarjeta-rol-titulo">Administrador</div>
+        <div class="tarjeta-rol-descripcion">
+          Registra nuevos empleados, gastos operativos y acceso a un dahsboard general con información de ventas, inventario, gastos, entre otros.
+        </div>
+      </div>
+
+      <div class="tarjeta-rol seguridad">
+        <div class="tarjeta-rol-titulo">Acceso seguro y privado</div>
+        <div class="tarjeta-rol-descripcion">
+          Cada cuenta es personal e intransferible. Toda la información está
+          protegida y solo es accesible por personal autorizado.
+          Si tienes problemas con tu acceso, contacta al área de Recursos Humanos.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- SECCIÓN CÓMO INGRESAR -->
+  <section class="seccion-pasos" id="pasos">
+    <div class="seccion-encabezado centrado">
+      <div class="seccion-tag">Proceso simple</div>
+      <h2 class="seccion-titulo">¿Cómo <strong>Ingresar al sistema</strong>?</h2>
+      <p class="seccion-descripcion">
+        Solo necesitas unos minutos. Sigue estos 4 pasos.
+      </p>
+    </div>
+
+    <div class="pasos-cuadricula">
+
+      <div class="tarjeta-paso">
+        <div class="paso-numero">01</div>
+        <div class="paso-titulo">Ingresa al login</div>
+        <div class="paso-descripcion">
+          Ingresa atraves del boton <strong style="color: #4A3728">INGRESAR</strong> que se encuentra en la barra de navegación en la parte superior de la pagina.
+        </div>
+      </div>
+
+      <div class="tarjeta-paso">
+        <div class="paso-numero">02</div>
+        <div class="paso-titulo">Agrega tus datos</div>
+        <div class="paso-descripcion">
+          Ingresa tu <strong style="color: #4A3728">usuario</strong>
+          y <strong style="color: #4A3728">contraseña</strong>
+          para acceder al sistema.
+        </div>
+      </div>
+
+      <div class="tarjeta-paso">
+        <div class="paso-numero">03</div>
+        <div class="paso-titulo">Verifica</div>
+        <div class="paso-descripcion">
+          Verifica que tus datos estén correctos. Ahora podras inciar sesión.
+        </div>
+      </div>
+
+      <div class="tarjeta-paso">
+        <div class="paso-numero">04</div>
+        <div class="paso-titulo">¡Listo para trabajar!</div>
+        <div class="paso-descripcion">
+         Estas dentro, puedes empiezar a usar el sistema de inmediato.
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <script>
+        function toggleTemaIndex() {
+            const esDark = document.documentElement.getAttribute('data-tema') === 'oscuro'
+            const nuevo = esDark ? 'claro' : 'oscuro'
+            document.documentElement.setAttribute('data-tema', nuevo)
+            localStorage.setItem('tema', nuevo)
+            document.getElementById('iconoTemaIndex').className = nuevo === 'oscuro' ? 'fas fa-sun' : 'fas fa-moon'
+        }
+        function toggleNavMobile() {
+            document.querySelector('.nav-links').classList.toggle('abierta')
+        }
+        ;(function() {
+            const saved = localStorage.getItem('tema') || 'claro'
+            document.documentElement.setAttribute('data-tema', saved)
+            document.addEventListener('DOMContentLoaded', () => {
+                const ico = document.getElementById('iconoTemaIndex')
+                if (ico) ico.className = saved === 'oscuro' ? 'fas fa-sun' : 'fas fa-moon'
+            })
+        })()
+    </script>
+</body>
+</html>

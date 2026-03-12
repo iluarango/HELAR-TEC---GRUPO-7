@@ -32,6 +32,19 @@ exports.register = asyncHandler(async (req, res) => {
     })
 })
 
+// Insumos próximos a vencer (en los próximos 3 días)
+exports.getProximosVencer = asyncHandler(async (req, res) => {
+    const result = await pool.query(`
+        SELECT * FROM insumos
+        WHERE fechacaducidad IS NOT NULL
+          AND fechacaducidad <= NOW() + INTERVAL '3 days'
+          AND fechacaducidad >= NOW()
+          AND estado = 'activo'
+        ORDER BY fechacaducidad ASC
+    `)
+    res.json({ success: true, insumos: result.rows })
+})
+
 // Actualizar estado del insumo (activo/inactivo)
 exports.updateEstado = asyncHandler(async (req, res) => {
     const { id } = req.params

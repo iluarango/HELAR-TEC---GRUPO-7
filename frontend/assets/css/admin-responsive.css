@@ -1,0 +1,183 @@
+/* Estilos responsivos del panel administrativo para distintos tamaños de pantalla y menú hamburguesa */
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+/* ─ 1400px: PC mediano – ocultar calendario ─────────────── */
+@media (max-width: 1400px) {
+    .seccion-calendario {
+        display: none;
+    }
+    .contenido-principal {
+        padding-right: 40px;
+    }
+}
+
+/* ─ 1200px: PC pequeño ───────────────────────────────────── */
+@media (max-width: 1200px) {
+    .cuadricula-estadisticas {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ─ 1024px: tablet landscape ────────────────────────────── */
+@media (max-width: 1024px) {
+    .barra-lateral-izquierda {
+        width: 210px;
+    }
+    .contenido-principal {
+        margin-left: 210px;
+        padding: 24px;
+    }
+    .grid-reportes {
+        grid-template-columns: 1fr;
+    }
+    .cards-ventas {
+        flex-direction: column;
+    }
+    .tabla-empleados {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .modal-contenido {
+        max-width: 95%;
+        padding: 24px;
+    }
+}
+
+/* ─ 768px: tablet portrait ──────────────────────────────── */
+@media (max-width: 768px) {
+    .barra-lateral-izquierda {
+        width: 180px;
+        padding: 14px;
+    }
+    .contenido-principal {
+        margin-left: 180px;
+        padding: 16px;
+    }
+    .cuadricula-estadisticas {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .encabezado-seccion {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+    .boton-generar {
+        width: 100%;
+        justify-content: center;
+    }
+    .modal-contenido {
+        max-width: 98%;
+        padding: 20px;
+        border-radius: 12px;
+    }
+}
+
+/* ─ 600px: móvil ────────────────────────────────────────── */
+@media (max-width: 600px) {
+    .barra-lateral-izquierda {
+        width: 160px;
+        padding: 12px;
+    }
+    .barra-lateral-izquierda .item-menu span,
+    .barra-lateral-izquierda .item-menu:not(.item-ajustes) > :not(svg):not(i) {
+        display: none;
+    }
+    .item-menu {
+        justify-content: center;
+        padding: 12px;
+    }
+    .contenido-principal {
+        margin-left: 160px;
+        padding: 12px;
+    }
+    .cuadricula-estadisticas {
+        grid-template-columns: 1fr;
+    }
+    .modal-contenido {
+        max-width: 100%;
+        border-radius: 10px;
+        padding: 16px;
+    }
+}
+
+/* ── HAMBURGER BUTTON ───────────────────────────────────── */
+.btn-hamburguesa {
+    display: none;
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    z-index: 300;
+    background: var(--color-accent);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    width: 42px;
+    height: 42px;
+    font-size: 18px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: background 0.2s;
+}
+.btn-hamburguesa:hover { background: var(--color-accent2); }
+
+.overlay-sidebar {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 149;
+}
+.overlay-sidebar.activo { display: block; }
+
+@media (max-width: 768px) {
+    .btn-hamburguesa { display: flex; }
+
+    .barra-lateral-izquierda {
+        transform: translateX(-110%);
+        transition: transform 0.3s ease;
+        z-index: 150;
+        width: 260px !important;
+        box-shadow: 4px 0 20px rgba(0,0,0,0.2);
+    }
+    .barra-lateral-izquierda.abierta { transform: translateX(0); }
+
+    .contenido-principal {
+        margin-left: 0 !important;
+        padding: 70px 14px 20px !important;
+    }
+    .seccion-calendario { display: none !important; }
+
+    .tabla-contenedor { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .tabla-empleados { min-width: 560px; font-size: 13px; }
+    .tabla-empleados th, .tabla-empleados td { padding: 10px 10px; white-space: nowrap; }
+
+    .modal { align-items: flex-end !important; }
+    .modal-contenido {
+        max-width: 100% !important;
+        width: 100% !important;
+        border-radius: 20px 20px 0 0 !important;
+        max-height: 92vh;
+    }
+    .modal-logout-contenido { border-radius: 20px 20px 0 0 !important; }
+
+    .encabezado-seccion { flex-direction: column; gap: 10px; align-items: flex-start; }
+    .boton-generar { width: 100%; justify-content: center; }
+    .grid-reportes { grid-template-columns: 1fr !important; }
+    .cards-ventas { flex-direction: column !important; }
+    .cuadricula-estadisticas { grid-template-columns: 1fr !important; }
+    .pestanas-reportes { flex-wrap: wrap; }
+
+    .encabezado-seccion h2 { font-size: 16px; }
+    .barra-busqueda { margin-bottom: 16px; }
+}
+
+@media (max-width: 480px) {
+    .contenido-principal { padding: 65px 10px 16px !important; }
+    .tabla-empleados th, .tabla-empleados td { padding: 8px 8px; font-size: 12px; }
+    .modal-contenido { padding: 20px 14px; }
+}

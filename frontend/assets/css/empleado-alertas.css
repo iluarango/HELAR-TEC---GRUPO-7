@@ -1,0 +1,124 @@
+/* Estilos de las tarjetas de alerta de vencimiento de insumos en el panel de empleado */
+/* ── ALERTAS DE VENCIMIENTO ─────────────────────────────────── */
+
+.alerta-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--bg-card);
+    border-radius: 14px;
+    padding: 16px 20px;
+    border: 1.5px solid var(--color-border);
+    box-shadow: 0 2px 8px rgba(169,124,115,0.07);
+    animation: fadeInUp 0.5s ease backwards;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.alerta-card.no-leida {
+    border-color: #fca5a5;
+    background: #fff8f8;
+}
+
+.alerta-card.urgente {
+    border-color: #dc2626;
+    background: #fff0f0;
+}
+
+.alerta-card.leida {
+    opacity: 0.6;
+}
+
+.alerta-icono {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #fee2e2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #dc2626;
+    font-size: 16px;
+}
+
+.alerta-card.leida .alerta-icono {
+    background: #f3f4f6;
+    color: #9ca3af;
+}
+
+.alerta-info {
+    flex: 1;
+}
+
+.alerta-titulo {
+    font-weight: 700;
+    font-size: 15px;
+    color: #5a3e3e;
+    margin-bottom: 4px;
+}
+
+.alerta-detalle {
+    font-size: 13px;
+    color: #8b7070;
+}
+
+.texto-urgente {
+    color: #dc2626;
+    font-weight: 700;
+}
+
+.texto-proximo {
+    color: #b45309;
+    font-weight: 600;
+}
+
+.alerta-btn-leida {
+    background: var(--bg-table-odd);
+    border: 1.5px solid var(--color-border);
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+    color: var(--color-accent);
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.alerta-btn-leida:hover {
+    border-color: var(--color-accent);
+    background: #f0ddd5;
+    color: #7a5555;
+}
+
+.alerta-icono i {
+    color: #dc2626;
+}
+
+.alerta-card.leida .alerta-icono i {
+    color: var(--color-accent);
+}
+
+.alerta-vacia {
+    text-align: center;
+    padding: 60px 20px;
+    color: #b8a090;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.alerta-vacia p {
+    font-size: 16px;
+    font-weight: 600;
+    color: #8b7070;
+    margin-bottom: 6px;
+}
+
+.alerta-vacia span {
+    font-size: 13px;
+    color: #b8a090;
+}

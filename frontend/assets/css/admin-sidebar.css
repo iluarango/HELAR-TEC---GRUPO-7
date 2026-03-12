@@ -1,0 +1,185 @@
+/* Estilos del sidebar del panel administrativo: menú de navegación, perfil de usuario y submenú de ajustes */
+/* ========================================
+   BARRA LATERAL IZQUIERDA (MENÚ)
+   ======================================== */
+
+.barra-lateral-izquierda {
+    width: 250px;
+    background-color: var(--bg-sidebar);
+    padding: 20px;
+    border-right: 2px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 100;
+}
+
+/* Logo de la empresa */
+.logo {
+    padding: 10px 0 30px 0;
+    font-size: 14px;
+    color: var(--color-text-muted);
+}
+
+/* Título del panel */
+.barra-lateral-izquierda h2 {
+    font-size: 18px;
+    color: var(--color-text-muted);
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+/* Contenedor del menú */
+.menu {
+    flex: 1;
+}
+
+/* Cada elemento del menú */
+.item-menu {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    margin-bottom: 5px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    color: var(--color-accent);
+    font-size: 15px;
+}
+
+/* Efecto al pasar el mouse sobre un elemento del menú */
+.item-menu:hover {
+    background-color: var(--bg-header);
+    color: var(--color-text-table);
+}
+
+/* Elemento del menú activo/seleccionado */
+.item-menu.activo {
+    background-color: var(--color-accent);
+    color: white;
+}
+
+/* Iconos dentro de los elementos del menú */
+.item-menu svg,
+.item-menu > i {
+    margin-right: 12px;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    font-size: 16px;
+    text-align: center;
+}
+
+/* ========================================
+   PERFIL DE USUARIO (parte inferior del menú)
+   ======================================== */
+
+.perfil-usuario {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: #c9a48a;
+    border-radius: 12px;
+    margin-top: 12px;
+}
+
+/* Avatar circular del usuario */
+.avatar-usuario {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: #e8b4b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    margin-right: 12px;
+}
+
+/* Información del usuario */
+.perfil-usuario .info-usuario h3 {
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.perfil-usuario .info-usuario p {
+    color: rgba(255,255,255,0.75);
+    font-size: 12px;
+}
+
+/* ========================================
+   SUBMENU AJUSTES (popup tipo empleado)
+   ======================================== */
+
+.menu-ajustes-wrapper-admin {
+    position: relative;
+    margin-top: 5px;
+}
+
+.item-ajustes {
+    cursor: pointer;
+}
+
+/* Popup sobre el botón */
+.submenu-ajustes {
+    list-style: none;
+    background: var(--bg-submenu);
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    position: absolute;
+    bottom: 110%;
+    left: 0;
+    width: 100%;
+    display: none;
+    z-index: 101;
+    overflow: hidden;
+}
+
+.submenu-ajustes.abierto {
+    display: block;
+}
+
+/* Cada opción del submenu */
+.submenu-item {
+    display: flex;
+    align-items: center;
+    padding: 14px 18px;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 14px;
+}
+
+.submenu-item:hover {
+    background-color: #fff5f5;
+    color: var(--color-text);
+}
+
+.submenu-item.cerrar-sesion:hover {
+    color: #d9534f;
+}
+
+.icono-submenu-admin {
+    width: 18px;
+    height: 18px;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+/* ========================================
+   LOGO EMPRESA
+   ======================================== */
+
+.logo-empresa {
+    margin-bottom: 20px;
+    padding: 10px 0;
+    display: flex;
+    justify-content: center;
+}

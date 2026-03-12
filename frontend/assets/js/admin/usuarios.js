@@ -12,6 +12,7 @@ modal.addEventListener('click', (e) => {
     if (e.target === modal) cerrarModal()
 })
 
+/** Cierra el modal de registro, resetea el formulario y oculta los requisitos de contraseña */
 function cerrarModal() {
     modal.style.display = 'none'
     document.getElementById('formRegistroEmpleado').reset()
@@ -93,6 +94,7 @@ document.getElementById('formRegistroEmpleado').addEventListener('submit', async
 // ── MODAL EDITAR ROL ───────────────────────────────────────
 const modalEditar = document.getElementById('modalEditarRol')
 
+/** Precarga datos del usuario en el modal de edición de rol y lo muestra */
 function abrirModalEditar(id, nombre, idRolActual) {
     document.getElementById('editIdUsuario').value = id
     document.getElementById('editNombreUsuario').value = nombre
@@ -153,6 +155,7 @@ document.getElementById('formEditarRol').addEventListener('submit', async (e) =>
 const modalEliminar = document.getElementById('modalEliminar')
 let idUsuarioAEliminar = null
 
+/** Guarda el id a eliminar y muestra el modal de confirmación con el nombre del usuario */
 function abrirModalEliminar(id, nombre) {
     idUsuarioAEliminar = id
     document.getElementById('nombreEliminar').textContent = nombre

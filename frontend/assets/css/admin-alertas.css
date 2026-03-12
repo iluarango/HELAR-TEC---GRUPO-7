@@ -1,0 +1,120 @@
+/* Estilos de las tarjetas de alertas y notificaciones del panel administrativo */
+/* ── ALERTAS ADMIN ────────────────────────────────────────────── */
+.alerta-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    border-radius: 14px;
+    background: var(--bg-card);
+    border: 1px solid #f0e0e0;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.alerta-card.no-leida {
+    border-left: 4px solid var(--color-accent);
+    background: var(--bg-table-odd);
+}
+
+.alerta-card.urgente {
+    border-left: 4px solid #dc2626;
+    background: #fff5f5;
+}
+
+.alerta-icono {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #fceaea;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-accent);
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.alerta-card.urgente .alerta-icono {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.alerta-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.alerta-info strong {
+    color: #5a3e3e;
+    font-size: 14px;
+}
+
+.alerta-info span {
+    color: var(--color-text-table);
+    font-size: 13px;
+}
+
+.alerta-info small {
+    color: var(--color-text-muted);
+    font-size: 12px;
+}
+
+.alerta-btn-leida {
+    background: #f0f0f0;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--color-accent);
+    font-size: 13px;
+    transition: background 0.2s, color 0.2s;
+    flex-shrink: 0;
+}
+
+.alerta-btn-leida:hover {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.alerta-vacia {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--color-text-muted);
+}
+
+.alerta-vacia i {
+    font-size: 48px;
+    margin-bottom: 16px;
+    display: block;
+    color: var(--color-accent2);
+}
+
+.alerta-vacia p {
+    font-size: 15px;
+}
+
+.btn-marcar-todas-admin {
+    background: var(--color-accent);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s;
+}
+
+.btn-marcar-todas-admin:hover {
+    background: #b58b8b;
+}

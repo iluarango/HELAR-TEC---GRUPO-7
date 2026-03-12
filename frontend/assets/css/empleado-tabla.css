@@ -1,0 +1,299 @@
+/* Estilos de las tablas de inventario, pedidos y ventas, badges de estado y botones de acción del panel de empleado */
+/* ── TABLA INVENTARIO Y PEDIDOS ─────────────────────────────── */
+.tabla-inventario,
+.tabla-pedidos {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-card);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+}
+
+.tabla-inventario thead,
+.tabla-pedidos thead {
+    background-color: var(--bg-header);
+    border-bottom: 2px solid var(--color-border);
+}
+
+.tabla-inventario th,
+.tabla-pedidos th {
+    text-align: left;
+    padding: 16px 20px;
+    font-weight: 600;
+    color: var(--color-text-table);
+    font-size: 14px;
+}
+
+.tabla-inventario td,
+.tabla-pedidos td {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--color-border-light);
+    font-size: 14px;
+    color: var(--color-text-table);
+}
+
+.tabla-inventario tr:last-child td,
+.tabla-pedidos tr:last-child td {
+    border-bottom: none;
+}
+
+/* Filas alternas */
+.tabla-inventario tbody tr:nth-child(even),
+.tabla-pedidos tbody tr:nth-child(even) {
+    background-color: var(--bg-table-even);
+}
+
+.tabla-inventario tbody tr:nth-child(odd),
+.tabla-pedidos tbody tr:nth-child(odd) {
+    background-color: var(--bg-table-odd);
+}
+
+.tabla-inventario tbody tr:hover,
+.tabla-pedidos tbody tr:hover {
+    background-color: var(--bg-table-hover) !important;
+}
+
+/* TABLA DE PEDIDOS Y VENTAS */
+.seccion-pedidos,
+.seccion-ventas {
+    margin-top: 20px;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.tabla-pedidos,
+.tabla-ventas {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-card);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+}
+
+.tabla-pedidos th,
+.tabla-ventas th {
+    background-color: var(--bg-header);
+    padding: 16px 20px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--color-text-table);
+    font-size: 14px;
+    border-bottom: 2px solid var(--color-border);
+}
+
+.tabla-pedidos td,
+.tabla-ventas td {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--color-border-light);
+    font-size: 14px;
+    color: var(--color-text-table);
+}
+
+.tabla-pedidos tbody tr:hover,
+.tabla-ventas tbody tr:hover {
+    background-color: var(--bg-table-hover);
+}
+
+/* Etiqueta de estado */
+.etiqueta-estado {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* Estados de pedidos */
+.estado-pendiente {
+    background: #fef3c7;
+    color: #92400e;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.estado-completado {
+    background: #d1fae5;
+    color: #065f46;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.estado-cancelado {
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+/* Badge de estado */
+.badge-estado {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badge-estado.estado-disponible {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.estado-disponible {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.estado-bajo {
+    background-color: #fecaca;
+    color: #dc2626;
+}
+
+/* Dropdown de estado */
+.estado-dropdown-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.badge-clickeable {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.2s;
+}
+
+.badge-clickeable:hover {
+    opacity: 0.85;
+}
+
+.estado-dropdown {
+    display: none;
+    position: fixed;
+    background: var(--bg-card);
+    border: 1px solid var(--color-border-light);
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    min-width: 130px;
+    overflow: hidden;
+}
+
+.estado-dropdown.abierto {
+    display: block;
+}
+
+.estado-opcion {
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background 0.15s;
+}
+
+.estado-opcion:hover {
+    background: var(--bg-table-odd);
+    color: var(--color-text);
+}
+
+.estado-opcion.opcion-seleccionada {
+    color: var(--color-accent);
+    font-weight: 600;
+}
+
+/* Botones de acción */
+.botones-accion {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.boton-accion {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px 10px;
+    color: var(--color-accent);
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.boton-accion i {
+    font-size: 16px;
+}
+
+.boton-accion:hover {
+    background: #f5e6e6;
+    color: #7a5555;
+}
+
+.boton-cancelar-pedido {
+    color: #d9534f;
+}
+
+.boton-cancelar-pedido:hover {
+    background: #fee2e2;
+    color: #c9302c;
+}
+
+.boton-eliminar:hover {
+    background: #fff0f0;
+    color: #d9534f;
+}
+
+.icono-accion {
+    width: 18px;
+    height: 18px;
+}
+
+/* ── ANIMACIÓN FILAS DE TABLA ─────────────────────────────── */
+.tabla-inventario tbody tr,
+.tabla-pedidos tbody tr,
+.tabla-ventas tbody tr {
+    animation: fadeInUp 0.55s ease backwards;
+}
+.tabla-inventario tbody tr:nth-child(1),
+.tabla-pedidos tbody tr:nth-child(1),
+.tabla-ventas tbody tr:nth-child(1) { animation-delay: 0.06s; }
+.tabla-inventario tbody tr:nth-child(2),
+.tabla-pedidos tbody tr:nth-child(2),
+.tabla-ventas tbody tr:nth-child(2) { animation-delay: 0.12s; }
+.tabla-inventario tbody tr:nth-child(3),
+.tabla-pedidos tbody tr:nth-child(3),
+.tabla-ventas tbody tr:nth-child(3) { animation-delay: 0.18s; }
+.tabla-inventario tbody tr:nth-child(4),
+.tabla-pedidos tbody tr:nth-child(4),
+.tabla-ventas tbody tr:nth-child(4) { animation-delay: 0.24s; }
+.tabla-inventario tbody tr:nth-child(5),
+.tabla-pedidos tbody tr:nth-child(5),
+.tabla-ventas tbody tr:nth-child(5) { animation-delay: 0.30s; }
+.tabla-inventario tbody tr:nth-child(6),
+.tabla-pedidos tbody tr:nth-child(6),
+.tabla-ventas tbody tr:nth-child(6) { animation-delay: 0.36s; }
+.tabla-inventario tbody tr:nth-child(n+7),
+.tabla-pedidos tbody tr:nth-child(n+7),
+.tabla-ventas tbody tr:nth-child(n+7) { animation-delay: 0.42s; }
+
+/* Estado cancelado inline (sin badge) */
+.estado-cancelado-inline {
+    background-color: #f3f4f6;
+    color: #6b7280;
+}

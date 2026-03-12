@@ -38,7 +38,7 @@ function renderTablaProveedores(proveedores) {
                 <div class="estado-dropdown-wrapper">
                     <span class="badge-clickeable ${p.estado === 'activo' ? 'estado-disponible' : 'estado-bajo'}"
                         onclick="toggleDropdownEstadoProveedor(${p.idproveedor}, event)">
-                        ${p.estado}
+                        ${p.estado} <i class="fas fa-chevron-down" style="font-size:9px;"></i>
                     </span>
                     <div class="estado-dropdown" id="dropdown-proveedor-${p.idproveedor}">
                         <div class="estado-opcion" onclick="cambiarEstadoProveedor(${p.idproveedor}, 'activo')">activo</div>
@@ -71,9 +71,10 @@ function toggleDropdownEstadoProveedor(id, event) {
     event.stopPropagation()
     document.querySelectorAll('.estado-dropdown.abierto').forEach(d => d.classList.remove('abierto'))
     const dropdown = document.getElementById(`dropdown-proveedor-${id}`)
-    const rect = event.target.getBoundingClientRect()
-    dropdown.style.top = `${rect.bottom + window.scrollY + 4}px`
-    dropdown.style.left = `${rect.left + window.scrollX}px`
+    const badge = event.currentTarget || event.target.closest('.badge-clickeable') || event.target
+    const rect = badge.getBoundingClientRect()
+    dropdown.style.top = `${rect.top}px`
+    dropdown.style.left = `${rect.right + 8}px`
     dropdown.classList.toggle('abierto')
 }
 

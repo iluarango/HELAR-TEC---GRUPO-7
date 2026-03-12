@@ -1,0 +1,181 @@
+/* Estilos de las tablas de datos, badges de estado y dropdowns del panel administrativo */
+/* ========================================
+   TABLA DE EMPLEADOS
+   ======================================== */
+
+.tabla-contenedor {
+    background-color: var(--bg-card);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    margin-top: 20px;
+}
+
+.tabla-empleados {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabla-empleados th {
+    background-color: var(--bg-header);
+    padding: 16px 20px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--color-text-table);
+    font-size: 14px;
+    border-bottom: 2px solid var(--color-border);
+}
+
+.tabla-empleados td {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--color-border-light);
+    font-size: 14px;
+    color: var(--color-text-table);
+}
+
+/* Filas alternas */
+.tabla-empleados tbody tr:nth-child(even) {
+    background-color: var(--bg-table-even);
+}
+
+.tabla-empleados tbody tr:nth-child(odd) {
+    background-color: var(--bg-table-odd);
+}
+
+.tabla-empleados tbody tr:hover {
+    background-color: var(--bg-table-hover) !important;
+}
+
+/* ── ANIMACIÓN TABLAS ────────────────────────────────────── */
+.tabla-empleados tbody tr {
+    animation: fadeInUp 0.55s ease backwards;
+}
+.tabla-empleados tbody tr:nth-child(1) { animation-delay: 0.06s; }
+.tabla-empleados tbody tr:nth-child(2) { animation-delay: 0.12s; }
+.tabla-empleados tbody tr:nth-child(3) { animation-delay: 0.18s; }
+.tabla-empleados tbody tr:nth-child(4) { animation-delay: 0.24s; }
+.tabla-empleados tbody tr:nth-child(5) { animation-delay: 0.30s; }
+.tabla-empleados tbody tr:nth-child(6) { animation-delay: 0.36s; }
+.tabla-empleados tbody tr:nth-child(n+7) { animation-delay: 0.42s; }
+
+/* ========================================
+   BADGES
+   ======================================== */
+
+.badge-rol {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badge-admin {
+    background-color: #a47c7c;
+    color: white;
+}
+
+.badge-empleado {
+    background-color: #8b6b6b;
+    color: white;
+}
+
+.badge-estado {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badge-activo {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.badge-inactivo {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+/* ========================================
+   BOTONES DE ACCIÓN EN TABLA
+   ======================================== */
+
+.btn-accion-tabla {
+    background: none;
+    border: none;
+    color: var(--color-accent);
+    cursor: pointer;
+    padding: 8px 10px;
+    border-radius: 8px;
+    transition: all 0.2s;
+    margin: 0 2px;
+}
+
+.btn-accion-tabla i {
+    font-size: 16px;
+}
+
+.btn-accion-tabla:hover {
+    background-color: #f5e6e6;
+    color: var(--color-text-table);
+}
+
+/* ========================================
+   DROPDOWN DE ESTADO
+   ======================================== */
+
+.estado-dropdown-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+/* Badge clickeable con cursor pointer */
+.badge-clickeable {
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.2s;
+}
+
+.badge-clickeable:hover {
+    opacity: 0.85;
+}
+
+/* Dropdown oculto por defecto */
+.estado-dropdown {
+    display: none;
+    position: fixed;
+    background: var(--bg-card);
+    border: 1px solid var(--color-border-light);
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    min-width: 130px;
+    overflow: hidden;
+}
+
+/* Dropdown visible cuando tiene clase .abierto */
+.estado-dropdown.abierto {
+    display: block;
+}
+
+.estado-opcion {
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background 0.15s;
+}
+
+.estado-opcion:hover {
+    background: #fdf5f5;
+    color: var(--color-text);
+}
+
+.estado-opcion.opcion-seleccionada {
+    color: var(--color-accent);
+    font-weight: 600;
+}

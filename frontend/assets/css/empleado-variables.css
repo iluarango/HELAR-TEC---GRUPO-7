@@ -1,0 +1,45 @@
+/* Variables CSS del panel de empleado: colores, fondos, sombras y soporte de tema oscuro */
+/* ── EMPLEADO VARIABLES ─────────────────────────────────────── */
+:root {
+    --bg-page: #ffffff;
+    --bg-sidebar: #ffffff;
+    --bg-card: #ffffff;
+    --bg-input: #ffffff;
+    --bg-header: #f5ede9;
+    --bg-table-odd: #fdf5f0;
+    --bg-table-even: #f5e8e0;
+    --bg-table-hover: #ead5c9;
+    --bg-submenu: #ffffff;
+    --color-text: #333333;
+    --color-text-muted: #999999;
+    --color-text-label: #8b6b5f;
+    --color-text-table: #6b4f4f;
+    --color-accent: #a47c7c;
+    --color-accent2: #c9956c;
+    --color-border: #e8d5c4;
+    --color-border-light: #f0e0d0;
+    --shadow-card: 0 2px 5px rgba(0,0,0,0.05);
+    --shadow-modal: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+[data-tema="oscuro"] {
+    --bg-page: #4a2c18;
+    --bg-sidebar: #3a2010;
+    --bg-card: #5c3824;
+    --bg-input: #442818;
+    --bg-header: #5c3824;
+    --bg-table-odd: #4a2c18;
+    --bg-table-even: #5c3824;
+    --bg-table-hover: #6e4434;
+    --bg-submenu: #442818;
+    --color-text: #f5ede6;
+    --color-text-muted: #c8a88e;
+    --color-text-label: #e8c8a4;
+    --color-text-table: #e0c0a0;
+    --color-accent: #d4a888;
+    --color-accent2: #e8c8a4;
+    --color-border: #7a4a30;
+    --color-border-light: #5c3420;
+    --shadow-card: 0 2px 8px rgba(0,0,0,0.4);
+    --shadow-modal: 0 10px 40px rgba(0,0,0,0.6);
+}

@@ -1,0 +1,257 @@
+/* Estilos de la página de inicio de sesión: layout de dos paneles, formulario y soporte de tema oscuro */
+/* ── VARIABLES ─────────────────────────────────────────────── */
+:root {
+    --bg-right: #ffffff;
+    --bg-input: #ffffff;
+    --color-text: #333333;
+    --color-text-muted: #888888;
+    --color-label: #7a5555;
+    --color-border: #e8d5c4;
+    --color-accent: #a47c7c;
+    --color-accent2: #c9956c;
+    --shadow-input: 0 0 0 3px rgba(164,124,124,0.12);
+    --bg-btn-tema: #f5ede9;
+    --color-btn-tema: #a47c7c;
+}
+[data-tema="oscuro"] {
+    --bg-right: #4a2c18;
+    --bg-input: #5c3824;
+    --color-text: #f5ede6;
+    --color-text-muted: #c8a88e;
+    --color-label: #e8c8a4;
+    --color-border: #7a4a30;
+    --color-accent: #d4a888;
+    --color-accent2: #e8c8a4;
+    --shadow-input: 0 0 0 3px rgba(212,168,136,0.25);
+    --bg-btn-tema: #5c3824;
+    --color-btn-tema: #e8c8a4;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    display: flex;
+}
+
+/* ── WRAPPER ────────────────────────────────────────────────── */
+.login-wrapper {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* ── LEFT PANEL ─────────────────────────────────────────────── */
+.login-izquierda {
+    width: 42%;
+    background: linear-gradient(145deg, #a47c7c 0%, #c9956c 50%, #e8b4b8 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 30px;
+    gap: 20px;
+}
+
+.login-logo-img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid rgba(255,255,255,0.4);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+
+.login-brand {
+    color: white;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.login-tagline {
+    color: rgba(255,255,255,0.85);
+    font-size: 15px;
+    text-align: center;
+}
+
+/* ── RIGHT PANEL ─────────────────────────────────────────────── */
+.login-derecha {
+    flex: 1;
+    background-color: var(--bg-right);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: background-color 0.3s;
+}
+
+.login-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+}
+
+.btn-volver {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-accent);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: 20px;
+    background: transparent;
+    border: 1.5px solid var(--color-border);
+    transition: all 0.2s;
+}
+.btn-volver:hover {
+    background: var(--color-accent);
+    color: white;
+    border-color: var(--color-accent);
+}
+
+.btn-tema-login {
+    background: var(--bg-btn-tema);
+    border: none;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--color-btn-tema);
+    font-size: 16px;
+    transition: all 0.2s;
+}
+.btn-tema-login:hover { opacity: 0.8; }
+
+/* ── FORM CONTAINER ─────────────────────────────────────────── */
+.login-form-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px 60px 60px;
+    max-width: 480px;
+    width: 100%;
+    align-self: center;
+}
+
+.login-titulo {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 8px;
+}
+
+.login-subtitulo {
+    color: var(--color-text-muted);
+    font-size: 14px;
+    margin-bottom: 32px;
+}
+
+/* ── FORM FIELDS ────────────────────────────────────────────── */
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--color-label);
+    font-size: 13px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--color-border);
+    border-radius: 12px;
+    font-size: 14px;
+    background-color: var(--bg-input);
+    color: var(--color-text);
+    transition: all 0.2s;
+    outline: none;
+}
+
+.input-group input:focus {
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-input);
+}
+
+.input-group input::placeholder { color: var(--color-text-muted); }
+
+/* ── PASSWORD TOGGLE ────────────────────────────────────────── */
+.password-wrapper {
+    position: relative;
+}
+.password-wrapper input { padding-right: 44px; }
+.eye-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-accent);
+    font-size: 16px;
+    padding: 4px;
+}
+
+/* ── SUBMIT BUTTON ──────────────────────────────────────────── */
+.btn-primary {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent2));
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+.btn-primary:hover { opacity: 0.9; }
+.btn-primary:active { transform: scale(0.99); }
+.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ── MENSAJE ERROR/ÉXITO ────────────────────────────────────── */
+#mensajeLogin {
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+}
+
+/* ── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .login-wrapper { flex-direction: column; }
+
+    .login-izquierda {
+        width: 100%;
+        padding: 40px 20px 30px;
+        min-height: 260px;
+    }
+    .login-logo-img { width: 130px; height: 130px; }
+    .login-brand { font-size: 24px; }
+
+    .login-derecha { flex: 1; }
+    .login-form-container { padding: 20px 24px 40px; max-width: 100%; }
+    .login-titulo { font-size: 22px; }
+}
+
+@media (max-width: 400px) {
+    .login-logo-img { width: 100px; height: 100px; }
+    .login-form-container { padding: 16px 16px 32px; }
+}

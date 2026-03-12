@@ -1,6 +1,7 @@
 const pool = require('../config/database.config')
 const asyncHandler = require('../utils/asyncHandler')
 
+/** Devuelve todos los adicionales ordenados por id */
 exports.getAdicionales = asyncHandler(async (req, res) => {
     const result = await pool.query(
         'SELECT * FROM adicionales ORDER BY idadicional ASC'
@@ -8,6 +9,7 @@ exports.getAdicionales = asyncHandler(async (req, res) => {
     res.json({ success: true, adicionales: result.rows })
 })
 
+/** Registra un nuevo adicional con nombre y precio */
 exports.register = asyncHandler(async (req, res) => {
     const { nombre, precio } = req.body
 
@@ -22,6 +24,7 @@ exports.register = asyncHandler(async (req, res) => {
     res.status(201).json({ success: true, message: 'Adicional registrado', adicional: result.rows[0] })
 })
 
+/** Actualiza nombre y precio de un adicional por id */
 exports.update = asyncHandler(async (req, res) => {
     const { id } = req.params
     const { nombre, precio } = req.body
@@ -37,6 +40,7 @@ exports.update = asyncHandler(async (req, res) => {
     res.json({ success: true, message: 'Adicional actualizado', adicional: result.rows[0] })
 })
 
+/** Activa o desactiva un adicional */
 exports.updateEstado = asyncHandler(async (req, res) => {
     const { id } = req.params
     const { estado } = req.body

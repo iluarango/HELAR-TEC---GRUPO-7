@@ -24,23 +24,26 @@ if (loginForm) {
             if (data.success) {
                 localStorage.setItem('token', data.token)
                 localStorage.setItem('usuario', JSON.stringify(data.usuario))
-                if (data.usuario.rol === 'administrador') {
-    window.location.href = './admin.html'
-} else {
-    window.location.href = './empleado.html'
-}
+                sessionStorage.setItem('loginExitoso', '1')
+                btnSubmit.textContent = 'Ingresando...'
+                const destino = data.usuario.rol === 'administrador' ? './admin.html' : './empleado.html'
+                setTimeout(() => {
+                    window.location.href = destino
+                }, 3000)
+                return
             } else {
                 mostrarErrorLogin(data.message || 'Credenciales incorrectas')
             }
         } catch (error) {
             mostrarErrorLogin('No se pudo conectar con el servidor')
-        } finally {
-            btnSubmit.disabled = false
-            btnSubmit.textContent = 'Iniciar sesión'
         }
+
+        btnSubmit.disabled = false
+        btnSubmit.textContent = 'Iniciar sesión'
     })
 }
 
+/** Crea o reutiliza el div de error bajo el formulario y muestra el mensaje */
 function mostrarErrorLogin(mensaje) {
     
     let errorEl = document.getElementById('mensajeError')

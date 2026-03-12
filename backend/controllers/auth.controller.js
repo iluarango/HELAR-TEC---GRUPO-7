@@ -3,7 +3,10 @@ const jwt = require('jsonwebtoken')
 const pool = require('../config/database.config')
 const asyncHandler = require('../utils/asyncHandler')
 
-// Login de usuario
+// Mensaje genérico para usuario/contraseña inválidos — evita enumeración de usuarios
+const MSG_CREDENCIALES_INVALIDAS = 'El nombre de usuario o la contraseña son incorrectos'
+
+/** Valida credenciales, comprueba estado activo y devuelve un JWT con rol */
 exports.login = asyncHandler(async (req, res) => {
     const { nombreUsuario, contrasenaUsuario } = req.body
 
@@ -20,10 +23,7 @@ exports.login = asyncHandler(async (req, res) => {
     )
 
     if (usuariosResult.rows.length === 0) {
-        return res.status(401).json({
-            success: false,
-            message: 'El nombre de usuario o la contraseña son incorrectos'
-        })
+        return res.status(401).json({ success: false, message: MSG_CREDENCIALES_INVALIDAS })
     }
 
     const usuario = usuariosResult.rows[0]
@@ -38,10 +38,7 @@ exports.login = asyncHandler(async (req, res) => {
     const isPasswordValid = await bcrypt.compare(contrasenaUsuario, usuario.contrasenausuario)
 
     if (!isPasswordValid) {
-        return res.status(401).json({
-            success: false,
-            message: 'El nombre de usuario o la contraseña son incorrectos'
-        })
+        return res.status(401).json({ success: false, message: MSG_CREDENCIALES_INVALIDAS })
     }
 
     const token = jwt.sign(

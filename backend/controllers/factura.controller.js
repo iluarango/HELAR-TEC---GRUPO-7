@@ -1,6 +1,7 @@
 const pool = require('../config/database.config')
 const asyncHandler = require('../utils/asyncHandler')
 
+/** Devuelve todas las facturas con nombre del usuario que las generó */
 exports.getFacturas = asyncHandler(async (req, res) => {
     const result = await pool.query(`
         SELECT
@@ -21,6 +22,7 @@ exports.getFacturas = asyncHandler(async (req, res) => {
     res.json({ success: true, facturas: result.rows })
 })
 
+/** Genera una factura para una venta; rechaza si ya tiene una factura asociada */
 exports.registerFactura = asyncHandler(async (req, res) => {
     const { idVenta, direccionFactura, metodoPago, adicionales } = req.body
     const idusuario = req.idusuario
@@ -34,7 +36,7 @@ exports.registerFactura = asyncHandler(async (req, res) => {
 
     // Verificar que la venta existe y obtener el total
     const ventaResult = await pool.query(
-        'SELECT totalventas FROM ventas WHERE idventa = $1',
+        'SELECT totalventa FROM ventas WHERE idventa = $1',
         [idVenta]
     )
 
@@ -52,7 +54,7 @@ exports.registerFactura = asyncHandler(async (req, res) => {
         return res.status(400).json({ success: false, message: 'Esta venta ya tiene una factura generada' })
     }
 
-    const subtotal = parseFloat(ventaResult.rows[0].totalventas)
+    const subtotal = parseFloat(ventaResult.rows[0].totalventa)
     const total = subtotal
 
     const result = await pool.query(
