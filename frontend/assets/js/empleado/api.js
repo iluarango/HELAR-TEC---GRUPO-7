@@ -47,8 +47,8 @@ async function apiFetch(path, options = {}) {
     }
 }
 
-// Exportar funciones específicas para cada ruta
-export const api = {
+// Funciones específicas para cada ruta (globales, sin módulos ES)
+const api = {
     // Auth
     login: (credentials) => apiFetch('/auth/login', { 
         method: 'POST', 
@@ -84,5 +84,4 @@ export const api = {
     health: () => apiFetch('/health')
 };
 
-// También exportamos API_BASE y apiFetch por si se necesitan
-export { API_BASE, apiFetch };
+// API_BASE y apiFetch quedan disponibles globalmente

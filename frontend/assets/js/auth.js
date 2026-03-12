@@ -1,6 +1,3 @@
-// Importar las funciones de api.js
-import { api } from './empleado/api.js';
-
 const loginForm = document.getElementById('loginForm')
 
 if (loginForm) {
