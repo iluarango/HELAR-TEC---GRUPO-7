@@ -1,13 +1,26 @@
-// Configuración de la conexión a la base de datos PostgreSQL mediante un pool de conexiones
 const { Pool } = require('pg')
-require('dotenv').config() // Carga las variables de entorno desde el archivo .env
+require('dotenv').config()
 
-const pool = new Pool({
-    user:     process.env.DB_USER,     // Usuario de la base de datos
-    host:     process.env.DB_HOST,     // Dirección del servidor de la base de datos
-    database: process.env.DB_NAME,     // Nombre de la base de datos
-    password: process.env.DB_PASSWORD, // Contraseña del usuario
-    port:     process.env.DB_PORT,     // Puerto de conexión (por defecto 5432 en PostgreSQL)
-})
+let pool
 
-module.exports = pool // Exporta el pool para ser usado en los controladores
+// Si existe DATABASE_URL (producción en Render)
+if (process.env.DATABASE_URL) {
+    pool = new Pool({
+        connectionString: process.env.DATABASE_URL,
+        ssl: {
+            rejectUnauthorized: false
+        }
+    })
+} 
+// Si no existe (entorno local)
+else {
+    pool = new Pool({
+        user: process.env.DB_USER,
+        host: process.env.DB_HOST,
+        database: process.env.DB_NAME,
+        password: process.env.DB_PASSWORD,
+        port: process.env.DB_PORT
+    })
+}
+
+module.exports = pool
