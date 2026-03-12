@@ -203,3 +203,13 @@
     .contenido-principal-empleado { padding: 65px 8px 14px !important; }
     table { font-size: 12px; }
 }
+
+/* ── MANUAL DE USUARIO RESPONSIVE ──────────────────────────── */
+@media (max-width: 768px) {
+    #contenido-manual {
+        margin: -70px -14px -20px;
+        padding: 16px;
+        width: 100vw;
+    }
+    #contenido-manual embed { height: calc(100vh - 80px); border-radius: 0; }
+}

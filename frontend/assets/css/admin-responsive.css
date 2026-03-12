@@ -182,6 +182,16 @@
     .modal-contenido { padding: 20px 14px; }
 }
 
+/* ── MANUAL DE USUARIO RESPONSIVE ──────────────────────────── */
+@media (max-width: 768px) {
+    #seccion-manual-admin {
+        margin: -70px -14px -20px;
+        padding: 16px;
+        width: 100vw;
+    }
+    #seccion-manual-admin embed { height: calc(100vh - 80px); border-radius: 0; }
+}
+
 /* ── MODAL PDF RESPONSIVE ───────────────────────────────── */
 @media (max-width: 768px) {
     #modalPdfPreview > div {

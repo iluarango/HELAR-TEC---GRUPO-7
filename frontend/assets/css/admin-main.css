@@ -150,6 +150,21 @@
     color: var(--color-text-muted);
 }
 
+/* ── SECCIÓN MANUAL DE USUARIO ──────────────────────────────── */
+#seccion-manual-admin {
+    margin: -30px -40px;
+    padding: 20px 30px;
+    width: calc(100vw - 250px);
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+#seccion-manual-admin embed {
+    width: 100%;
+    height: calc(100vh - 90px);
+    display: block;
+    border-radius: 10px;
+}
+
 /* ========================================
    CERRAR SESIÓN
    ======================================== */

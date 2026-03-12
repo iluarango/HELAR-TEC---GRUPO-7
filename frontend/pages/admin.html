@@ -31,7 +31,6 @@
                 <div class="item-menu" onclick="cambiarSeccionAdmin('gastos', this)" style="position:relative;">
                     <i class="fas fa-file-invoice-dollar"></i>
                     Gastos Operativos
-                    <span id="badge-gastos-vencen" style="display:none; position:absolute; top:6px; right:10px; background:#dc2626; color:white; font-size:11px; font-weight:700; min-width:18px; height:18px; border-radius:9px; align-items:center; justify-content:center; padding:0 4px;"></span>
                 </div>
                 <div class="item-menu" onclick="cambiarSeccionAdmin('reportes', this)">
                     <i class="fas fa-chart-bar"></i>
@@ -169,10 +168,8 @@
 
             <!-- SECCIÓN MANUAL DE USUARIO -->
             <div id="seccion-manual-admin" style="display:none;">
-                <div class="encabezado-seccion">
-                    <h2><i class="fas fa-book" style="margin-right:10px;"></i> MANUAL DE USUARIO</h2>
-                </div>
-                <embed src="../assets/manual-usuario.pdf" type="application/pdf" style="width:100%; height:calc(100vh - 120px); border:none; border-radius:14px; margin-top:12px; display:block;" />
+                <h2 style="font-size:20px; font-weight:500; color:var(--color-accent); margin-bottom:14px;"><i class="fas fa-book" style="margin-right:8px;"></i> MANUAL DE USUARIO</h2>
+                <embed src="../assets/manual-usuario.pdf" type="application/pdf" style="display:block; width:100%; height:calc(100vh - 100px); border:none; border-radius:12px;" />
             </div>
 
             <!-- SECCIÓN REPORTES -->

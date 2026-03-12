@@ -404,6 +404,21 @@
     border-color: var(--color-accent);
 }
 
+/* ── SECCIÓN MANUAL DE USUARIO ──────────────────────────────── */
+#contenido-manual {
+    margin: -30px;
+    padding: 20px 24px;
+    width: calc(100vw - 280px);
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+#contenido-manual embed {
+    width: 100%;
+    height: calc(100vh - 90px);
+    display: block;
+    border-radius: 10px;
+}
+
 /* ── ANIMACIONES DASHBOARD ──────────────────────────────────── */
 @keyframes fadeInUp {
     from {

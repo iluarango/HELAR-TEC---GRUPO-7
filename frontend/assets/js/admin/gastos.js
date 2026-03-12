@@ -1,37 +1,6 @@
 const API_GASTOS = 'https://helar-tec-grupo-7.onrender.com/api/gastos'
 
-// ── ALERTAS DE GASTOS PRÓXIMOS A VENCER ────────────────────────
-/** Filtra gastos que vencen en los próximos 3 días y actualiza el badge de navegación */
-function verificarAlertasGastos(gastos) {
-    const hoy = new Date()
-    hoy.setHours(0, 0, 0, 0)
-    const en3Dias = new Date(hoy)
-    en3Dias.setDate(en3Dias.getDate() + 3)
-
-    const proximosVencer = gastos.filter(g => {
-        if (!g.fechavencimiento || g.estadogasto === 'pagado') return false
-        const vence = new Date(g.fechavencimiento)
-        vence.setHours(0, 0, 0, 0)
-        return vence <= en3Dias && vence >= hoy
-    })
-
-    const badge = document.getElementById('badge-gastos-vencen')
-    if (badge) {
-        badge.textContent = proximosVencer.length
-        badge.style.display = proximosVencer.length > 0 ? 'inline-flex' : 'none'
-    }
-}
-
 // ── CAMBIAR SECCIÓN ────────────────────────────────────────────
-
-// Cargar gastos al inicio solo para actualizar el badge sin mostrar la sección
-;(async () => {
-    try {
-        const resp = await fetch(API_GASTOS, { headers: { 'Authorization': `Bearer ${token}` } })
-        const data = await resp.json()
-        if (data.success) verificarAlertasGastos(data.gastos)
-    } catch {}
-})()
 
 /** Muestra la sección del panel admin seleccionada y dispara su función de carga (solo una vez por sección) */
 function cambiarSeccionAdmin(seccion, elemento) {
@@ -71,7 +40,6 @@ async function cargarGastos() {
 // ── RENDER TABLA ───────────────────────────────────────────────
 function renderTablaGastos(gastos) {
     const tbody = document.getElementById('tablaGastosBody')
-    verificarAlertasGastos(gastos)
 
     if (gastos.length === 0) {
         tbody.innerHTML = mensajeFila('No hay gastos registrados', 8)
@@ -237,6 +205,7 @@ document.getElementById('formGasto').addEventListener('submit', async (e) => {
         if (data.success) {
             mostrarMensaje('mensajeGasto', 'Gasto registrado exitosamente', 'success')
             await cargarGastos()
+            if (typeof verificarAlertasAdmin === 'function') verificarAlertasAdmin()
             setTimeout(() => cerrarModalGasto(), 1500)
         } else {
             mostrarMensaje('mensajeGasto', data.message || 'Error al registrar', 'error')
