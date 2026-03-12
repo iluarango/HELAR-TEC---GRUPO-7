@@ -1,9 +1,9 @@
 /* Hoja de estilos principal del panel de empleado — importa todos los módulos CSS del empleado */
-@import url('./empleado-variables.css?v=14');
-@import url('./empleado-base.css?v=14');
-@import url('./empleado-sidebar.css?v=14');
-@import url('./empleado-main.css?v=14');
-@import url('./empleado-tabla.css?v=14');
-@import url('./empleado-modales.css?v=14');
-@import url('./empleado-alertas.css?v=14');
-@import url('./empleado-responsive.css?v=14');
+@import url('./empleado-variables.css?v=15');
+@import url('./empleado-base.css?v=15');
+@import url('./empleado-sidebar.css?v=15');
+@import url('./empleado-main.css?v=15');
+@import url('./empleado-tabla.css?v=15');
+@import url('./empleado-modales.css?v=15');
+@import url('./empleado-alertas.css?v=15');
+@import url('./empleado-responsive.css?v=15');

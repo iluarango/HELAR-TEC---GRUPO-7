@@ -1,11 +1,11 @@
 /* Hoja de estilos principal del panel administrativo — importa todos los módulos CSS del admin */
-@import url('./admin-variables.css?v=12');
-@import url('./admin-base.css?v=12');
-@import url('./admin-sidebar.css?v=12');
-@import url('./admin-main.css?v=12');
-@import url('./admin-tabla.css?v=12');
-@import url('./admin-modales.css?v=12');
-@import url('./admin-reportes.css?v=12');
-@import url('./admin-alertas.css?v=12');
-@import url('./admin-calendario.css?v=12');
-@import url('./admin-responsive.css?v=12');
+@import url('./admin-variables.css?v=13');
+@import url('./admin-base.css?v=13');
+@import url('./admin-sidebar.css?v=13');
+@import url('./admin-main.css?v=13');
+@import url('./admin-tabla.css?v=13');
+@import url('./admin-modales.css?v=13');
+@import url('./admin-reportes.css?v=13');
+@import url('./admin-alertas.css?v=13');
+@import url('./admin-calendario.css?v=13');
+@import url('./admin-responsive.css?v=13');
