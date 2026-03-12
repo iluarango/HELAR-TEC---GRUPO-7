@@ -48,7 +48,7 @@
             <div class="menu-ajustes-wrapper-admin">
                 <!-- Popup submenu -->
                 <ul class="submenu-ajustes" id="submenuAjustes">
-                    <li class="submenu-item" onclick="alert('Manual de usuario próximamente')">
+                    <li class="submenu-item" onclick="cambiarSeccionAdmin('manual', null); document.getElementById('submenuAjustes').classList.remove('abierto')">
                         <svg class="icono-submenu-admin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                         </svg>
@@ -164,6 +164,41 @@
                         <i class="fas fa-spinner fa-spin"></i>
                         <p>Cargando alertas...</p>
                     </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN MANUAL DE USUARIO -->
+            <div id="seccion-manual-admin" style="display:none;">
+                <div class="encabezado-seccion">
+                    <h2><i class="fas fa-book" style="margin-right:10px;"></i> MANUAL DE USUARIO</h2>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:16px; margin-top:16px;">
+
+                    <div style="background:var(--bg-card); border:1px solid var(--color-border); border-radius:14px; padding:20px;">
+                        <h3 style="color:var(--color-accent); margin-bottom:8px; font-size:15px;"><i class="fas fa-users" style="margin-right:8px;"></i>Empleados</h3>
+                        <p style="color:var(--color-text); font-size:13px; line-height:1.7;">Gestión de usuarios del sistema. Puedes registrar nuevos empleados con nombre, correo, contraseña y rol (administrador o empleado). También puedes editar el rol, cambiar el estado (activo/inactivo) o eliminar un usuario. La contraseña debe tener entre 12 y 16 caracteres, incluyendo mayúsculas, minúsculas, números y caracteres especiales.</p>
+                    </div>
+
+                    <div style="background:var(--bg-card); border:1px solid var(--color-border); border-radius:14px; padding:20px;">
+                        <h3 style="color:var(--color-accent); margin-bottom:8px; font-size:15px;"><i class="fas fa-file-invoice-dollar" style="margin-right:8px;"></i>Gastos Operativos</h3>
+                        <p style="color:var(--color-text); font-size:13px; line-height:1.7;">Control de gastos del negocio. Puedes registrar gastos con nombre, monto, fecha de vencimiento y estado. Los gastos próximos a vencer (en 3 días) generan una alerta en el menú lateral. Puedes marcar un gasto como pagado desde el listado.</p>
+                    </div>
+
+                    <div style="background:var(--bg-card); border:1px solid var(--color-border); border-radius:14px; padding:20px;">
+                        <h3 style="color:var(--color-accent); margin-bottom:8px; font-size:15px;"><i class="fas fa-chart-bar" style="margin-right:8px;"></i>Reportes</h3>
+                        <p style="color:var(--color-text); font-size:13px; line-height:1.7;">Visualización de reportes del negocio mediante gráficas. Puedes consultar reportes de ventas, productos más vendidos, movimientos de insumos y compras por proveedor. Los reportes pueden exportarse en formato PDF.</p>
+                    </div>
+
+                    <div style="background:var(--bg-card); border:1px solid var(--color-border); border-radius:14px; padding:20px;">
+                        <h3 style="color:var(--color-accent); margin-bottom:8px; font-size:15px;"><i class="fas fa-bell" style="margin-right:8px;"></i>Alertas</h3>
+                        <p style="color:var(--color-text); font-size:13px; line-height:1.7;">Centro de notificaciones del panel administrativo. Muestra alertas del sistema sobre insumos con bajo stock, gastos próximos a vencer y otras novedades. Puedes marcar alertas como leídas individualmente o todas a la vez.</p>
+                    </div>
+
+                    <div style="background:var(--bg-card); border:1px solid var(--color-border); border-radius:14px; padding:20px;">
+                        <h3 style="color:var(--color-accent); margin-bottom:8px; font-size:15px;"><i class="fas fa-cog" style="margin-right:8px;"></i>Ajustes</h3>
+                        <p style="color:var(--color-text); font-size:13px; line-height:1.7;">Accede a las opciones del sistema desde el ícono de ajustes en la parte inferior del menú: cambiar entre modo claro y oscuro, consultar este manual o cerrar sesión de forma segura.</p>
+                    </div>
+
                 </div>
             </div>
 

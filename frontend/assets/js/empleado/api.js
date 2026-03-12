@@ -39,8 +39,10 @@ async function apiFetch(path, options = {}, _retry = true) {
         return await res.json();
 
     } catch (error) {
-        // Render free tier: el servidor puede estar despertando — reintenta una vez
-        if (_retry) {
+        // Solo reintenta GET: las peticiones de mutación (POST/PUT/DELETE) no son idempotentes
+        // y reintentarlas puede crear registros duplicados
+        const metodo = (options.method || 'GET').toUpperCase();
+        if (_retry && metodo === 'GET') {
             console.warn('Servidor no disponible, reintentando en 4 s...', path);
             await new Promise(r => setTimeout(r, 4000));
             return apiFetch(path, options, false);

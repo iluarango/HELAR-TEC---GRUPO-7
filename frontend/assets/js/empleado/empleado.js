@@ -25,7 +25,10 @@ if (payload) {
 }
 
 // ── CAMBIAR SECCIÓN ───────────────────────────────────────────
-/** Muestra la sección solicitada, oculta las demás y dispara su función de carga */
+// Rastrea qué secciones ya cargaron sus datos para evitar doble carga
+const _seccionesYaCargadas = new Set()
+
+/** Muestra la sección solicitada, oculta las demás y dispara su función de carga (solo una vez por sección) */
 function cambiarSeccion(seccion, elemento) {
 
     document.querySelectorAll(".seccion-contenido")
@@ -38,15 +41,19 @@ function cambiarSeccion(seccion, elemento) {
         .forEach(op => op.classList.remove("activa"))
     if (elemento) elemento.classList.add("activa")
 
-    switch (seccion) {
-        case "general":     if (typeof cargarDashboard   === "function") cargarDashboard();   break
-        case "inventario":  if (typeof cargarInsumos     === "function") cargarInsumos();     break
-        case "proveedores": if (typeof cargarProveedores === "function") cargarProveedores(); break
-        case "compras":     if (typeof cargarCompras     === "function") cargarCompras();     break
-        case "productos":   if (typeof cargarProductos   === "function") cargarProductos();   break
-        case "pedidos":     if (typeof cargarPedidos     === "function") cargarPedidos();     break
-        case "ventas":      if (typeof cargarVentas      === "function") cargarVentas();      break
-        case "alertas":     if (typeof cargarAlertas     === "function") cargarAlertas();     break
+    // General siempre refresca (KPIs en tiempo real); las demás solo cargan una vez
+    if (seccion === "general" || !_seccionesYaCargadas.has(seccion)) {
+        _seccionesYaCargadas.add(seccion)
+        switch (seccion) {
+            case "general":     if (typeof cargarDashboard   === "function") cargarDashboard();   break
+            case "inventario":  if (typeof cargarInsumos     === "function") cargarInsumos();     break
+            case "proveedores": if (typeof cargarProveedores === "function") cargarProveedores(); break
+            case "compras":     if (typeof cargarCompras     === "function") cargarCompras();     break
+            case "productos":   if (typeof cargarProductos   === "function") cargarProductos();   break
+            case "pedidos":     if (typeof cargarPedidos     === "function") cargarPedidos();     break
+            case "ventas":      if (typeof cargarVentas      === "function") cargarVentas();      break
+            case "alertas":     if (typeof cargarAlertas     === "function") cargarAlertas();     break
+        }
     }
 }
 

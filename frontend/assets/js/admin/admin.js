@@ -100,6 +100,7 @@ function renderTabla(usuarios) {
     }).join('')
 }
 
+_adminSeccionesYaCargadas.add('empleados')
 cargarUsuarios()
 
 // ── BÚSQUEDA ───────────────────────────────────────────────

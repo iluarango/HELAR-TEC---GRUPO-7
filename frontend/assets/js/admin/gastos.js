@@ -33,20 +33,24 @@ function verificarAlertasGastos(gastos) {
     } catch {}
 })()
 
-/** Muestra la sección del panel admin seleccionada y dispara su función de carga */
+/** Muestra la sección del panel admin seleccionada y dispara su función de carga (solo una vez por sección) */
 function cambiarSeccionAdmin(seccion, elemento) {
-    document.getElementById('seccion-empleados').style.display     = seccion === 'empleados' ? 'block' : 'none'
-    document.getElementById('seccion-gastos').style.display        = seccion === 'gastos'    ? 'block' : 'none'
-    document.getElementById('seccion-reportes').style.display      = seccion === 'reportes'  ? 'block' : 'none'
-    document.getElementById('seccion-alertas-admin').style.display = seccion === 'alertas'   ? 'block' : 'none'
+    document.getElementById('seccion-empleados').style.display      = seccion === 'empleados' ? 'block' : 'none'
+    document.getElementById('seccion-gastos').style.display         = seccion === 'gastos'    ? 'block' : 'none'
+    document.getElementById('seccion-reportes').style.display       = seccion === 'reportes'  ? 'block' : 'none'
+    document.getElementById('seccion-alertas-admin').style.display  = seccion === 'alertas'   ? 'block' : 'none'
+    document.getElementById('seccion-manual-admin').style.display   = seccion === 'manual'    ? 'block' : 'none'
 
     document.querySelectorAll('.item-menu').forEach(i => i.classList.remove('activo'))
     if (elemento) elemento.classList.add('activo')
 
-    if (seccion === 'gastos') cargarGastos()
-    if (seccion === 'empleados') cargarUsuarios()
-    if (seccion === 'reportes') cargarReportes()
-    if (seccion === 'alertas') cargarAlertasAdmin()
+    if (!_adminSeccionesYaCargadas.has(seccion)) {
+        _adminSeccionesYaCargadas.add(seccion)
+        if (seccion === 'gastos')     cargarGastos()
+        if (seccion === 'empleados')  cargarUsuarios()
+        if (seccion === 'reportes')   cargarReportes()
+        if (seccion === 'alertas')    cargarAlertasAdmin()
+    }
 }
 
 // ── CARGAR GASTOS ──────────────────────────────────────────────

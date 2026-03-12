@@ -101,20 +101,21 @@
 }
 
 .btn-marcar-todas-admin {
-    background: var(--color-accent);
-    color: white;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 20px;
+    background: var(--bg-header);
+    border: 1.5px solid var(--color-border);
+    border-radius: 10px;
+    padding: 8px 16px;
     cursor: pointer;
+    color: var(--color-accent);
     font-size: 13px;
     font-weight: 600;
-    display: flex;
+    transition: all 0.2s;
+    display: inline-flex;
     align-items: center;
-    gap: 8px;
-    transition: background 0.2s;
+    gap: 6px;
 }
 
 .btn-marcar-todas-admin:hover {
-    background: #b58b8b;
+    border-color: var(--color-accent);
+    background: var(--bg-table-odd);
 }

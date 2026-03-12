@@ -1,4 +1,6 @@
 // ── HELPERS DE UI ──────────────────────────────────────────
+// Rastrea secciones ya cargadas para evitar doble carga al navegar
+const _adminSeccionesYaCargadas = new Set()
 
 function mostrarMensaje(elementId, texto, tipo) {
     const el = document.getElementById(elementId)

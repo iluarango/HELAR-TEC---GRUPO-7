@@ -84,7 +84,7 @@
                     </li>
                 </ul>
                 <ul class="menu-ajustes" id="menuAjustes">
-                    <li class="opcion-submenu" onclick="alert('Manual de usuario próximamente')">
+                    <li class="opcion-submenu" onclick="cambiarSeccion('manual', null); document.getElementById('menuAjustes').style.display='none'">
                         <svg class="icono-submenu" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                         </svg>
@@ -493,6 +493,56 @@
                     </button>
                 </div>
                 <div id="lista-alertas" style="display:flex; flex-direction:column; gap:12px; margin-top:16px;"></div>
+            </div>
+
+            <!-- SECCIÓN MANUAL DE USUARIO -->
+            <div id="contenido-manual" class="seccion-contenido">
+                <div class="encabezado-seccion">
+                    <h2>Manual de Usuario</h2>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:16px; margin-top:16px;">
+
+                    <div style="background:var(--bg-card); border:1px solid var(--color-border); border-radius:14px; padding:20px;">
+                        <h3 style="color:var(--color-accent); margin-bottom:8px; font-size:15px;"><i class="fas fa-tachometer-alt" style="margin-right:8px;"></i>General</h3>
+                        <p style="color:var(--color-text); font-size:13px; line-height:1.7;">Panel principal con indicadores del día: pedidos, ventas totales, insumos en stock y más. Se actualiza cada vez que ingresas a esta sección.</p>
+                    </div>
+
+                    <div style="background:var(--bg-card); border:1px solid var(--color-border); border-radius:14px; padding:20px;">
+                        <h3 style="color:var(--color-accent); margin-bottom:8px; font-size:15px;"><i class="fas fa-boxes" style="margin-right:8px;"></i>Inventario</h3>
+                        <p style="color:var(--color-text); font-size:13px; line-height:1.7;">Gestión de insumos. Puedes registrar nuevos insumos con nombre, categoría, stock actual, stock mínimo, unidad de medida y fecha de caducidad. Los insumos con stock igual o menor al mínimo aparecen resaltados en rojo. También puedes editar o cambiar el estado de cada insumo.</p>
+                    </div>
+
+                    <div style="background:var(--bg-card); border:1px solid var(--color-border); border-radius:14px; padding:20px;">
+                        <h3 style="color:var(--color-accent); margin-bottom:8px; font-size:15px;"><i class="fas fa-truck" style="margin-right:8px;"></i>Proveedores</h3>
+                        <p style="color:var(--color-text); font-size:13px; line-height:1.7;">Registro y consulta de proveedores. Puedes agregar nuevos proveedores con nombre, contacto, teléfono y correo. También puedes editar su información o activar/inactivar un proveedor.</p>
+                    </div>
+
+                    <div style="background:var(--bg-card); border:1px solid var(--color-border); border-radius:14px; padding:20px;">
+                        <h3 style="color:var(--color-accent); margin-bottom:8px; font-size:15px;"><i class="fas fa-shopping-cart" style="margin-right:8px;"></i>Compras</h3>
+                        <p style="color:var(--color-text); font-size:13px; line-height:1.7;">Registro de compras realizadas a proveedores. Al registrar una compra debes seleccionar el proveedor, el insumo, la cantidad y el precio. El sistema actualiza automáticamente el stock del insumo.</p>
+                    </div>
+
+                    <div style="background:var(--bg-card); border:1px solid var(--color-border); border-radius:14px; padding:20px;">
+                        <h3 style="color:var(--color-accent); margin-bottom:8px; font-size:15px;"><i class="fas fa-ice-cream" style="margin-right:8px;"></i>Productos</h3>
+                        <p style="color:var(--color-text); font-size:13px; line-height:1.7;">Gestión del catálogo de productos. Puedes crear productos con nombre, descripción, precio y categoría. Desde aquí también se administran los sabores, adicionales y salsas disponibles.</p>
+                    </div>
+
+                    <div style="background:var(--bg-card); border:1px solid var(--color-border); border-radius:14px; padding:20px;">
+                        <h3 style="color:var(--color-accent); margin-bottom:8px; font-size:15px;"><i class="fas fa-clipboard-list" style="margin-right:8px;"></i>Pedidos</h3>
+                        <p style="color:var(--color-text); font-size:13px; line-height:1.7;">Registro y seguimiento de pedidos de clientes. Puedes crear un pedido seleccionando productos, sabores, adicionales y salsas. El estado del pedido puede cambiar entre pendiente, en proceso y entregado.</p>
+                    </div>
+
+                    <div style="background:var(--bg-card); border:1px solid var(--color-border); border-radius:14px; padding:20px;">
+                        <h3 style="color:var(--color-accent); margin-bottom:8px; font-size:15px;"><i class="fas fa-cash-register" style="margin-right:8px;"></i>Ventas</h3>
+                        <p style="color:var(--color-text); font-size:13px; line-height:1.7;">Registro de ventas del día. Puedes crear una venta vinculada a un pedido o directamente. El sistema genera automáticamente la factura asociada.</p>
+                    </div>
+
+                    <div style="background:var(--bg-card); border:1px solid var(--color-border); border-radius:14px; padding:20px;">
+                        <h3 style="color:var(--color-accent); margin-bottom:8px; font-size:15px;"><i class="fas fa-bell" style="margin-right:8px;"></i>Alertas</h3>
+                        <p style="color:var(--color-text); font-size:13px; line-height:1.7;">Notificaciones de insumos próximos a vencer (en los próximos 3 días). Puedes marcar alertas como leídas individualmente o todas a la vez. Las alertas no leídas se muestran con un indicador rojo en el menú.</p>
+                    </div>
+
+                </div>
             </div>
 
         </main>
