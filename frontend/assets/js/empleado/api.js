@@ -1,7 +1,7 @@
 // ============================================
 // CONFIGURACIÓN PARA PRODUCCIÓN EN RENDER
 // ============================================
-// FORZAMOS el uso de la URL de Render para todas las peticiones
+// Uso de la URL de Render para todas las peticiones
 const API_BASE = 'https://helar-tec-grupo-7.onrender.com/api';
 
 console.log('Conectando a API:', API_BASE);
@@ -48,7 +48,7 @@ async function apiFetch(path, options = {}) {
 }
 
 // Exportar funciones específicas para cada ruta
-const api = {
+export const api = {
     // Auth
     login: (credentials) => apiFetch('/auth/login', { 
         method: 'POST', 
@@ -84,7 +84,5 @@ const api = {
     health: () => apiFetch('/health')
 };
 
-// Exportar para usar en otros archivos
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { apiFetch, api, API_BASE };
-}
+// También exportamos API_BASE y apiFetch por si se necesitan
+export { API_BASE, apiFetch };
