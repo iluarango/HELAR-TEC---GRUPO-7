@@ -1,4 +1,4 @@
-const API_REPORTES = 'http://localhost:3000/api/reportes'
+const API_REPORTES = 'https://helar-tec-grupo-7.onrender.com/api/reportes'
 
 let chartProductos = null
 let chartInsumos   = null

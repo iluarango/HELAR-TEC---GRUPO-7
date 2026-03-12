@@ -1,4 +1,4 @@
-const API_GASTOS = 'http://localhost:3000/api/gastos'
+const API_GASTOS = 'https://helar-tec-grupo-7.onrender.com/api/gastos'
 
 // ── ALERTAS DE GASTOS PRÓXIMOS A VENCER ────────────────────────
 /** Filtra gastos que vencen en los próximos 3 días y actualiza el badge de navegación */

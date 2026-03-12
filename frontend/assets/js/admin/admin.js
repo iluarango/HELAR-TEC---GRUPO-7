@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/api/usuarios'
+const API_URL = 'https://helar-tec-grupo-7.onrender.com/api/usuarios'
 
 // ── PROTECCIÓN DE RUTA ─────────────────────────────────────
 const token = localStorage.getItem('token')
