@@ -29,15 +29,15 @@
     --bg-table-odd: #7c5a52;
     --bg-table-even: #8a6860;
     --bg-table-hover: #a08880;
-    --bg-submenu: #745248;
-    --color-text: #f5ede9;
-    --color-text-muted: #e0c8c0;
-    --color-text-label: #f5e8e0;
-    --color-text-table: #f0e0d8;
-    --color-accent: #e8c0b0;
-    --color-accent2: #e8c8a4;
-    --color-border: #a08070;
-    --color-border-light: #8a6860;
+    --bg-submenu: #6b4c44;
+    --color-text: #ffffff;
+    --color-text-muted: #f5e8e0;
+    --color-text-label: #ffffff;
+    --color-text-table: #ffffff;
+    --color-accent: #f5c8b0;
+    --color-accent2: #f0d8a0;
+    --color-border: #b09080;
+    --color-border-light: #9a7870;
     --shadow-card: 0 2px 8px rgba(0,0,0,0.3);
     --shadow-modal: 0 10px 40px rgba(0,0,0,0.5);
 }

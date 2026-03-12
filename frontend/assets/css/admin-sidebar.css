@@ -158,13 +158,17 @@
 }
 
 .submenu-item:hover {
-    background-color: #fff5f5;
+    background-color: var(--bg-header);
     color: var(--color-text);
 }
 
 .submenu-item.cerrar-sesion:hover {
     color: #d9534f;
 }
+
+[data-tema="oscuro"] .item-menu.activo { color: #3a2010; }
+[data-tema="oscuro"] .submenu-ajustes { box-shadow: 0 5px 20px rgba(0,0,0,0.4); }
+[data-tema="oscuro"] .submenu-item.cerrar-sesion:hover { color: #ff8a80; }
 
 .icono-submenu-admin {
     width: 18px;

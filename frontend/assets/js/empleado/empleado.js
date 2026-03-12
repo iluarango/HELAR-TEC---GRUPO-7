@@ -1,7 +1,7 @@
 const token = localStorage.getItem("token") || "";  // || "" para evitar undefined al leer el token
 
 if (!token) {
-    window.location.href = "../pages/login.html"
+    window.location.replace("../pages/login.html")
     throw new Error("No hay token");  // detiene la ejecución del resto del script
 }
 
@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     confirmarLogout.addEventListener("click", () => {
         localStorage.removeItem("token")
-        window.location.href = "../pages/login.html"
+        window.location.replace("../pages/login.html")
     })
 
     // ── CALENDARIO FLATPICKR ──────────────────────────────────

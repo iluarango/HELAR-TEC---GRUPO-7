@@ -181,3 +181,16 @@
     .tabla-empleados th, .tabla-empleados td { padding: 8px 8px; font-size: 12px; }
     .modal-contenido { padding: 20px 14px; }
 }
+
+/* ── MODAL PDF RESPONSIVE ───────────────────────────────── */
+@media (max-width: 768px) {
+    #modalPdfPreview > div {
+        height: 95vh !important;
+        border-radius: 16px 16px 0 0 !important;
+        align-self: flex-end;
+    }
+    #modalPdfPreview {
+        align-items: flex-end !important;
+        padding: 0 !important;
+    }
+}

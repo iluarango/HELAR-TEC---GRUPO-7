@@ -4,6 +4,7 @@ let chartProductos = null
 let chartInsumos   = null
 let chartCompras   = null
 let chartGastos    = null
+let _pdfBlobUrl    = null
 
 // ── CARGAR REPORTES ─────────────────────────────────────────────
 /** Obtiene datos del endpoint de reportes y renderiza los cuatro gráficos Chart.js */
@@ -159,10 +160,11 @@ async function generarArchivo() {
             pdf.addImage(imgData, 'PNG', cx + 2, cy + 10, colW - 4, chartH - 2)
         })
 
-        // ── Descargar ────────────────────────────────────────────
-        const ts = new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-')
-        pdf.save(`reporte-${ts}.pdf`)
-        mostrarToastReporte('PDF descargado correctamente')
+        // ── Mostrar en modal ─────────────────────────────────────
+        _pdfBlobUrl = pdf.output('bloburl')
+        document.getElementById('iframePdf').src = _pdfBlobUrl
+        document.getElementById('modalPdfPreview').style.display = 'flex'
+        mostrarToastReporte('Reporte generado correctamente')
 
     } catch (err) {
         console.error('Error al generar PDF:', err)
@@ -171,6 +173,21 @@ async function generarArchivo() {
         btn.disabled = false
         btn.innerHTML = '<i class="fas fa-file-arrow-down"></i> Descargar PDF'
     }
+}
+
+// ── CONTROLES MODAL PDF ──────────────────────────────────────────
+function descargarPdf() {
+    if (!_pdfBlobUrl) return
+    const a = document.createElement('a')
+    const ts = new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-')
+    a.href = _pdfBlobUrl
+    a.download = `reporte-${ts}.pdf`
+    a.click()
+}
+
+function cerrarModalPdf() {
+    document.getElementById('modalPdfPreview').style.display = 'none'
+    document.getElementById('iframePdf').src = ''
 }
 
 // ── TOAST ────────────────────────────────────────────────────────

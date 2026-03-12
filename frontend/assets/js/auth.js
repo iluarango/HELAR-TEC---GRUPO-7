@@ -32,7 +32,7 @@ if (loginForm) {
                 const destino = data.usuario.rol === 'administrador' ? './admin.html' : './empleado.html'
                 
                 setTimeout(() => {
-                    window.location.href = destino
+                    window.location.replace(destino)
                 }, 2000) // Reducido a 2 segundos
                 
                 return

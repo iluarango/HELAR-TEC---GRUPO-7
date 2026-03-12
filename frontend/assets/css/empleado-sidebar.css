@@ -48,7 +48,7 @@
 
 .opcion-menu:hover {
     background-color: var(--bg-header);
-    color: #7a5555;
+    color: var(--color-text-table);
 }
 
 /* Opción del menú activa */
@@ -157,3 +157,8 @@
     font-size: 12px;
     color: rgba(255,255,255,0.75);
 }
+
+/* ── DARK MODE ──────────────────────────────────────────────── */
+[data-tema="oscuro"] .opcion-menu.activa { color: #3a2010; }
+[data-tema="oscuro"] .menu-ajustes { box-shadow: 0 5px 20px rgba(0,0,0,0.4); }
+[data-tema="oscuro"] .opcion-submenu.cerrar-sesion:hover { color: #ff8a80; }

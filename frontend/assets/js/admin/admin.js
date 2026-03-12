@@ -5,7 +5,7 @@ const token = localStorage.getItem('token')
 const usuario = JSON.parse(localStorage.getItem('usuario') || 'null')
 
 if (!token || !usuario) {
-    window.location.href = './login.html'
+    window.location.replace('./login.html')
 } else {
     document.getElementById('nombreAdmin').textContent = usuario.nombreUsuario
     document.getElementById('avatarAdmin').textContent = usuario.nombreUsuario.substring(0, 2).toUpperCase()
@@ -144,7 +144,7 @@ document.getElementById('cancelarLogout').addEventListener('click', () => {
 document.getElementById('confirmarLogout').addEventListener('click', () => {
     localStorage.removeItem('token')
     localStorage.removeItem('usuario')
-    window.location.href = './login.html'
+    window.location.replace('./login.html')
 })
 
 // ── DARK MODE ────────────────────────────────────────────────

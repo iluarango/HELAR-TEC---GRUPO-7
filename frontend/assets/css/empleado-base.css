@@ -72,6 +72,41 @@ body {
     box-shadow: none !important;
 }
 
+/* ── FLATPICKR DARK MODE ────────────────────────────────────── */
+[data-tema="oscuro"] .flatpickr-day {
+    color: #ffffff !important;
+}
+[data-tema="oscuro"] .flatpickr-day:hover {
+    background: var(--bg-table-hover) !important;
+    color: #ffffff !important;
+}
+[data-tema="oscuro"] .flatpickr-day.today {
+    border-color: var(--color-accent) !important;
+    color: #ffffff !important;
+}
+[data-tema="oscuro"] .flatpickr-day.selected,
+[data-tema="oscuro"] .flatpickr-day.selected:hover {
+    background: var(--color-accent) !important;
+    border-color: var(--color-accent) !important;
+    color: #3a2010 !important;
+}
+[data-tema="oscuro"] .flatpickr-weekday {
+    color: var(--color-text-muted) !important;
+}
+[data-tema="oscuro"] .flatpickr-current-month .flatpickr-monthDropdown-months {
+    background: var(--bg-card) !important;
+    border-color: var(--color-border) !important;
+    color: #ffffff !important;
+}
+[data-tema="oscuro"] .flatpickr-current-month input.cur-year {
+    color: #ffffff !important;
+}
+[data-tema="oscuro"] .flatpickr-day.flatpickr-disabled,
+[data-tema="oscuro"] .flatpickr-day.prevMonthDay,
+[data-tema="oscuro"] .flatpickr-day.nextMonthDay {
+    color: var(--color-border) !important;
+}
+
 /* Bloquea el scroll del fondo cuando un modal está abierto */
 body:has(.modal[style*="flex"]) {
     overflow: hidden;
