@@ -86,7 +86,6 @@
     border-radius: 12px;
     margin-top: 12px;
 }
-
 /* Avatar circular del usuario */
 .avatar-usuario {
     width: 45px;
@@ -166,9 +165,11 @@
     color: #d9534f;
 }
 
-[data-tema="oscuro"] .item-menu.activo { color: #3a2010; }
-[data-tema="oscuro"] .submenu-ajustes { box-shadow: 0 5px 20px rgba(0,0,0,0.4); }
+[data-tema="oscuro"] .item-menu.activo { color: #1a0a0a; }
+[data-tema="oscuro"] .submenu-ajustes { box-shadow: 0 5px 20px rgba(0,0,0,0.6); }
 [data-tema="oscuro"] .submenu-item.cerrar-sesion:hover { color: #ff8a80; }
+[data-tema="oscuro"] .perfil-usuario { background: #2e1e1e; }
+[data-tema="oscuro"] .avatar-usuario { background-color: #4a2a2a; }
 
 .icono-submenu-admin {
     width: 18px;

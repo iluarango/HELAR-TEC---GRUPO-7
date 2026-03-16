@@ -157,25 +157,17 @@
 
 /* ── SECCIÓN MANUAL DE USUARIO ──────────────────────────────── */
 #seccion-manual-admin {
-    position: fixed;
-    left: 250px;
-    right: 380px;
-    top: 0;
-    bottom: 0;
-    margin: 0;
+    margin-top: -30px;
+    margin-left: -40px;
+    margin-right: -30px;
     padding: 20px 24px;
     box-sizing: border-box;
-    background: var(--bg-page);
-    z-index: 5;
-    display: flex;
-    flex-direction: column;
 }
 #seccion-manual-admin embed {
-    flex: 1;
     width: 100%;
+    height: calc(100vh - 100px);
     display: block;
     border-radius: 10px;
-    min-height: 0;
 }
 
 /* ========================================

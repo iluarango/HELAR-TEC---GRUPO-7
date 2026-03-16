@@ -11,9 +11,6 @@
     .contenido-principal {
         padding-right: 40px;
     }
-    #seccion-manual-admin {
-        right: 30px;
-    }
 }
 
 /* ─ 1200px: PC pequeño ───────────────────────────────────── */
@@ -188,11 +185,11 @@
 /* ── MANUAL DE USUARIO RESPONSIVE ──────────────────────────── */
 @media (max-width: 768px) {
     #seccion-manual-admin {
-        left: 0;
-        right: 0;
-        padding: 60px 14px 16px;
+        margin: -70px -14px -20px;
+        padding: 16px;
+        width: 100vw;
     }
-    #seccion-manual-admin embed { border-radius: 0; }
+    #seccion-manual-admin embed { height: calc(100vh - 80px); border-radius: 0; }
 }
 
 /* ── MODAL PDF RESPONSIVE ───────────────────────────────── */

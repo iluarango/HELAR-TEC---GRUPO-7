@@ -205,16 +205,11 @@
 }
 
 /* ── MANUAL DE USUARIO RESPONSIVE ──────────────────────────── */
-@media (max-width: 1400px) {
-    #contenido-manual {
-        right: 30px;
-    }
-}
 @media (max-width: 768px) {
     #contenido-manual {
-        left: 0;
-        right: 0;
-        padding: 60px 14px 16px;
+        margin: -70px -14px -20px;
+        padding: 16px;
+        width: 100vw;
     }
-    #contenido-manual embed { border-radius: 0; }
+    #contenido-manual embed { height: calc(100vh - 80px); border-radius: 0; }
 }
