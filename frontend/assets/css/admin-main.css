@@ -82,8 +82,8 @@
     background: #f5c6c6;
     color: #a97c73;
 }
-[data-tema="oscuro"] .boton-generar { background: #c8a0a0; color: #3a1a1a; }
-[data-tema="oscuro"] .boton-generar:hover { background: #ddbcbc; color: #3a1a1a; }
+[data-tema="oscuro"] .boton-generar { background: #b89090; color: #ffffff; }
+[data-tema="oscuro"] .boton-generar:hover { background: #ccacac; color: #ffffff; }
 
 /* ========================================
    TARJETAS DE ESTADÍSTICAS

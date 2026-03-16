@@ -113,8 +113,8 @@
 .boton-registrar:hover {
     background: #b58b8b;
 }
-[data-tema="oscuro"] .boton-registrar { background: #c8a0a0; color: #3a1a1a; }
-[data-tema="oscuro"] .boton-registrar:hover { background: #ddbcbc; color: #3a1a1a; }
+[data-tema="oscuro"] .boton-registrar { background: #b89090; color: #ffffff; }
+[data-tema="oscuro"] .boton-registrar:hover { background: #ccacac; color: #ffffff; }
 
 /* CALENDARIO */
 .seccion-calendario {
