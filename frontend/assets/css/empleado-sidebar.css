@@ -162,5 +162,5 @@
 [data-tema="oscuro"] .opcion-menu.activa { color: #1a0a0a; }
 [data-tema="oscuro"] .menu-ajustes { box-shadow: 0 5px 20px rgba(0,0,0,0.6); }
 [data-tema="oscuro"] .opcion-submenu.cerrar-sesion:hover { color: #ff8a80; }
-[data-tema="oscuro"] .perfil-usuario { background: #b48888; }
-[data-tema="oscuro"] .avatar-usuario { background-color: #c09898; }
+[data-tema="oscuro"] .perfil-usuario { background: #c09898; }
+[data-tema="oscuro"] .avatar-usuario { background-color: #d4b0b0; }

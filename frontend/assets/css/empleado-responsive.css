@@ -142,11 +142,16 @@
     .barra-busqueda { width: 100% !important; }
     .encabezado-seccion,
     .encabezado-panel { flex-direction: column; gap: 10px; align-items: flex-start; }
+    .seccion-cabecera { flex-direction: column; gap: 10px; }
+    .seccion-barra { flex-direction: column; align-items: flex-start; gap: 10px; }
     .boton-nuevo,
     .boton-accion-principal { width: 100%; justify-content: center; }
+    .boton-registrar { width: 100%; justify-content: center; }
 
     .grid-botones-sabor { flex-wrap: wrap; }
     .btn-sabor { font-size: 12px; padding: 5px 10px; }
+
+    .grid-resumen { grid-template-columns: repeat(2, 1fr) !important; }
 
     /* Legacy overrides from original */
     .grilla-estadisticas {
@@ -202,6 +207,8 @@
     .contenido-principal,
     .contenido-principal-empleado { padding: 65px 8px 14px !important; }
     table { font-size: 12px; }
+    .grid-resumen { grid-template-columns: 1fr !important; }
+    .grilla-estadisticas { grid-template-columns: 1fr !important; }
 }
 
 /* ── MANUAL DE USUARIO RESPONSIVE ──────────────────────────── */

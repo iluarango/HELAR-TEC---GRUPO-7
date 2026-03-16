@@ -160,11 +160,10 @@ async function generarArchivo() {
             pdf.addImage(imgData, 'PNG', cx + 2, cy + 10, colW - 4, chartH - 2)
         })
 
-        // ── Mostrar en modal ─────────────────────────────────────
-        _pdfBlobUrl = pdf.output('bloburl')
-        document.getElementById('iframePdf').src = _pdfBlobUrl
-        document.getElementById('modalPdfPreview').style.display = 'flex'
-        mostrarToastReporte('Reporte generado correctamente')
+        // ── Descargar directamente ────────────────────────────────
+        const ts = new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-')
+        pdf.save(`reporte-helar-tec-${ts}.pdf`)
+        mostrarToastReporte('Reporte descargado correctamente')
 
     } catch (err) {
         console.error('Error al generar PDF:', err)

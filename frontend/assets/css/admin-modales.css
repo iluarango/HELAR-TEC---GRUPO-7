@@ -274,3 +274,15 @@ body:has(.modal[style*="flex"]) {
 .modal-logout-footer .btn-cerrar:hover {
     background: #c9302c;
 }
+
+/* ── DARK MODE MODALES ──────────────────────────────────────── */
+[data-tema="oscuro"] .modal-logout-header { background: #8c6464; }
+[data-tema="oscuro"] .modal-logout-body p { color: var(--color-text); }
+[data-tema="oscuro"] .modal-logout-footer { border-top-color: var(--color-border); }
+[data-tema="oscuro"] .modal-logout-footer .btn-cancelar { background: var(--bg-header); color: var(--color-text); }
+[data-tema="oscuro"] .modal-logout-footer .btn-cancelar:hover { background: var(--bg-table-hover); }
+[data-tema="oscuro"] .modal-cerrar:hover { background-color: var(--bg-header); }
+[data-tema="oscuro"] .form-group input,
+[data-tema="oscuro"] .form-group select { border-color: var(--color-border); color: var(--color-text); }
+[data-tema="oscuro"] .form-group input::placeholder { color: var(--color-text-muted); }
+[data-tema="oscuro"] .form-group select option { background: var(--bg-input); color: var(--color-text); }

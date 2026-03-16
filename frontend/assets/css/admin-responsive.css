@@ -18,6 +18,12 @@
     .cuadricula-estadisticas {
         grid-template-columns: repeat(2, 1fr);
     }
+    .grid-resumen {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+    .grid-reportes {
+        grid-template-columns: 1fr 1fr;
+    }
 }
 
 /* ─ 1024px: tablet landscape ────────────────────────────── */
@@ -156,6 +162,11 @@
     .tabla-empleados { min-width: 560px; font-size: 13px; }
     .tabla-empleados th, .tabla-empleados td { padding: 10px 10px; white-space: nowrap; }
 
+    .tabla-inventario { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; min-width: 480px; font-size: 13px; }
+    .tabla-inventario th, .tabla-inventario td { padding: 10px 10px; white-space: nowrap; }
+    #panelInsumos, #panelProductos, #panelCategorias, #panelSabores, #panelAdicionales,
+    #panelVentas, #seccion-proveedores { overflow-x: auto; }
+
     .modal { align-items: flex-end !important; }
     .modal-contenido {
         max-width: 100% !important;
@@ -174,12 +185,24 @@
 
     .encabezado-seccion h2 { font-size: 16px; }
     .barra-busqueda { margin-bottom: 16px; }
+    .grid-resumen { grid-template-columns: repeat(2, 1fr) !important; }
+    .tarjeta-estadistica { padding: 18px; }
+
+    .seccion-cabecera { flex-direction: column; gap: 10px; }
+    .seccion-barra { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .pestanas { flex-wrap: wrap; }
+    .boton-registrar { width: 100%; justify-content: center; }
+
+    #seccion-acerca embed { height: calc(100vh - 90px); border-radius: 0; }
+    #seccion-acerca { margin: -70px -14px -20px; padding: 16px; width: 100vw; }
 }
 
 @media (max-width: 480px) {
     .contenido-principal { padding: 65px 10px 16px !important; }
     .tabla-empleados th, .tabla-empleados td { padding: 8px 8px; font-size: 12px; }
     .modal-contenido { padding: 20px 14px; }
+    .grid-resumen { grid-template-columns: 1fr !important; }
+    .encabezado-seccion h2 { font-size: 15px; }
 }
 
 /* ── MANUAL DE USUARIO RESPONSIVE ──────────────────────────── */
@@ -192,15 +215,3 @@
     #seccion-manual-admin embed { height: calc(100vh - 80px); border-radius: 0; }
 }
 
-/* ── MODAL PDF RESPONSIVE ───────────────────────────────── */
-@media (max-width: 768px) {
-    #modalPdfPreview > div {
-        height: 95vh !important;
-        border-radius: 16px 16px 0 0 !important;
-        align-self: flex-end;
-    }
-    #modalPdfPreview {
-        align-items: flex-end !important;
-        padding: 0 !important;
-    }
-}
