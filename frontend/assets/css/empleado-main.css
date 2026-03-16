@@ -406,17 +406,25 @@
 
 /* ── SECCIÓN MANUAL DE USUARIO ──────────────────────────────── */
 #contenido-manual {
-    margin-top: -30px;
-    margin-left: -30px;
-    margin-right: 0;
+    position: fixed;
+    left: 280px;
+    right: 380px;
+    top: 0;
+    bottom: 0;
+    margin: 0;
     padding: 20px 24px;
     box-sizing: border-box;
+    background: var(--bg-page);
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
 }
 #contenido-manual embed {
+    flex: 1;
     width: 100%;
-    height: calc(100vh - 90px);
     display: block;
     border-radius: 10px;
+    min-height: 0;
 }
 
 /* ── ANIMACIONES DASHBOARD ──────────────────────────────────── */
