@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Administrador | HELAR-TEC</title>
+    <link rel="stylesheet" href="../assets/css/empleado.css?v=15">
     <link rel="stylesheet" href="../assets/css/admin.css?v=13">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -22,6 +23,10 @@
         <!-- BARRA LATERAL IZQUIERDA -->
         <aside class="barra-lateral-izquierda">
             <nav class="menu">
+                <div class="item-menu" onclick="cambiarSeccionAdmin('general', this)">
+                    <i class="fas fa-home"></i>
+                    General
+                </div>
                 <div class="item-menu activo" onclick="cambiarSeccionAdmin('empleados', this)">
                     <svg fill="currentColor" viewBox="0 0 20 20">
                         <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
@@ -40,6 +45,26 @@
                     <i class="fas fa-bell"></i>
                     Alertas
                     <span id="badge-alertas-admin" style="display:none; position:absolute; top:6px; right:10px; background:#dc2626; color:white; font-size:11px; font-weight:700; min-width:18px; height:18px; border-radius:9px; align-items:center; justify-content:center; padding:0 4px;"></span>
+                </div>
+                <div class="item-menu" onclick="cambiarSeccionAdmin('inventario', this)">
+                    <i class="fas fa-boxes"></i>
+                    Inventario
+                </div>
+                <div class="item-menu" onclick="cambiarSeccionAdmin('proveedores', this)">
+                    <i class="fas fa-truck"></i>
+                    Proveedores
+                </div>
+                <div class="item-menu" onclick="cambiarSeccionAdmin('productos', this)">
+                    <i class="fas fa-ice-cream"></i>
+                    Productos
+                </div>
+                <div class="item-menu" onclick="cambiarSeccionAdmin('ventas', this)">
+                    <i class="fas fa-chart-line"></i>
+                    Ventas
+                </div>
+                <div class="item-menu" onclick="cambiarSeccionAdmin('acerca', this)">
+                    <i class="fas fa-info-circle"></i>
+                    Acerca del sistema
                 </div>
             </nav>
 
@@ -84,6 +109,58 @@
         <!-- CALENDARIO LATERAL -->
         <!-- CONTENIDO PRINCIPAL -->
         <main class="contenido-principal">
+
+            <!-- SECCIÓN GENERAL -->
+            <div id="seccion-general" style="display:none;">
+                <div class="encabezado-seccion">
+                    <div>
+                        <p style="color:#b89a8a; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:1.2px; margin-bottom:4px;">Panel de Administrador</p>
+                        <h2>Resumen General</h2>
+                    </div>
+                </div>
+                <div class="grid-resumen" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:20px; margin-top:10px;">
+                    <div style="background:var(--bg-card); border-radius:14px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,.07); text-align:center; border:1px solid var(--border-color);">
+                        <i class="fas fa-shopping-cart" style="font-size:28px; color:#a47c7c; margin-bottom:10px;"></i>
+                        <div id="card-pedidos-hoy" style="font-size:36px; font-weight:700; color:var(--color-text);">-</div>
+                        <div style="color:#6b7280; font-size:13px; margin-top:4px;">Pedidos hoy</div>
+                    </div>
+                    <div style="background:var(--bg-card); border-radius:14px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,.07); text-align:center; border:1px solid var(--border-color);">
+                        <i class="fas fa-clock" style="font-size:28px; color:#f59e0b; margin-bottom:10px;"></i>
+                        <div id="card-pendientes" style="font-size:36px; font-weight:700; color:var(--color-text);">-</div>
+                        <div style="color:#6b7280; font-size:13px; margin-top:4px;">Pedidos pendientes</div>
+                    </div>
+                    <div style="background:var(--bg-card); border-radius:14px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,.07); text-align:center; border:1px solid var(--border-color);">
+                        <i class="fas fa-dollar-sign" style="font-size:28px; color:#10b981; margin-bottom:10px;"></i>
+                        <div id="card-ventas-hoy" style="font-size:28px; font-weight:700; color:var(--color-text);">-</div>
+                        <div style="color:#6b7280; font-size:13px; margin-top:4px;">Ventas del día</div>
+                    </div>
+                    <div style="background:var(--bg-card); border-radius:14px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,.07); text-align:center; border:1px solid var(--border-color);">
+                        <i class="fas fa-calendar-alt" style="font-size:28px; color:#059669; margin-bottom:10px;"></i>
+                        <div id="card-ventas-mes" style="font-size:28px; font-weight:700; color:var(--color-text);">-</div>
+                        <div style="color:#6b7280; font-size:13px; margin-top:4px;">Ventas del mes</div>
+                    </div>
+                    <div style="background:var(--bg-card); border-radius:14px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,.07); text-align:center; border:1px solid var(--border-color);">
+                        <i class="fas fa-boxes" style="font-size:28px; color:#6366f1; margin-bottom:10px;"></i>
+                        <div id="card-insumos" style="font-size:36px; font-weight:700; color:var(--color-text);">-</div>
+                        <div style="color:#6b7280; font-size:13px; margin-top:4px;">Insumos en inventario</div>
+                    </div>
+                    <div style="background:var(--bg-card); border-radius:14px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,.07); text-align:center; border:1px solid var(--border-color);">
+                        <i class="fas fa-exclamation-triangle" style="font-size:28px; color:#ef4444; margin-bottom:10px;"></i>
+                        <div id="card-stock-bajo" style="font-size:36px; font-weight:700; color:var(--color-text);">-</div>
+                        <div style="color:#6b7280; font-size:13px; margin-top:4px;">Insumos stock bajo</div>
+                    </div>
+                    <div style="background:var(--bg-card); border-radius:14px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,.07); text-align:center; border:1px solid var(--border-color);">
+                        <i class="fas fa-ice-cream" style="font-size:28px; color:#ec4899; margin-bottom:10px;"></i>
+                        <div id="card-productos" style="font-size:36px; font-weight:700; color:var(--color-text);">-</div>
+                        <div style="color:#6b7280; font-size:13px; margin-top:4px;">Productos activos</div>
+                    </div>
+                    <div style="background:var(--bg-card); border-radius:14px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,.07); text-align:center; border:1px solid var(--border-color);">
+                        <i class="fas fa-truck" style="font-size:28px; color:#a47c7c; margin-bottom:10px;"></i>
+                        <div id="card-proveedores" style="font-size:36px; font-weight:700; color:var(--color-text);">-</div>
+                        <div style="color:#6b7280; font-size:13px; margin-top:4px;">Proveedores activos</div>
+                    </div>
+                </div>
+            </div>
 
             <!-- SECCIÓN EMPLEADOS -->
             <div id="seccion-empleados">
@@ -217,6 +294,187 @@
                     <button type="button" class="btn-exportar pdf" id="btnGenerarArchivo" onclick="generarArchivo()">
                         <i class="fas fa-file-arrow-down"></i> Descargar PDF
                     </button>
+                </div>
+            </div>
+
+            <!-- SECCIÓN ACERCA DEL SISTEMA (ADMIN) -->
+            <div id="seccion-acerca" style="display:none;">
+                <div class="encabezado-seccion">
+                    <h2><i class="fas fa-info-circle" style="margin-right:10px;"></i>Acerca del sistema</h2>
+                </div>
+                <embed src="../assets/manual-usuario.pdf" type="application/pdf" style="display:block; width:100%; height:calc(100vh - 120px); border:none; border-radius:12px;" />
+            </div>
+
+            <!-- SECCIÓN INVENTARIO (ADMIN) -->
+            <div id="seccion-inventario" style="display:none;">
+                <div class="seccion-cabecera">
+                    <h2><i class="fas fa-boxes" style="margin-right:10px;"></i>Inventario</h2>
+                    <button class="boton-registrar" id="btnAbrirModalInsumo" style="display:none;">
+                        <span>+</span> Registrar insumo
+                    </button>
+                </div>
+                <div id="panelInsumos">
+                    <div class="barra-busqueda">
+                        <svg width="20" height="20" fill="#999" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
+                        </svg>
+                        <input type="text" id="inputBusquedaInsumo" placeholder="Buscar por nombre o categoría...">
+                    </div>
+                    <div class="seccion-inventario">
+                        <table class="tabla-inventario">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Categoría</th>
+                                    <th>Stock</th>
+                                    <th>Stock mínimo</th>
+                                    <th>Unidad</th>
+                                    <th>Caducidad</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cuerpoTablaInsumos">
+                                <tr>
+                                    <td colspan="8" style="text-align:center; padding:40px; color:#999;">
+                                        <i class="fas fa-spinner fa-spin" style="font-size:24px; color:#a47c7c;"></i>
+                                        <p style="margin-top:10px;">Cargando insumos...</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN PROVEEDORES (ADMIN) -->
+            <div id="seccion-proveedores" style="display:none;">
+                <div class="encabezado-seccion">
+                    <h2><i class="fas fa-truck" style="margin-right:10px;"></i>Proveedores</h2>
+                    <button class="boton-registrar" id="btnAbrirModalProveedor">
+                        <span>+</span> Registrar proveedor
+                    </button>
+                </div>
+                <div class="barra-busqueda">
+                    <svg width="20" height="20" fill="#999" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
+                    </svg>
+                    <input type="text" id="inputBusquedaProveedor" placeholder="Buscar por nombre...">
+                </div>
+                <table class="tabla-inventario">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Contacto</th>
+                            <th>Teléfono</th>
+                            <th>Correo</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTablaProveedores"></tbody>
+                </table>
+            </div>
+
+            <!-- SECCIÓN PRODUCTOS (ADMIN) -->
+            <div id="seccion-productos" style="display:none;">
+                <div class="seccion-cabecera">
+                    <h2><i class="fas fa-ice-cream" style="margin-right:10px;"></i>Productos</h2>
+                    <div class="seccion-barra">
+                        <div class="pestanas">
+                            <button type="button" class="pestana activa" id="pestanaProductos" onclick="cambiarPestana('productos')"><i class="fas fa-ice-cream pestana-icono"></i>Productos</button>
+                            <button type="button" class="pestana" id="pestanaCategorias" onclick="cambiarPestana('categorias')"><i class="fas fa-tags pestana-icono"></i>Categorías</button>
+                            <button type="button" class="pestana" id="pestanaSabores" onclick="cambiarPestana('sabores')"><i class="fas fa-palette pestana-icono"></i>Sabores</button>
+                            <button type="button" class="pestana" id="pestanaAdicionales" onclick="cambiarPestana('adicionales')"><i class="fas fa-plus pestana-icono"></i>Adicionales</button>
+                        </div>
+                        <button class="boton-registrar" id="btnAbrirModalProducto">
+                            <span>+</span> Registrar producto
+                        </button>
+                        <button class="boton-registrar" id="btnAbrirModalCategoria" style="display:none;">
+                            <span>+</span> Registrar categoría
+                        </button>
+                        <button class="boton-registrar" id="btnAbrirModalSabor" style="display:none;">
+                            <span>+</span> Registrar sabor
+                        </button>
+                        <button class="boton-registrar" id="btnAbrirModalAdicional" style="display:none;">
+                            <span>+</span> Registrar adicional
+                        </button>
+                    </div>
+                </div>
+                <!-- PANEL PRODUCTOS -->
+                <div id="panelProductos">
+                    <div class="barra-busqueda">
+                        <svg width="20" height="20" fill="#999" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
+                        </svg>
+                        <input type="text" id="inputBusquedaProducto" placeholder="Buscar por nombre o categoría...">
+                    </div>
+                    <table class="tabla-inventario">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Categoría</th>
+                                <th>Precio</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoTablaProductos"></tbody>
+                    </table>
+                </div>
+                <!-- PANEL CATEGORÍAS -->
+                <div id="panelCategorias" style="display:none;">
+                    <table class="tabla-inventario">
+                        <thead>
+                            <tr><th>Nombre</th><th>Estado</th><th>Acciones</th></tr>
+                        </thead>
+                        <tbody id="cuerpoTablaCategorias"></tbody>
+                    </table>
+                </div>
+                <!-- PANEL SABORES -->
+                <div id="panelSabores" style="display:none;">
+                    <table class="tabla-inventario">
+                        <thead>
+                            <tr><th>Nombre</th><th>Estado</th><th>Acciones</th></tr>
+                        </thead>
+                        <tbody id="cuerpoTablaSabores"></tbody>
+                    </table>
+                </div>
+                <!-- PANEL ADICIONALES -->
+                <div id="panelAdicionales" style="display:none;">
+                    <table class="tabla-inventario">
+                        <thead>
+                            <tr><th>Nombre</th><th>Precio</th><th>Estado</th><th>Acciones</th></tr>
+                        </thead>
+                        <tbody id="cuerpoTablaAdicionales"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SECCIÓN VENTAS (ADMIN) -->
+            <div id="seccion-ventas" style="display:none;">
+                <div class="seccion-cabecera">
+                    <h2><i class="fas fa-chart-line" style="margin-right:10px;"></i>Ventas</h2>
+                </div>
+                <div id="panelVentas">
+                    <div class="barra-busqueda">
+                        <svg width="20" height="20" fill="#999" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
+                        </svg>
+                        <input type="text" id="inputBusquedaVenta" placeholder="Buscar por # venta o # pedido...">
+                    </div>
+                    <table class="tabla-inventario">
+                        <thead>
+                            <tr>
+                                <th># Venta</th>
+                                <th>Fecha</th>
+                                <th># Pedido</th>
+                                <th>Total</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoTablaVentas"></tbody>
+                    </table>
                 </div>
             </div>
 
@@ -452,6 +710,268 @@
         </div>
     </div>
 
+    <!-- MODAL INSUMO (edición) -->
+    <div id="modalInsumo" class="modal">
+        <div class="modal-contenido" style="max-width:780px;">
+            <button class="modal-cerrar" id="btnCerrarModalInsumo">×</button>
+            <h2 id="tituloModalInsumo">Editar Insumo</h2>
+            <p id="subtituloModalInsumo" style="color:#999; font-size:14px; margin-bottom:20px;">Modifica los datos del insumo</p>
+            <form id="formInsumo" novalidate>
+                <input type="hidden" id="idInsumoEditar">
+                <div class="form-group">
+                    <label>Nombre del insumo</label>
+                    <input type="text" id="nombreInsumo" placeholder="Ej: Leche entera" required minlength="2" maxlength="100">
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                    <div class="form-group">
+                        <label>Categoría</label>
+                        <select id="tipoInsumo" required>
+                            <option value="" disabled selected>Selecciona categoría</option>
+                            <option value="Saborizantes">Saborizantes</option>
+                            <option value="Lácteos">Lácteos</option>
+                            <option value="Frutas">Frutas</option>
+                            <option value="Granos/cereales">Granos/cereales</option>
+                            <option value="Endulzantes">Endulzantes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Unidad de medida</label>
+                        <select id="unidadMedida" required>
+                            <option value="" disabled selected>Selecciona</option>
+                            <option value="L">Litros (L)</option>
+                            <option value="kg">Kilogramos (kg)</option>
+                            <option value="g">Gramos (g)</option>
+                            <option value="ml">Mililitros (ml)</option>
+                            <option value="Unidades">Unidades</option>
+                            <option value="Cajas">Cajas</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;">
+                    <div class="form-group">
+                        <label>Stock actual</label>
+                        <input type="number" id="stock" min="0" max="99999" step="0.01" placeholder="Ej: 50" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Stock mínimo</label>
+                        <input type="number" id="stockMinimo" min="0" max="99999" step="0.01" placeholder="Ej: 10" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Caducidad <span style="color:#bbb; font-weight:normal;">(opcional)</span></label>
+                        <input type="date" id="fechaCaducidad">
+                    </div>
+                </div>
+                <div id="mensajeInsumo"></div>
+                <div class="botones">
+                    <button type="button" class="btn-cancelar" id="btnCancelarModalInsumo">Cancelar</button>
+                    <button type="submit" class="btn-registrar" id="btnSubmitInsumo">Guardar cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL PROVEEDOR -->
+    <div id="modalProveedor" class="modal">
+        <div class="modal-contenido">
+            <button class="modal-cerrar" id="btnCerrarModalProveedor">×</button>
+            <h2 id="tituloModalProveedor">Registrar Proveedor</h2>
+            <form id="formProveedor" novalidate>
+                <input type="hidden" id="idProveedorEditar">
+                <div class="form-group">
+                    <label>Nombre <span style="color:#d9534f">*</span></label>
+                    <input type="text" id="nombreProveedor" placeholder="Ej: Lácteos del Valle" required minlength="2" maxlength="100">
+                </div>
+                <div class="form-group">
+                    <label>Contacto <span style="color:#d9534f">*</span></label>
+                    <input type="text" id="contactoProveedor" placeholder="Ej: Juan Pérez" maxlength="100" required>
+                </div>
+                <div class="form-group">
+                    <label>Teléfono <span style="color:#d9534f">*</span></label>
+                    <input type="tel" id="telefonoProveedor" placeholder="Ej: 3001234567" pattern="[0-9+\-\s]{7,20}" maxlength="20" required>
+                </div>
+                <div class="form-group">
+                    <label>Correo <span style="color:#d9534f">*</span></label>
+                    <input type="email" id="correoProveedor" placeholder="Ej: proveedor@correo.com" required>
+                </div>
+                <div id="mensajeProveedor"></div>
+                <div class="botones">
+                    <button type="button" class="btn-cancelar" id="btnCancelarModalProveedor">Cancelar</button>
+                    <button type="submit" class="btn-registrar" id="btnSubmitProveedor">Registrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL PRODUCTO -->
+    <div id="modalProducto" class="modal">
+        <div class="modal-contenido">
+            <button class="modal-cerrar" id="btnCerrarModalProducto">×</button>
+            <h2 id="tituloModalProducto">Registrar Producto</h2>
+            <form id="formProducto" novalidate>
+                <input type="hidden" id="idProductoEditar">
+                <div class="form-group">
+                    <label>Nombre <span style="color:#d9534f">*</span></label>
+                    <input type="text" id="nombreProducto" placeholder="Ej: Copa Queso" required minlength="2" maxlength="100">
+                </div>
+                <div class="form-group">
+                    <label>Descripción <span style="color:#999; font-weight:normal;">(opcional)</span></label>
+                    <textarea id="descripcionProducto" placeholder="Ej: Dos bolas de helado con queso..." rows="3" style="resize:vertical;" maxlength="500"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Categoría <span style="color:#d9534f">*</span></label>
+                    <select id="categoriaProducto" required>
+                        <option value="" disabled selected>Selecciona categoría</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Precio base <span style="color:#d9534f">*</span></label>
+                    <input type="number" id="precioProducto" min="0" max="9999999" step="100" placeholder="Ej: 15000" required>
+                </div>
+                <div id="mensajeProducto"></div>
+                <div class="botones">
+                    <button type="button" class="btn-cancelar" id="btnCancelarModalProducto">Cancelar</button>
+                    <button type="submit" class="btn-registrar" id="btnSubmitProducto">Registrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL CATEGORÍA -->
+    <div id="modalCategoria" class="modal">
+        <div class="modal-contenido">
+            <button class="modal-cerrar" id="btnCerrarModalCategoria">×</button>
+            <h2 id="tituloModalCategoria">Registrar Categoría</h2>
+            <form id="formCategoria" novalidate>
+                <input type="hidden" id="idCategoriaEditar">
+                <div class="form-group">
+                    <label>Nombre <span style="color:#d9534f">*</span></label>
+                    <input type="text" id="nombreCategoria" placeholder="Ej: Copas" required minlength="2" maxlength="100">
+                </div>
+                <div id="mensajeCategoria"></div>
+                <div class="botones">
+                    <button type="button" class="btn-cancelar" id="btnCancelarModalCategoria">Cancelar</button>
+                    <button type="submit" class="btn-registrar" id="btnSubmitCategoria">Registrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL SABOR -->
+    <div id="modalSabor" class="modal">
+        <div class="modal-contenido">
+            <button class="modal-cerrar" id="btnCerrarModalSabor">×</button>
+            <h2 id="tituloModalSabor">Registrar Sabor</h2>
+            <form id="formSabor" novalidate>
+                <input type="hidden" id="idSaborEditar">
+                <div class="form-group">
+                    <label>Nombre <span style="color:#d9534f">*</span></label>
+                    <input type="text" id="nombreSabor" placeholder="Ej: Chocolate" required minlength="2" maxlength="100">
+                </div>
+                <div id="mensajeSabor"></div>
+                <div class="botones">
+                    <button type="button" class="btn-cancelar" id="btnCancelarModalSabor">Cancelar</button>
+                    <button type="submit" class="btn-registrar" id="btnSubmitSabor">Registrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL ADICIONAL -->
+    <div id="modalAdicional" class="modal">
+        <div class="modal-contenido">
+            <button class="modal-cerrar" id="btnCerrarModalAdicional">×</button>
+            <h2 id="tituloModalAdicional">Registrar Adicional</h2>
+            <form id="formAdicional" novalidate>
+                <input type="hidden" id="idAdicionalEditar">
+                <div class="form-group">
+                    <label>Nombre <span style="color:#d9534f">*</span></label>
+                    <input type="text" id="nombreAdicional" placeholder="Ej: Salsa de chocolate" required minlength="2" maxlength="100">
+                </div>
+                <div class="form-group">
+                    <label>Precio <span style="color:#d9534f">*</span></label>
+                    <input type="number" id="precioAdicional" min="0" max="999999" step="100" placeholder="0" required>
+                </div>
+                <div id="mensajeAdicional"></div>
+                <div class="botones">
+                    <button type="button" class="btn-cancelar" id="btnCancelarModalAdicional">Cancelar</button>
+                    <button type="submit" class="btn-registrar" id="btnSubmitAdicional">Registrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL DETALLES VENTA -->
+    <div id="modalDetallesVenta" class="modal">
+        <div class="modal-contenido" style="max-width:700px;">
+            <button class="modal-cerrar" id="btnCerrarDetallesVenta">×</button>
+            <h2 id="tituloDetallesVenta">Venta #</h2>
+            <div id="infoDetallesVenta" style="margin-bottom:16px; color:#666; font-size:14px;"></div>
+            <table class="tabla-inventario">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cant.</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpoDetallesVenta"></tbody>
+            </table>
+            <div style="text-align:right; font-weight:600; margin-top:12px; color:#a47c7c;">
+                Total: <span id="totalDetallesVenta">$0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL FACTURA (requerido por ventas.js - no accesible desde admin) -->
+    <div id="modalFactura" class="modal" style="display:none;">
+        <div class="modal-contenido" style="max-width:500px;">
+            <button class="modal-cerrar" id="btnCerrarModalFactura">&times;</button>
+            <h2 id="tituloModalFactura">Generar Factura</h2>
+            <div id="mensajeFactura" style="display:none;"></div>
+            <form id="formFactura" novalidate>
+                <input type="hidden" id="idVentaFactura">
+                <div class="form-group">
+                    <label>Dirección del local <span style="color:#d9534f">*</span></label>
+                    <input type="text" id="direccionFactura" maxlength="150" placeholder="Cargando dirección..." required>
+                </div>
+                <div class="form-group">
+                    <label>Método de pago *</label>
+                    <select id="metodoPago" required>
+                        <option value="" disabled selected>Selecciona</option>
+                        <option value="efectivo">Efectivo</option>
+                        <option value="tarjeta">Tarjeta</option>
+                        <option value="transferencia">Transferencia</option>
+                        <option value="nequi">Nequi</option>
+                        <option value="daviplata">Daviplata</option>
+                    </select>
+                </div>
+                <div id="calculadorCambio" style="display:none; background:#f9fafb; border-radius:12px; padding:16px; margin-bottom:12px;">
+                    <div style="font-size:13px; color:#6b7280; margin-bottom:10px; font-weight:600;">Calculador de cambio</div>
+                    <div style="display:flex; justify-content:space-between; font-size:14px; margin-bottom:10px;">
+                        <span>Total a pagar:</span><strong id="totalAPagar" style="color:#a47c7c;">$0</strong>
+                    </div>
+                    <div class="form-group" style="margin-bottom:10px;">
+                        <label>Monto recibido</label>
+                        <input type="number" id="montoRecibido" min="0" placeholder="Ej: 50000" oninput="calcularCambio()">
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:15px; font-weight:700; color:#10b981;">
+                        <span>Cambio a devolver:</span><span id="valorCambio">$0</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Observaciones (opcional)</label>
+                    <textarea id="adicionalesFactura" rows="3" placeholder="Notas adicionales"></textarea>
+                </div>
+                <div style="display:flex; gap:12px; justify-content:flex-end; margin-top:24px;">
+                    <button type="button" id="btnCancelarModalFactura" style="padding:10px 20px; border:1px solid #d1d5db; background:white; border-radius:10px; cursor:pointer; font-size:14px; color:#6b7280;">Cancelar</button>
+                    <button type="submit" id="btnSubmitFactura" style="padding:10px 24px; background:#a47c7c; color:white; border:none; border-radius:10px; cursor:pointer; font-size:14px; font-weight:600;">
+                        <i class="fas fa-file-invoice"></i> Generar factura
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- MODAL PREVIEW PDF -->
     <div id="modalPdfPreview" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:9999; align-items:center; justify-content:center; padding:16px;">
         <div style="background:#fff; width:100%; max-width:960px; height:90vh; border-radius:16px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 20px 60px rgba(0,0,0,0.4);">
@@ -488,6 +1008,72 @@
             actualizarHoraAdmin()
             setInterval(actualizarHoraAdmin, 60000)
         })
+    </script>
+    <script src="../assets/js/empleado/api.js"></script>
+    <script src="../assets/js/empleado/utils.js"></script>
+    <script src="../assets/js/empleado/general.js"></script>
+    <script src="../assets/js/empleado/inventario.js"></script>
+    <script src="../assets/js/empleado/proveedores.js"></script>
+    <script src="../assets/js/empleado/productos.js"></script>
+    <script src="../assets/js/empleado/categorias.js"></script>
+    <script src="../assets/js/empleado/ventas.js"></script>
+    <script>
+        // En el panel admin, el inventario es solo lectura (sin edición ni dropdown de estado)
+        renderTablaInsumos = function(insumos) {
+            const tbody = document.getElementById('cuerpoTablaInsumos')
+            if (!insumos || insumos.length === 0) {
+                tbody.innerHTML = mensajeFilaTabla('No hay insumos registrados', 7)
+                return
+            }
+            tbody.innerHTML = insumos.map(i => {
+                const stockBajo = i.stock <= i.stockminimo
+                const fechaCad = i.fechacaducidad
+                    ? new Date(i.fechacaducidad).toLocaleDateString('es-CO')
+                    : '<span style="color:#ccc">-</span>'
+                return `
+                    <tr>
+                        <td>${i.nombreinsumo}</td>
+                        <td>${i.tipoinsumo}</td>
+                        <td style="color:${stockBajo ? '#dc2626' : 'inherit'}; font-weight:${stockBajo ? '600' : 'normal'};">
+                            ${i.stock} ${stockBajo ? '<i class="fas fa-exclamation-triangle" style="color:#dc2626; font-size:12px;"></i>' : ''}
+                        </td>
+                        <td>${i.stockminimo}</td>
+                        <td>${i.unidadmedida}</td>
+                        <td>${fechaCad}</td>
+                        <td>
+                            <span class="${i.estado === 'activo' ? 'estado-disponible' : 'estado-bajo'}"
+                                style="padding:4px 10px; border-radius:20px; font-size:12px; font-weight:600;">
+                                ${i.estado}
+                            </span>
+                        </td>
+                    </tr>
+                `
+            }).join('')
+        }
+
+        // En el panel admin, la sección de ventas no tiene la funcionalidad de generar factura
+        renderTablaVentas = function(ventas) {
+            const tbody = document.getElementById('cuerpoTablaVentas')
+            if (!ventas || ventas.length === 0) {
+                tbody.innerHTML = mensajeFilaTabla('No hay ventas registradas', 5)
+                return
+            }
+            tbody.innerHTML = ventas.map(v => `
+                <tr>
+                    <td>#${v.idventa}</td>
+                    <td>${new Date(v.fechaventa).toLocaleDateString('es-CO')}</td>
+                    <td>#${v.idpedido}</td>
+                    <td>$${parseFloat(v.totalventa).toLocaleString('es-CO')}</td>
+                    <td>
+                        <div class="botones-accion">
+                            <button class="boton-accion" title="Ver detalles" onclick="verDetallesVenta(${v.idventa})">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('')
+        }
     </script>
     <script src="../assets/js/admin/ui.js?v=3"></script>
     <script src="../assets/js/admin/usuarios.js?v=3"></script>

@@ -4,21 +4,33 @@ const API_GASTOS = 'https://helar-tec-grupo-7.onrender.com/api/gastos'
 
 /** Muestra la sección del panel admin seleccionada y dispara su función de carga (solo una vez por sección) */
 function cambiarSeccionAdmin(seccion, elemento) {
-    document.getElementById('seccion-empleados').style.display      = seccion === 'empleados' ? 'block' : 'none'
-    document.getElementById('seccion-gastos').style.display         = seccion === 'gastos'    ? 'block' : 'none'
-    document.getElementById('seccion-reportes').style.display       = seccion === 'reportes'  ? 'block' : 'none'
-    document.getElementById('seccion-alertas-admin').style.display  = seccion === 'alertas'   ? 'block' : 'none'
-    document.getElementById('seccion-manual-admin').style.display   = seccion === 'manual'    ? 'block' : 'none'
+    document.getElementById('seccion-general').style.display        = seccion === 'general'     ? 'block' : 'none'
+    document.getElementById('seccion-empleados').style.display      = seccion === 'empleados'   ? 'block' : 'none'
+    document.getElementById('seccion-gastos').style.display         = seccion === 'gastos'      ? 'block' : 'none'
+    document.getElementById('seccion-reportes').style.display       = seccion === 'reportes'    ? 'block' : 'none'
+    document.getElementById('seccion-alertas-admin').style.display  = seccion === 'alertas'     ? 'block' : 'none'
+    document.getElementById('seccion-manual-admin').style.display   = seccion === 'manual'      ? 'block' : 'none'
+    document.getElementById('seccion-inventario').style.display     = seccion === 'inventario'  ? 'block' : 'none'
+    document.getElementById('seccion-proveedores').style.display    = seccion === 'proveedores' ? 'block' : 'none'
+    document.getElementById('seccion-productos').style.display      = seccion === 'productos'   ? 'block' : 'none'
+    document.getElementById('seccion-ventas').style.display         = seccion === 'ventas'      ? 'block' : 'none'
+    document.getElementById('seccion-acerca').style.display         = seccion === 'acerca'      ? 'block' : 'none'
 
     document.querySelectorAll('.item-menu').forEach(i => i.classList.remove('activo'))
     if (elemento) elemento.classList.add('activo')
 
-    if (!_adminSeccionesYaCargadas.has(seccion)) {
+    // General siempre refresca; las demás solo cargan una vez
+    if (seccion === 'general' || !_adminSeccionesYaCargadas.has(seccion)) {
         _adminSeccionesYaCargadas.add(seccion)
-        if (seccion === 'gastos')     cargarGastos()
-        if (seccion === 'empleados')  cargarUsuarios()
-        if (seccion === 'reportes')   cargarReportes()
-        if (seccion === 'alertas')    cargarAlertasAdmin()
+        if (seccion === 'general')      cargarDashboard()
+        if (seccion === 'gastos')       cargarGastos()
+        if (seccion === 'empleados')    cargarUsuarios()
+        if (seccion === 'reportes')     cargarReportes()
+        if (seccion === 'alertas')      cargarAlertasAdmin()
+        if (seccion === 'inventario')   cargarInsumos()
+        if (seccion === 'proveedores')  cargarProveedores()
+        if (seccion === 'productos')    cargarProductos()
+        if (seccion === 'ventas')       cargarVentas()
     }
 }
 
