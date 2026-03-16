@@ -222,7 +222,7 @@
 }
 
 /* ── DARK MODE MODALES ──────────────────────────────────────── */
-[data-tema="oscuro"] .modal-logout-header { background: #b89090; }
+[data-tema="oscuro"] .modal-logout-header { background: #8c6464; }
 [data-tema="oscuro"] .modal-logout-body p { color: var(--color-text); }
 [data-tema="oscuro"] .modal-logout-footer { border-top-color: var(--color-border); }
 [data-tema="oscuro"] .modal-logout-footer .btn-cancelar { background: var(--bg-header); color: var(--color-text); }

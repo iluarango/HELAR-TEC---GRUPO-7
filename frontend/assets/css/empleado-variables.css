@@ -23,32 +23,32 @@
 }
 
 [data-tema="oscuro"] {
-    --bg-page: #c8a8a8;
-    --bg-sidebar: #b89090;
-    --bg-card: #dac4c4;
-    --bg-input: #ccb4b4;
-    --bg-header: #e4d0d0;
-    --bg-table-odd: #c8a8a8;
-    --bg-table-even: #d8bcbc;
-    --bg-table-hover: #eedada;
-    --bg-submenu: #b89090;
-    --color-text: #ffffff;
-    --color-text-muted: #fff0f0;
-    --color-text-label: #ffffff;
-    --color-text-table: #ffffff;
+    --bg-page: #a07474;
+    --bg-sidebar: #8c6464;
+    --bg-card: #b48888;
+    --bg-input: #9e7474;
+    --bg-header: #c09898;
+    --bg-table-odd: #a07474;
+    --bg-table-even: #b48888;
+    --bg-table-hover: #caaaaa;
+    --bg-submenu: #8c6464;
+    --color-text: #f5e8e8;
+    --color-text-muted: #f0d8d8;
+    --color-text-label: #f5e0d8;
+    --color-text-table: #f5e8e8;
     --color-accent: #ffe8e8;
     --color-accent2: #ffd8b8;
-    --color-border: #d4b4b4;
-    --color-border-light: #ccaaaa;
-    --shadow-card: 0 2px 8px rgba(0,0,0,0.15);
-    --shadow-modal: 0 10px 40px rgba(0,0,0,0.3);
+    --color-border: #c8a4a4;
+    --color-border-light: #b89090;
+    --shadow-card: 0 2px 8px rgba(0,0,0,0.25);
+    --shadow-modal: 0 10px 40px rgba(0,0,0,0.45);
 }
 
-/* ── DARK MODE: iconos de tarjetas generales ──────────────── */
+/* ── DARK MODE: texto e iconos de tarjetas generales ─────── */
 [data-tema="oscuro"] .grid-resumen i.fa-shopping-cart,
 [data-tema="oscuro"] .grid-resumen i.fa-truck {
-    color: #ffffff !important;
+    color: #f5e8e8 !important;
 }
 [data-tema="oscuro"] .grid-resumen > div > div:last-child {
-    color: rgba(255, 255, 255, 0.85) !important;
+    color: #f0d8d8 !important;
 }
