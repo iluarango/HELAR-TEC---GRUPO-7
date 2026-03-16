@@ -168,8 +168,8 @@
 [data-tema="oscuro"] .item-menu.activo { color: #1a0a0a; }
 [data-tema="oscuro"] .submenu-ajustes { box-shadow: 0 5px 20px rgba(0,0,0,0.6); }
 [data-tema="oscuro"] .submenu-item.cerrar-sesion:hover { color: #ff8a80; }
-[data-tema="oscuro"] .perfil-usuario { background: #5a3535; }
-[data-tema="oscuro"] .avatar-usuario { background-color: #6a4040; }
+[data-tema="oscuro"] .perfil-usuario { background: #b48888; }
+[data-tema="oscuro"] .avatar-usuario { background-color: #c09898; }
 
 .icono-submenu-admin {
     width: 18px;
